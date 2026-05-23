@@ -1,0 +1,91 @@
+[
+{
+    "id":1,
+    "category":"JavaScript",
+    "subcategory":"变量提升",
+    "difficulty":"easy",
+    "type":"single",
+    "title":"以下代码输出什么？console.log(a); var a = 1;",
+    "options":[
+        {"key": "A", "text": "undefined"},
+        {"key": "B", "text": "1"},
+        {"key": "C", "text": "报错"},
+        {"key": "D", "text": "null"}
+    ],  
+    "answer":"A",
+    "analysis":" var声明的变量会提升到作用域顶部，但只提升声明，不提升赋值。所以console.log(a)执行时a已声明但未赋值，输出undefined。",
+    "tags":["变量提升","var"]
+}
+,
+{
+    "id":2,
+    "category":"JavaScript",
+    "subcategory":"函数",
+    "difficulty":"easy",
+    "type":"single",
+    "title":"以下代码输出什么？function a() { console.log('hello world'); } a();",
+    "options":[
+        {"key": "A", "text": "hello world"},
+        {"key": "B", "text": "报错"},
+        {"key": "C", "text": "null"},
+        {"key": "D", "text": "undefined"}
+    ],
+    "answer":"A",
+    "analysis":" 函数调用时会先执行函数体，再执行函数体内的代码。所以输出hello world。",
+    "tags":["函数","调用"]
+}
+,
+{
+    "id": 3,
+        "category": "JavaScript",
+        "subcategory": "基础语法",
+        "difficulty": "easy",
+        "type": "single",
+        "title": "以下哪个不是 JavaScript 的基本数据类型？",
+        "options": [
+            {"key": "A", "text": " String"},
+            {"key": "B", "text": " Number"},
+            {"key": "C", "text": " Boolean"},
+            {"key": "D", "text": " Array"}
+        ],
+        "answer": "D",
+        "analysis": "JavaScript 的基本数据类型包括 String、Number、Boolean、Undefined、Null、Symbol 和 BigInt，Array 属于引用类型。",
+        "tags": ["数据类型", "基础"]
+}
+,
+{
+     "id": 4,
+        "category": "JavaScript",
+        "subcategory": "变量声明",
+        "difficulty": "easy",
+        "type": "single",
+        "title": "以下关于 var、let、const 的说法，错误的是？",
+        "options": [
+            {"key": "A", "text": " var 存在变量提升"},
+            {"key": "B", "text": " let 存在块级作用域"},
+            {"key": "C", "text": " const 声明的变量不可修改"},
+            {"key": "D", "text": " let 存在暂时性死区"}
+        ],
+        "answer": "C",
+        "analysis": "const 声明的变量如果是引用类型（如对象、数组），其属性或元素是可以修改的，只是变量本身的引用地址不能改变。",
+        "tags": ["变量声明", "作用域"]
+}
+,
+{
+    "id": 5,
+        "category": "JavaScript",
+        "subcategory": "运算符",
+        "difficulty": "easy",
+        "type": "single",
+        "title": "console.log(0 == false) 和 console.log(0 === false) 的输出结果分别是？",
+        "options": [
+           {"key": "A", "text": " true、true"},
+           {"key": "B", "text": " true、false"},
+           {"key": "C", "text": " false、true"},
+           {"key": "D", "text": " false、false"}
+        ],
+        "answer": "B",
+        "analysis": "== 会进行类型转换，0 和 false 都会被转为数字 0，结果为 true；=== 不进行类型转换，0 是 Number 类型，false 是 Boolean 类型，结果为 false。",
+        "tags": ["运算符", "类型转换"]
+}
+]
