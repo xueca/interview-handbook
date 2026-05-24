@@ -5,7 +5,7 @@ function auth(req, res, next) {
    const authheader = req.headers.authorization;
    if(!authheader || !authheader.startsWith('Bearer ')){
       return res.status(401).json({
-        code: 401, message:"未登录",data:null
+        code: 401, message:"未登录",data:null 
       })
    }
    const token = authheader.split(' ')[1];

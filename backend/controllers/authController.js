@@ -9,8 +9,8 @@ const authController = {
 
         //2. 校验参数是否完整
         if(!username || !password){
-            return res.status(400).json({
-                code: 400, message:"用户名或密码不能为空",data:null
+            return res.status(401).json({
+                code: 401, message:"用户名或密码不能为空",data:null
             })
         }
 
@@ -20,8 +20,8 @@ const authController = {
         //4.检查用户名是否重复
         const exists = users.find(user => user.username === username)
         if(exists){
-            return res.status(400).json({
-                code: 400, message:"用户名已存在",data:null
+            return res.status(401).json({
+                code: 401, message:"用户名已存在",data:null
             })
         }
 
@@ -56,8 +56,8 @@ const authController = {
 
     //2.验证参数
     if(!username || !password){
-        return res.status(400).json({
-            code:400 ,message:"用户名或密码不能为空",data:null
+        return res.status(401).json({
+            code:401 ,message:"用户名或密码不能为空",data:null
         }) 
 
     }
@@ -66,14 +66,14 @@ const authController = {
     //4.查找用户
     const user = users.find(user => user.username === username)
     if(!user){
-        return res.status(400).json({
-            code:400 ,message:"用户名不存在",data:null
+        return res.status(401).json({
+            code:401 ,message:"用户名不存在",data:null
         })
     }
     //5.验证密码
     if(!bcrypt.compareSync(password,user.password)){
-        return res.status(400).json({
-            code:400,message:"密码错误",data:null
+        return res.status(401).json({
+            code:401,message:"密码错误",data:null
         })
     }
     //6.签发jwt
