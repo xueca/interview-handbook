@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "username": "test@example.com",
+    "password": "$2b$10$ZCK9HHB955BVP/ZI71eioeBXYT7xTOBcra53F7diNHdlG7A/f/PR.",
+    "nickname": "test@example.com",
+    "createAt": "2026-05-23T11:15:11.116Z"
+  },
+  {
+    "id": 2,
+    "username": "ceshi1",
+    "password": "$2b$10$x/xRP0UYCBwIr7WDVgp.3ejeFuH8mW3fo3HsvG1zP0Jdpu5jx/mam",
+    "nickname": "ceshi1",
+    "createAt": "2026-05-23T15:10:48.683Z"
+  }
+]

@@ -5,12 +5,12 @@ readjson = (filename) => {
   try{
   const fullpath = path.join(__dirname,filename)
   if (!fs.existsSync(fullpath)){
-    return {}
+    return []
   }
   return JSON.parse(fs.readFileSync(fullpath, 'utf8'));
 }catch(err){
   console.error('读取失败:', err.message)
-  return {}
+  return []
 }
 }
 writejson = (filename,data) => {

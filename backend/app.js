@@ -1,14 +1,20 @@
-require('dotenv').config();
-const express = require('express');
+require('dotenv').config()
+const express = require('express')
+const auth = require('./middleware/auth')
+const authRoute = require('./routes/auth')
 
-const app = express();
+const app = express()
+app.use(express.json())
+app.use('/api/auth',authRoute)
 
-const port = process.env.PORT ;
+
+const port = process.env.PORT 
 
 app.get('/', (req, res) => {
-  res.send('Hello World!');
-});
+  res.send('Hello World!')
+})
+
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
+  console.log(`Example app listening on port ${port}`)
+})
