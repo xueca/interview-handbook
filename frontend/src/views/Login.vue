@@ -2,9 +2,9 @@
 import { ref } from 'vue'
 import {  useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-import { useUserStore } from '../stores/user'
+import { useUserstore } from '../stores/user'
 
-const userStore = useUserStore()
+const userStore = useUserstore()
 const router = useRouter()
 
 // 控制当前是登录还是注册模式

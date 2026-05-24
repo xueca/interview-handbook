@@ -1,14 +1,14 @@
 import axios from 'axios'
-import router from '@/router'
+import router from '../router/index.js'
 
-//创建axions实例
+//创建axios实例
 const service = axios.create({
     baseURL:'/api', //代理自动转发到http://localhost:5000
     timeout:7000
 })
 
 //请求拦截器
-request.interceptors.request.use(
+service.interceptors.request.use(
     (config)=>{
      // 从 localStorage 取 token，加到请求头
      const token = localStorage.getItem('token')
@@ -21,8 +21,9 @@ request.interceptors.request.use(
         return Promise.reject(error)
     }
 )
+
 //响应拦截器
-request.interceptors.response.use(
+service.interceptors.response.use(
     (response)=>{
         //200状态码，直接返回data
         return response.data
