@@ -1,91 +1,1452 @@
 [
-{
-    "id":1,
-    "category":"JavaScript",
-    "subcategory":"变量提升",
-    "difficulty":"easy",
-    "type":"single",
-    "title":"以下代码输出什么？console.log(a); var a = 1;",
-    "options":[
-        {"key": "A", "text": "undefined"},
-        {"key": "B", "text": "1"},
-        {"key": "C", "text": "报错"},
-        {"key": "D", "text": "null"}
-    ],  
-    "answer":"A",
-    "analysis":" var声明的变量会提升到作用域顶部，但只提升声明，不提升赋值。所以console.log(a)执行时a已声明但未赋值，输出undefined。",
-    "tags":["变量提升","var"]
-}
-,
-{
-    "id":2,
-    "category":"JavaScript",
-    "subcategory":"函数",
-    "difficulty":"easy",
-    "type":"single",
-    "title":"以下代码输出什么？function a() { console.log('hello world'); } a();",
-    "options":[
-        {"key": "A", "text": "hello world"},
-        {"key": "B", "text": "报错"},
-        {"key": "C", "text": "null"},
-        {"key": "D", "text": "undefined"}
+  {
+    "id": 1,
+    "title": "以下代码的输出结果是什么？\n```javascript\nconst obj = {\n  name: 'Alice',\n  sayHi: () => {\n    console.log(this.name);\n  }\n};\nobj.sayHi();\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "Alice"
+      },
+      {
+        "key": "B",
+        "text": "undefined"
+      },
+      {
+        "key": "C",
+        "text": "null"
+      },
+      {
+        "key": "D",
+        "text": "报错"
+      }
     ],
-    "answer":"A",
-    "analysis":" 函数调用时会先执行函数体，再执行函数体内的代码。所以输出hello world。",
-    "tags":["函数","调用"]
-}
-,
-{
+    "answer": "B",
+    "analysis": "箭头函数没有自己的 `this`，它会继承外层作用域的 `this`。这里外层是全局作用域（非严格模式下 `this` 指向 `window`/`global`，但 `window.name` 默认是空字符串或 undefined），所以 `this.name` 为 `undefined`。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 2,
+    "title": "以下代码的输出结果是什么？\n```javascript\nfunction foo() {\n  console.log(this.a);\n}\nvar a = 2;\nfoo.call(null);\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "2"
+      },
+      {
+        "key": "B",
+        "text": "undefined"
+      },
+      {
+        "key": "C",
+        "text": "null"
+      },
+      {
+        "key": "D",
+        "text": "报错"
+      }
+    ],
+    "answer": "A",
+    "analysis": "当 `call`/`apply`/`bind` 传入 `null` 或 `undefined` 作为 `this` 时，在非严格模式下会替换为全局对象（浏览器中是 `window`），所以 `this.a` 等于全局变量 `a` 的值 `2`。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
     "id": 3,
-        "category": "JavaScript",
-        "subcategory": "基础语法",
-        "difficulty": "easy",
-        "type": "single",
-        "title": "以下哪个不是 JavaScript 的基本数据类型？",
-        "options": [
-            {"key": "A", "text": " String"},
-            {"key": "B", "text": " Number"},
-            {"key": "C", "text": " Boolean"},
-            {"key": "D", "text": " Array"}
-        ],
-        "answer": "D",
-        "analysis": "JavaScript 的基本数据类型包括 String、Number、Boolean、Undefined、Null、Symbol 和 BigInt，Array 属于引用类型。",
-        "tags": ["数据类型", "基础"]
-}
-,
-{
-     "id": 4,
-        "category": "JavaScript",
-        "subcategory": "变量声明",
-        "difficulty": "easy",
-        "type": "single",
-        "title": "以下关于 var、let、const 的说法，错误的是？",
-        "options": [
-            {"key": "A", "text": " var 存在变量提升"},
-            {"key": "B", "text": " let 存在块级作用域"},
-            {"key": "C", "text": " const 声明的变量不可修改"},
-            {"key": "D", "text": " let 存在暂时性死区"}
-        ],
-        "answer": "C",
-        "analysis": "const 声明的变量如果是引用类型（如对象、数组），其属性或元素是可以修改的，只是变量本身的引用地址不能改变。",
-        "tags": ["变量声明", "作用域"]
-}
-,
-{
+    "title": "以下代码的输出结果是什么？\n```javascript\nvar a = 10;\nfunction test() {\n  console.log(a);\n  var a = 20;\n  console.log(a);\n}\ntest();\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "10, 20"
+      },
+      {
+        "key": "B",
+        "text": "undefined, 20"
+      },
+      {
+        "key": "C",
+        "text": "10, 10"
+      },
+      {
+        "key": "D",
+        "text": "undefined, undefined"
+      }
+    ],
+    "answer": "B",
+    "analysis": "函数作用域内 `var a = 20` 会发生变量提升，所以第一个 `console.log(a)` 访问的是提升后的 `a`（值为 `undefined`），第二个输出 `20`。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 4,
+    "title": "以下代码的输出结果是什么？\n```javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "0, 1, 2"
+      },
+      {
+        "key": "B",
+        "text": "3, 3, 3"
+      },
+      {
+        "key": "C",
+        "text": "0, 1, 2, 3"
+      },
+      {
+        "key": "D",
+        "text": "报错"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`var` 声明的变量没有块级作用域，`setTimeout` 的回调在循环结束后执行，此时 `i` 已经变为 `3`。三个回调共享同一个 `i`，所以都输出 `3`。改用 `let` 可以输出 `0, 1, 2`。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
     "id": 5,
-        "category": "JavaScript",
-        "subcategory": "运算符",
-        "difficulty": "easy",
-        "type": "single",
-        "title": "console.log(0 == false) 和 console.log(0 === false) 的输出结果分别是？",
-        "options": [
-           {"key": "A", "text": " true、true"},
-           {"key": "B", "text": " true、false"},
-           {"key": "C", "text": " false、true"},
-           {"key": "D", "text": " false、false"}
-        ],
-        "answer": "B",
-        "analysis": "== 会进行类型转换，0 和 false 都会被转为数字 0，结果为 true；=== 不进行类型转换，0 是 Number 类型，false 是 Boolean 类型，结果为 false。",
-        "tags": ["运算符", "类型转换"]
-}
+    "title": "以下代码的输出结果是什么？\n```javascript\nfunction createCounter() {\n  let count = 0;\n  return function() {\n    return ++count;\n  };\n}\nconst counter = createCounter();\nconsole.log(counter());\nconsole.log(counter());\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "0, 0"
+      },
+      {
+        "key": "B",
+        "text": "1, 1"
+      },
+      {
+        "key": "C",
+        "text": "1, 2"
+      },
+      {
+        "key": "D",
+        "text": "0, 1"
+      }
+    ],
+    "answer": "C",
+    "analysis": "闭包使得内部函数可以访问并修改外部函数的变量 `count`。`++count` 先自增再返回，所以第一次返回 `1`，第二次返回 `2`。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 6,
+    "title": "以下代码的输出结果是什么？\n```javascript\nfunction Person(name) {\n  this.name = name;\n}\nPerson.prototype.sayName = function() {\n  console.log(this.name);\n};\nconst p = new Person('Bob');\nconsole.log(p.__proto__ === Person.prototype);\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "true"
+      },
+      {
+        "key": "B",
+        "text": "false"
+      },
+      {
+        "key": "C",
+        "text": "undefined"
+      },
+      {
+        "key": "D",
+        "text": "报错"
+      }
+    ],
+    "answer": "A",
+    "analysis": "实例对象的 `__proto__` 属性指向构造函数的 `prototype` 属性，这是 JavaScript 原型链的基本机制。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 7,
+    "title": "以下代码的输出结果是什么？\n```javascript\nfunction Animal() {}\nfunction Dog() {}\nDog.prototype = new Animal();\nconst dog = new Dog();\nconsole.log(dog.__proto__ === Dog.prototype);\nconsole.log(Dog.prototype.__proto__ === Animal.prototype);\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "true, true"
+      },
+      {
+        "key": "B",
+        "text": "true, false"
+      },
+      {
+        "key": "C",
+        "text": "false, true"
+      },
+      {
+        "key": "D",
+        "text": "false, false"
+      }
+    ],
+    "answer": "A",
+    "analysis": "第一行：`dog.__proto__` 指向 `Dog.prototype`，为 `true`。第二行：`Dog.prototype` 是 `Animal` 的实例，所以 `Dog.prototype.__proto__` 指向 `Animal.prototype`，为 `true`。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 8,
+    "title": "以下代码的输出结果是什么？\n```javascript\nclass A {}\nclass B extends A {}\nconst b = new B();\nconsole.log(b.__proto__.__proto__ === A.prototype);\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "true"
+      },
+      {
+        "key": "B",
+        "text": "false"
+      },
+      {
+        "key": "C",
+        "text": "undefined"
+      },
+      {
+        "key": "D",
+        "text": "报错"
+      }
+    ],
+    "answer": "A",
+    "analysis": "ES6 `class` 的继承通过 `Object.create()` 实现原型链链接。`b.__proto__` 是 `B.prototype`，`B.prototype.__proto__` 是 `A.prototype`，所以结果为 `true`。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 9,
+    "title": "以下代码的输出结果是什么？\n```javascript\nconst promise = new Promise((resolve, reject) => {\n  console.log(1);\n  resolve();\n  console.log(2);\n});\npromise.then(() => console.log(3));\nconsole.log(4);\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "1, 2, 3, 4"
+      },
+      {
+        "key": "B",
+        "text": "1, 2, 4, 3"
+      },
+      {
+        "key": "C",
+        "text": "1, 4, 2, 3"
+      },
+      {
+        "key": "D",
+        "text": "4, 1, 2, 3"
+      }
+    ],
+    "answer": "B",
+    "analysis": "Promise 构造函数是同步执行的，所以先输出 `1`、`2`。`then` 回调是微任务，在同步代码 `console.log(4)` 之后执行，所以顺序是 `1, 2, 4, 3`。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 10,
+    "title": "以下代码的输出结果是什么？\n```javascript\nPromise.resolve(1)\n  .then(x => x + 1)\n  .then(x => { throw new Error('oops') })\n  .catch(() => 3)\n  .then(x => console.log(x));\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "1"
+      },
+      {
+        "key": "B",
+        "text": "2"
+      },
+      {
+        "key": "C",
+        "text": "3"
+      },
+      {
+        "key": "D",
+        "text": "报错"
+      }
+    ],
+    "answer": "C",
+    "analysis": "第一个 `then` 返回 `2`，第二个 `then` 抛出错误被 `catch` 捕获，`catch` 返回 `3`，第三个 `then` 接收 `3` 并输出。",
+    "tags": [],
+    "difficulty": "hard",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 11,
+    "title": "以下代码的输出结果是什么？\n```javascript\nasync function foo() {\n  console.log('A');\n  await Promise.resolve();\n  console.log('B');\n}\nfoo();\nconsole.log('C');\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "A, B, C"
+      },
+      {
+        "key": "B",
+        "text": "A, C, B"
+      },
+      {
+        "key": "C",
+        "text": "C, A, B"
+      },
+      {
+        "key": "D",
+        "text": "B, A, C"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`async` 函数内部在遇到 `await` 时会暂停，将后续代码作为微任务放入队列。所以先输出 `A`，然后 `await` 让出执行权，同步代码 `console.log('C')` 执行，最后微任务 `B` 执行。",
+    "tags": [],
+    "difficulty": "hard",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 12,
+    "title": "以下代码的输出结果是什么？\n```javascript\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "1, 2, 3, 4"
+      },
+      {
+        "key": "B",
+        "text": "1, 4, 3, 2"
+      },
+      {
+        "key": "C",
+        "text": "1, 4, 2, 3"
+      },
+      {
+        "key": "D",
+        "text": "1, 3, 4, 2"
+      }
+    ],
+    "answer": "B",
+    "analysis": "同步代码先执行：`1`、`4`。然后微任务（Promise.then）执行：`3`。最后宏任务（setTimeout）执行：`2`。所以顺序是 `1, 4, 3, 2`。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 13,
+    "title": "以下代码的输出结果是什么？\n```javascript\nsetTimeout(() => console.log('timeout'), 0);\nPromise.resolve().then(() => console.log('promise'));\nprocess.nextTick(() => console.log('nextTick'));\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "timeout, promise, nextTick"
+      },
+      {
+        "key": "B",
+        "text": "promise, nextTick, timeout"
+      },
+      {
+        "key": "C",
+        "text": "nextTick, promise, timeout"
+      },
+      {
+        "key": "D",
+        "text": "nextTick, timeout, promise"
+      }
+    ],
+    "answer": "C",
+    "analysis": "在 Node.js 中，事件循环优先级为：`process.nextTick` > 微任务（Promise）> 宏任务（setTimeout）。所以顺序是 `nextTick, promise, timeout`。",
+    "tags": [],
+    "difficulty": "hard",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 14,
+    "title": "以下哪个方法可以实现数组去重？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`[...new Set(arr)]`"
+      },
+      {
+        "key": "B",
+        "text": "`arr.filter((v, i) => arr.indexOf(v) === i)`"
+      },
+      {
+        "key": "C",
+        "text": "`arr.reduce((acc, v) => acc.includes(v) ? acc : [...acc, v], [])`"
+      },
+      {
+        "key": "D",
+        "text": "以上都可以"
+      }
+    ],
+    "answer": "D",
+    "analysis": "A 利用 Set 的唯一性；B 利用 `indexOf` 返回第一个匹配索引；C 利用 `reduce` 累积不重复元素。三种方法都可以实现数组去重。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 15,
+    "title": "以下代码的输出结果是什么？\n```javascript\nconsole.log(typeof null);\nconsole.log(typeof []);\nconsole.log(typeof {});\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "\"null\", \"array\", \"object\""
+      },
+      {
+        "key": "B",
+        "text": "\"object\", \"object\", \"object\""
+      },
+      {
+        "key": "C",
+        "text": "\"object\", \"array\", \"object\""
+      },
+      {
+        "key": "D",
+        "text": "\"null\", \"object\", \"object\""
+      }
+    ],
+    "answer": "B",
+    "analysis": "`typeof null` 返回 `\"object\"` 是 JavaScript 的历史 bug；`typeof []` 返回 `\"object\"`（数组是对象的一种）；`typeof {}` 返回 `\"object\"`。要判断数组应使用 `Array.isArray()`。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "JavaScript",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 16,
+    "title": "Vue 3 中 `ref` 和 `reactive` 的主要区别是什么？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`ref` 只能用于基本类型，`reactive` 只能用于对象"
+      },
+      {
+        "key": "B",
+        "text": "`ref` 返回的是一个包装对象，需要通过 `.value` 访问；`reactive` 直接返回代理对象"
+      },
+      {
+        "key": "C",
+        "text": "`reactive` 支持深层响应式，`ref` 不支持"
+      },
+      {
+        "key": "D",
+        "text": "`ref` 是 Vue 2 的 API，`reactive` 是 Vue 3 新增的"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`ref` 可以对任何类型进行响应式包装，返回 `{ value: ... }` 结构，访问时需用 `.value`。`reactive` 使用 Proxy 对对象进行代理，直接返回代理对象。两者都支持深层响应式。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "Vue / React",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 17,
+    "title": "Vue 3 的响应式系统是基于什么实现的？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Object.defineProperty"
+      },
+      {
+        "key": "B",
+        "text": "Proxy"
+      },
+      {
+        "key": "C",
+        "text": "Reflect"
+      },
+      {
+        "key": "D",
+        "text": "Object.observe"
+      }
+    ],
+    "answer": "B",
+    "analysis": "Vue 3 使用 ES6 的 `Proxy` 替代 Vue 2 的 `Object.defineProperty`，可以监听对象属性的新增和删除，且对数组的支持更完善。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "Vue / React",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 18,
+    "title": "在 Vue 2 中，以下哪个生命周期钩子在数据更新后、DOM 更新前执行？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`beforeUpdate`"
+      },
+      {
+        "key": "B",
+        "text": "`updated`"
+      },
+      {
+        "key": "C",
+        "text": "`beforeMount`"
+      },
+      {
+        "key": "D",
+        "text": "`mounted`"
+      }
+    ],
+    "answer": "A",
+    "analysis": "`beforeUpdate` 在数据变化后、DOM 重新渲染之前调用；`updated` 在 DOM 更新完成后调用；`beforeMount`/`mounted` 是挂载阶段的生命周期。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "Vue / React",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 19,
+    "title": "React 中，以下哪个 Hook 用于在组件卸载时执行清理操作？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`useState`"
+      },
+      {
+        "key": "B",
+        "text": "`useEffect`"
+      },
+      {
+        "key": "C",
+        "text": "`useContext`"
+      },
+      {
+        "key": "D",
+        "text": "`useReducer`"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`useEffect` 可以返回一个清理函数（cleanup function），React 在组件卸载或依赖变化前执行该函数，用于清理订阅、定时器等副作用。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "Vue / React",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 20,
+    "title": "React 中，以下代码存在什么问题？\n```javascript\nfunction Example() {\n  const [count, setCount] = useState(0);\n  useEffect(() => {\n    setInterval(() => {\n      console.log(count);\n    }, 1000);\n  }, []);\n  return <div>{count}</div>;\n}\n```",
+    "options": [
+      {
+        "key": "A",
+        "text": "没有语法错误，运行正常"
+      },
+      {
+        "key": "B",
+        "text": "`setInterval` 中的 `count` 永远是初始值 0，形成闭包陷阱"
+      },
+      {
+        "key": "C",
+        "text": "应该使用 `useLayoutEffect` 代替 `useEffect`"
+      },
+      {
+        "key": "D",
+        "text": "缺少清理函数导致内存泄漏"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`useEffect` 依赖数组为空，只执行一次。`setInterval` 回调形成闭包，永远引用初始的 `count` 值 `0`。解决方法是添加 `count` 到依赖数组，或使用函数式更新 `setCount(c => c + 1)`。",
+    "tags": [],
+    "difficulty": "hard",
+    "category": "Vue / React",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 21,
+    "title": "Vue 中父子组件通信，以下哪种方式不正确？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Props 向下传递，$emit 向上传递"
+      },
+      {
+        "key": "B",
+        "text": "使用 `provide` / `inject` 跨层级通信"
+      },
+      {
+        "key": "C",
+        "text": "使用 `$parent` / `$children` 直接访问实例"
+      },
+      {
+        "key": "D",
+        "text": "使用 `v-model` 实现双向绑定"
+      }
+    ],
+    "answer": "C",
+    "analysis": "Vue 3 已移除 `$children`，且官方不推荐直接访问 `$parent` 或 `$children` 来通信，这会导致组件耦合严重。正确方式包括 props/$emit、provide/inject、事件总线、Vuex/Pinia 等。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "Vue / React",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 22,
+    "title": "React 中，以下哪个 API 用于跨层级组件通信？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`useState`"
+      },
+      {
+        "key": "B",
+        "text": "`useContext`"
+      },
+      {
+        "key": "C",
+        "text": "`useRef`"
+      },
+      {
+        "key": "D",
+        "text": "`useMemo`"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`useContext` 配合 `React.createContext` 可以实现跨层级组件的数据传递，避免逐层传递 props（prop drilling）。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "Vue / React",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 23,
+    "title": "以下关于 Vue 的 `computed` 和 `watch` 的描述，正确的是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`computed` 有缓存，`watch` 没有缓存"
+      },
+      {
+        "key": "B",
+        "text": "`computed` 适合执行异步操作，`watch` 适合计算派生数据"
+      },
+      {
+        "key": "C",
+        "text": "`computed` 和 `watch` 都不能监听深层对象变化"
+      },
+      {
+        "key": "D",
+        "text": "`computed` 必须接收一个函数作为参数"
+      }
+    ],
+    "answer": "A",
+    "analysis": "`computed` 基于依赖缓存，只有依赖变化时才重新计算；`watch` 每次数据变化都执行回调。B 说反了，`watch` 适合异步操作，`computed` 适合派生数据。C 错误，`watch` 可设置 `deep: true`。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "Vue / React",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 24,
+    "title": "React 中，`useMemo` 和 `useCallback` 的区别是什么？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`useMemo` 缓存函数返回值，`useCallback` 缓存函数本身"
+      },
+      {
+        "key": "B",
+        "text": "`useMemo` 缓存函数本身，`useCallback` 缓存返回值"
+      },
+      {
+        "key": "C",
+        "text": "两者功能完全相同，可以互换使用"
+      },
+      {
+        "key": "D",
+        "text": "`useMemo` 用于类组件，`useCallback` 用于函数组件"
+      }
+    ],
+    "answer": "A",
+    "analysis": "`useMemo(() => compute(a, b), [a, b])` 缓存计算结果；`useCallback(fn, [deps])` 等价于 `useMemo(() => fn, [deps])`，缓存函数引用，避免子组件不必要的重渲染。",
+    "tags": [],
+    "difficulty": "hard",
+    "category": "Vue / React",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 25,
+    "title": "Vue 3 的 `Teleport` 组件的作用是什么？",
+    "options": [
+      {
+        "key": "A",
+        "text": "实现组件的懒加载"
+      },
+      {
+        "key": "B",
+        "text": "将组件的 DOM 渲染到指定的目标位置"
+      },
+      {
+        "key": "C",
+        "text": "实现组件的动画过渡"
+      },
+      {
+        "key": "D",
+        "text": "实现组件的 keep-alive 缓存"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`Teleport` 可以将组件模板的一部分渲染到 DOM 中的其他位置（如 `body` 末尾），常用于模态框、通知等需要脱离当前组件层级的场景。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "Vue / React",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 26,
+    "title": "在标准盒模型中，一个元素的 `width: 100px; padding: 10px; border: 5px;` 实际占据的宽度是多少？",
+    "options": [
+      {
+        "key": "A",
+        "text": "100px"
+      },
+      {
+        "key": "B",
+        "text": "110px"
+      },
+      {
+        "key": "C",
+        "text": "120px"
+      },
+      {
+        "key": "D",
+        "text": "130px"
+      }
+    ],
+    "answer": "D",
+    "analysis": "标准盒模型（`box-sizing: content-box`）下，实际宽度 = width + padding-left + padding-right + border-left + border-right = 100 + 10×2 + 5×2 = 130px。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "CSS",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 27,
+    "title": "以下哪个 CSS 属性可以将盒模型改为 IE 盒模型（边框盒模型）？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`box-model: border-box`"
+      },
+      {
+        "key": "B",
+        "text": "`box-sizing: border-box`"
+      },
+      {
+        "key": "C",
+        "text": "`display: border-box`"
+      },
+      {
+        "key": "D",
+        "text": "`model: border-box`"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`box-sizing: border-box` 让元素的 `width`/`height` 包含 `padding` 和 `border`，这是现代开发中常用的设置。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "CSS",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 28,
+    "title": "Flex 布局中，`justify-content: space-between` 的效果是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "所有项目均匀分布，两端不留空白"
+      },
+      {
+        "key": "B",
+        "text": "所有项目均匀分布，两端留一半空白"
+      },
+      {
+        "key": "C",
+        "text": "所有项目均匀分布，两端留完整空白"
+      },
+      {
+        "key": "D",
+        "text": "项目靠左对齐"
+      }
+    ],
+    "answer": "A",
+    "analysis": "`space-between`：两端对齐，项目之间间隔相等，两端不留空白。`space-around` 是两端留一半空白，`space-evenly` 是两端留完整空白。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "CSS",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 29,
+    "title": "Flex 布局中，以下哪个属性用于定义项目的放大比例？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`flex-shrink`"
+      },
+      {
+        "key": "B",
+        "text": "`flex-grow`"
+      },
+      {
+        "key": "C",
+        "text": "`flex-basis`"
+      },
+      {
+        "key": "D",
+        "text": "`flex-direction`"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`flex-grow` 定义项目的放大比例，默认为 `0`（不放大）。`flex-shrink` 是缩小比例，`flex-basis` 是初始大小，`flex-direction` 是主轴方向。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "CSS",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 30,
+    "title": "CSS Grid 中，`grid-template-columns: repeat(3, 1fr)` 表示什么？",
+    "options": [
+      {
+        "key": "A",
+        "text": "3 列，每列宽度为 1fr，剩余空间平均分配"
+      },
+      {
+        "key": "B",
+        "text": "3 行，每行高度为 1fr"
+      },
+      {
+        "key": "C",
+        "text": "3 列，每列固定宽度 1px"
+      },
+      {
+        "key": "D",
+        "text": "1 列，宽度为 3fr"
+      }
+    ],
+    "answer": "A",
+    "analysis": "`repeat(3, 1fr)` 表示重复 3 次 `1fr`，即 3 列，每列占据可用空间的 1 份。`fr` 是分数单位，用于分配剩余空间。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "CSS",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 31,
+    "title": "CSS Grid 中，`grid-area` 属性可以用于？",
+    "options": [
+      {
+        "key": "A",
+        "text": "定义网格项在网格中的位置（行起始/列起始/行结束/列结束）"
+      },
+      {
+        "key": "B",
+        "text": "定义网格容器的区域名称"
+      },
+      {
+        "key": "C",
+        "text": "定义网格的间距"
+      },
+      {
+        "key": "D",
+        "text": "定义网格的模板列"
+      }
+    ],
+    "answer": "A",
+    "analysis": "`grid-area` 是 `grid-row-start`、`grid-column-start`、`grid-row-end`、`grid-column-end` 的简写，用于指定网格项的位置和跨度。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "CSS",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 32,
+    "title": "以下哪种方式可以创建 BFC（块级格式化上下文）？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`display: inline`"
+      },
+      {
+        "key": "B",
+        "text": "`float: left`"
+      },
+      {
+        "key": "C",
+        "text": "`position: relative`"
+      },
+      {
+        "key": "D",
+        "text": "`overflow: visible`"
+      }
+    ],
+    "answer": "B",
+    "analysis": "创建 BFC 的常见方式：`float` 不为 `none`、`position` 为 `absolute` 或 `fixed`、`display` 为 `inline-block`/`flex`/`grid`、`overflow` 不为 `visible`。`float: left` 满足条件。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "CSS",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 33,
+    "title": "BFC 的主要作用不包括以下哪项？",
+    "options": [
+      {
+        "key": "A",
+        "text": "阻止外边距重叠"
+      },
+      {
+        "key": "B",
+        "text": "清除浮动"
+      },
+      {
+        "key": "C",
+        "text": "阻止元素被浮动元素覆盖"
+      },
+      {
+        "key": "D",
+        "text": "实现文字环绕图片"
+      }
+    ],
+    "answer": "D",
+    "analysis": "BFC 可以：1）阻止垂直外边距重叠；2）包含内部浮动（清除浮动）；3）阻止元素被外部浮动覆盖。文字环绕图片是浮动（`float`）本身的特性，不是 BFC 的作用。",
+    "tags": [],
+    "difficulty": "hard",
+    "category": "CSS",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 34,
+    "title": "以下哪个 CSS 选择器的优先级最高？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`.class #id`"
+      },
+      {
+        "key": "B",
+        "text": "`#id .class`"
+      },
+      {
+        "key": "C",
+        "text": "`div#id.class`"
+      },
+      {
+        "key": "D",
+        "text": "`#id`"
+      }
+    ],
+    "answer": "C",
+    "analysis": "优先级计算（内联 > ID > 类/属性/伪类 > 元素/伪元素）。C 有 1 个 ID + 1 个类 + 1 个元素 = (0,1,2,1)；A 和 B 都是 (0,1,1,0)；D 是 (0,1,0,0)。所以 C 优先级最高。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "CSS",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 35,
+    "title": "以下哪个属性可以实现元素的垂直居中（已知容器高度）？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`margin: auto 0`"
+      },
+      {
+        "key": "B",
+        "text": "`position: absolute; top: 50%; transform: translateY(-50%)`"
+      },
+      {
+        "key": "C",
+        "text": "`vertical-align: middle`"
+      },
+      {
+        "key": "D",
+        "text": "`display: block; margin: auto`"
+      }
+    ],
+    "answer": "B",
+    "analysis": "A 的 `margin: auto 0` 在垂直方向不会生效（块级元素水平居中用 `margin: 0 auto`）。B 是绝对定位配合 `transform` 的经典垂直居中方案。C 只对行内元素有效且需配合特定条件。D 只能水平居中。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "CSS",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 36,
+    "title": "HTTP 缓存中，`Cache-Control: max-age=3600` 表示什么？",
+    "options": [
+      {
+        "key": "A",
+        "text": "缓存 3600 毫秒"
+      },
+      {
+        "key": "B",
+        "text": "缓存 3600 秒"
+      },
+      {
+        "key": "C",
+        "text": "缓存 3600 分钟"
+      },
+      {
+        "key": "D",
+        "text": "缓存 3600 小时"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`max-age` 的单位是秒。`max-age=3600` 表示资源在 3600 秒（1 小时）内有效，可直接使用缓存副本，无需向服务器验证。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "网络 / 浏览器",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 37,
+    "title": "以下关于 `ETag` 和 `Last-Modified` 的描述，正确的是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`ETag` 基于时间，`Last-Modified` 基于内容哈希"
+      },
+      {
+        "key": "B",
+        "text": "`ETag` 优先级高于 `Last-Modified`，服务器优先使用 `ETag`"
+      },
+      {
+        "key": "C",
+        "text": "两者不能同时使用"
+      },
+      {
+        "key": "D",
+        "text": "`Last-Modified` 精度比 `ETag` 更高"
+      }
+    ],
+    "answer": "B",
+    "analysis": "`ETag` 是内容标识符（如哈希），`Last-Modified` 是最后修改时间。服务器优先比较 `ETag`，`ETag` 精度更高（能识别 1 秒内的多次修改）。两者可以同时存在。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "网络 / 浏览器",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 38,
+    "title": "以下哪种情况会触发浏览器的强缓存（不会发请求到服务器）？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`Cache-Control: no-cache`"
+      },
+      {
+        "key": "B",
+        "text": "`Cache-Control: max-age=0`"
+      },
+      {
+        "key": "C",
+        "text": "`Cache-Control: max-age=3600` 且缓存未过期"
+      },
+      {
+        "key": "D",
+        "text": "`Expires` 已过期"
+      }
+    ],
+    "answer": "C",
+    "analysis": "强缓存通过 `Expires` 或 `Cache-Control: max-age` 控制，在缓存有效期内直接使用本地缓存，不发请求。`no-cache` 和 `max-age=0` 都会发请求到服务器（协商缓存）。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "网络 / 浏览器",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 39,
+    "title": "以下哪个 HTTP 头可以彻底解决跨域问题（服务器端设置）？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`Access-Control-Allow-Origin: *`"
+      },
+      {
+        "key": "B",
+        "text": "`Content-Type: application/json`"
+      },
+      {
+        "key": "C",
+        "text": "`X-Frame-Options: SAMEORIGIN`"
+      },
+      {
+        "key": "D",
+        "text": "`Referrer-Policy: no-referrer`"
+      }
+    ],
+    "answer": "A",
+    "analysis": "`Access-Control-Allow-Origin` 是 CORS（跨域资源共享）的核心响应头，设置为 `*` 允许所有来源访问，或指定具体域名。其他选项与跨域无关。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "网络 / 浏览器",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 40,
+    "title": "JSONP 跨域的原理是利用了？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`XMLHttpRequest`"
+      },
+      {
+        "key": "B",
+        "text": "`fetch` API"
+      },
+      {
+        "key": "C",
+        "text": "`<script>` 标签不受同源策略限制"
+      },
+      {
+        "key": "D",
+        "text": "`WebSocket`"
+      }
+    ],
+    "answer": "C",
+    "analysis": "JSONP 通过动态创建 `<script>` 标签加载跨域脚本，利用 `<script>`、` <img>`、`<link>` 等标签不受同源策略限制的特性。但 JSONP 只支持 GET 请求，且存在安全风险。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "网络 / 浏览器",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 41,
+    "title": "浏览器的同源策略（Same-Origin Policy）中，以下哪项不属于同源判断的要素？",
+    "options": [
+      {
+        "key": "A",
+        "text": "协议（Protocol）"
+      },
+      {
+        "key": "B",
+        "text": "域名（Host）"
+      },
+      {
+        "key": "C",
+        "text": "端口（Port）"
+      },
+      {
+        "key": "D",
+        "text": "路径（Path）"
+      }
+    ],
+    "answer": "D",
+    "analysis": "同源要求协议、域名、端口三者完全相同，路径不同不影响同源判断。例如 `https://a.com/page1` 和 `https://a.com/page2` 是同源的。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "网络 / 浏览器",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 42,
+    "title": "以下关于浏览器渲染流程的描述，正确的是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "解析 HTML → 构建 DOM → 构建 CSSOM → 生成 Render Tree → Layout → Paint → Composite"
+      },
+      {
+        "key": "B",
+        "text": "解析 HTML → 构建 CSSOM → 构建 DOM → 生成 Render Tree → Paint → Layout → Composite"
+      },
+      {
+        "key": "C",
+        "text": "解析 HTML → 同时构建 DOM 和 CSSOM → 生成 Render Tree → Layout → Paint → Composite"
+      },
+      {
+        "key": "D",
+        "text": "解析 HTML → 构建 DOM → 下载 JS → 执行 JS → 构建 CSSOM → 生成 Render Tree"
+      }
+    ],
+    "answer": "C",
+    "analysis": "浏览器会并行解析 HTML 构建 DOM 和下载/解析 CSS 构建 CSSOM，两者都完成后合并生成 Render Tree，然后进行 Layout（计算布局）、Paint（绘制）、Composite（合成）。JS 会阻塞 HTML 解析。",
+    "tags": [],
+    "difficulty": "hard",
+    "category": "网络 / 浏览器",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 43,
+    "title": "以下哪种操作会导致重排（Reflow）？",
+    "options": [
+      {
+        "key": "A",
+        "text": "改变元素的 `color`"
+      },
+      {
+        "key": "B",
+        "text": "改变元素的 `transform`"
+      },
+      {
+        "key": "C",
+        "text": "改变元素的 `width`"
+      },
+      {
+        "key": "D",
+        "text": "改变元素的 `opacity`"
+      }
+    ],
+    "answer": "C",
+    "analysis": "重排是几何属性变化导致重新计算布局。`width`、`height`、`margin`、`padding` 等几何属性变化会触发重排。`color` 只触发重绘（Repaint）；`transform` 和 `opacity` 可由 GPU 直接处理，通常只触发合成（Composite）。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "网络 / 浏览器",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 44,
+    "title": "以下关于事件循环（Event Loop）的描述，正确的是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "宏任务永远优先于微任务执行"
+      },
+      {
+        "key": "B",
+        "text": "微任务在当前宏任务结束后立即执行，优先于下一个宏任务"
+      },
+      {
+        "key": "C",
+        "text": "`setTimeout` 是微任务"
+      },
+      {
+        "key": "D",
+        "text": "`Promise.then` 是宏任务"
+      }
+    ],
+    "answer": "B",
+    "analysis": "事件循环中，当前宏任务执行完毕后，会清空所有微任务队列，然后执行下一个宏任务。`setTimeout`/`setInterval` 是宏任务，`Promise.then`/`MutationObserver` 是微任务。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "网络 / 浏览器",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 45,
+    "title": "以下哪个 HTTP 状态码表示请求成功且服务器创建了新资源？",
+    "options": [
+      {
+        "key": "A",
+        "text": "200"
+      },
+      {
+        "key": "B",
+        "text": "201"
+      },
+      {
+        "key": "C",
+        "text": "204"
+      },
+      {
+        "key": "D",
+        "text": "301"
+      }
+    ],
+    "answer": "B",
+    "analysis": "201 Created 表示请求成功并创建了新的资源（常用于 POST 请求）。200 OK 是通用成功状态；204 No Content 成功但无返回内容；301 是永久重定向。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "网络 / 浏览器",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 46,
+    "title": "Webpack 中，`tree shaking` 的作用是什么？",
+    "options": [
+      {
+        "key": "A",
+        "text": "将代码分割成多个 chunk"
+      },
+      {
+        "key": "B",
+        "text": "移除 JavaScript 上下文中未引用的代码（死代码消除）"
+      },
+      {
+        "key": "C",
+        "text": "将 CSS 提取到单独文件"
+      },
+      {
+        "key": "D",
+        "text": "压缩图片资源"
+      }
+    ],
+    "answer": "B",
+    "analysis": "Tree Shaking 是 Webpack/Rollup 等打包工具的优化技术，基于 ES Module 的静态结构分析，自动移除未被 import/export 引用的代码，减小打包体积。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "工程化",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 47,
+    "title": "以下哪个配置项用于 Webpack 的代码分割（Code Splitting）？",
+    "options": [
+      {
+        "key": "A",
+        "text": "`optimization.splitChunks`"
+      },
+      {
+        "key": "B",
+        "text": "`optimization.minimize`"
+      },
+      {
+        "key": "C",
+        "text": "`module.rules`"
+      },
+      {
+        "key": "D",
+        "text": "`resolve.alias`"
+      }
+    ],
+    "answer": "A",
+    "analysis": "`optimization.splitChunks` 是 Webpack 4+ 内置的代码分割配置，用于提取公共模块、拆分 vendor 代码等。`minimize` 用于代码压缩，`module.rules` 配置 loader，`resolve.alias` 配置路径别名。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "工程化",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 48,
+    "title": "Vite 在开发阶段为什么比 Webpack 快？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Vite 使用了更快的编程语言编写"
+      },
+      {
+        "key": "B",
+        "text": "Vite 在开发阶段基于原生 ESM，无需打包编译"
+      },
+      {
+        "key": "C",
+        "text": "Vite 使用了更强大的 CPU"
+      },
+      {
+        "key": "D",
+        "text": "Vite 的代码量更少"
+      }
+    ],
+    "answer": "B",
+    "analysis": "Vite 开发阶段利用浏览器原生 ES Modules，按需编译和加载模块，避免了 Webpack 开发时全量打包的过程。生产环境才使用 Rollup 打包。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "工程化",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 49,
+    "title": "以下哪个工具可以用于检查代码规范（Linting）？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Babel"
+      },
+      {
+        "key": "B",
+        "text": "ESLint"
+      },
+      {
+        "key": "C",
+        "text": "Webpack"
+      },
+      {
+        "key": "D",
+        "text": "PostCSS"
+      }
+    ],
+    "answer": "B",
+    "analysis": "ESLint 是 JavaScript/TypeScript 的静态代码分析工具，用于检查代码风格、发现潜在问题。Babel 是转译器，Webpack 是打包器，PostCSS 是 CSS 处理工具。",
+    "tags": [],
+    "difficulty": "easy",
+    "category": "工程化",
+    "subcategory": "基础",
+    "type": "single"
+  },
+  {
+    "id": 50,
+    "title": "以下关于 Webpack Loader 和 Plugin 的描述，正确的是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "Loader 用于执行更广范围的任务，Plugin 用于转换特定类型的模块"
+      },
+      {
+        "key": "B",
+        "text": "Loader 在模块加载时工作，Plugin 在打包生命周期中的各个钩子处工作"
+      },
+      {
+        "key": "C",
+        "text": "Loader 和 Plugin 没有本质区别，可以互换使用"
+      },
+      {
+        "key": "D",
+        "text": "Plugin 只能用于生产环境"
+      }
+    ],
+    "answer": "B",
+    "analysis": "Loader 是文件加载器，在 `module.rules` 中配置，用于转换特定类型文件（如 babel-loader、css-loader）。Plugin 在 Webpack 构建生命周期的各个钩子中执行更广泛的任务（如 HtmlWebpackPlugin、CleanWebpackPlugin）。",
+    "tags": [],
+    "difficulty": "medium",
+    "category": "工程化",
+    "subcategory": "基础",
+    "type": "single"
+  }
 ]
