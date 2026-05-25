@@ -19,6 +19,7 @@ const questionController = {
     res.json({
         total:filteredQuestions.length,
         msg:'success',
+        code:0,
         data:filteredQuestions
     })
 },
@@ -33,6 +34,7 @@ const questionController = {
         if(question){
             res.json({
                 msg:'success',
+                code:0,
                 data:question
             })
         }else{

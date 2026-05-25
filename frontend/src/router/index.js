@@ -22,7 +22,7 @@ const routes = [
         name:'NotFound',
         component: () => import('../views/NotFound.vue')
     
-    }
+    },
 ]
 
 //创建路由实例
