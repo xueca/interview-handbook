@@ -26,16 +26,28 @@ async function handleSubmit() {
     let res
     if(isLogin.value){
         res = await userStore.login(form.value.username, form.value.password)
+        // 登录成功，跳转首页
+        if(res.code === 0){
+            router.push('/')
+        }
+        else{
+            ElMessage.error(res.message || '登录失败')
+        }
     }else{
         res = await userStore.register(form.value.username, form.value.password)
+        // 注册成功，提示成功信息并清空表单
+        if(res.code === 0){
+            ElMessage.success('注册成功')
+            isLogin.value = true
+            // 清空表单，避免密码保留在输入框（方案A：让用户重新输入）
+            form.value.username = ''
+            form.value.password = ''
+        }
+        else{
+            ElMessage.error(res.message || '注册失败')
+        }
     }
-    // 3. 成功则跳转，失败则提示
-    if (res.code === 0){
-        ElMessage.success(isLogin.value ? '登陆成功' : '注册成功')
-        router.push('/')
-    }else {
-        ElMessage.error(res.message || '注册失败')
-    }
+   
 
 
 }

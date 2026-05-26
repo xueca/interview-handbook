@@ -35,13 +35,24 @@
 <script setup>
 //导入 Vue Router
 import { useRoute } from 'vue-router';
-
+import { onMounted } from 'vue'
+import { useUserstore } from './stores/user'
 // 导入 Element Plus 图标
 import { HomeFilled, Document } from '@element-plus/icons-vue'
 // 获取当前路由信息
 const route = useRoute()
 // 判断当前页面是否不需要侧边栏
 const isFullPage = () => route.path === '/login'
+
+const userStore = useUserstore()
+onMounted(() => {
+  // 刷新页面时，如果 token 存在，验证它是否有效
+  if (userStore.token) {
+    userStore.getUserInfo()
+  }
+})
+
+
 
 </script>
 

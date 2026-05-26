@@ -9,6 +9,12 @@ export const useUserstore =defineStore('user',()=>
     const token = ref(localStorage.getItem('token')||'')
     const userInfo = ref(JSON.parse(localStorage.getItem('userInfo') || 'null'))
 
+
+    //注册
+    async function register(username,password){
+        const res = await registerApi(username,password)
+        return res
+    }
     // 登录
     async function login(username,password){
         const res = await loginApi(username,password)
@@ -22,6 +28,7 @@ export const useUserstore =defineStore('user',()=>
         }
         return res
     }
+    
     
     //退出登录
     function logout(){
@@ -43,7 +50,7 @@ export const useUserstore =defineStore('user',()=>
         }
     }
 
-    return { token, userInfo, login, logout, getUserInfo }
+    return { token, userInfo, login, register, logout, getUserInfo }
 }
 
 )

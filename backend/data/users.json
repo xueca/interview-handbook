@@ -12,5 +12,12 @@
     "password": "$2b$10$x/xRP0UYCBwIr7WDVgp.3ejeFuH8mW3fo3HsvG1zP0Jdpu5jx/mam",
     "nickname": "ceshi1",
     "createAt": "2026-05-23T15:10:48.683Z"
+  },
+  {
+    "id": 3,
+    "username": "xxc",
+    "password": "$2b$10$q7Nyt2OWif3XdGlsydS13O7xghnIVat04lgY2VL262kUGAf.QSv6q",
+    "nickname": "xxc",
+    "createAt": "2026-05-26T07:08:07.010Z"
   }
 ]

@@ -16,6 +16,7 @@
 
           </el-select>
           <el-select v-model="difficulty" placeholder="选择难度">
+            <el-option label="全部" value="" />
             <el-option label="easy" value="easy" />
             <el-option label="medium" value="medium" />
             <el-option label="hard" value="hard" />
