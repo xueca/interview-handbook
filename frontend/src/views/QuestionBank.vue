@@ -24,13 +24,13 @@
           <el-input v-model="keyword" placeholder="搜索题目" />
           <el-button type="primary" @click="handleSearch">搜索</el-button>
       </div>
-      <div v-for="item in questionStore.list" :key="item.id" class="question-card">
+      <router-link v-for="item in questionStore.list" :key="item.id" class="question-card" :to="{path:'/quiz',query:{category:item.category}}">
         <p class="question-id">{{ item.id }}</p>
         <div class="question-title" v-html="marked(item.title)"></div>
         <p>类型：{{ typeMap[item.type] }}</p>
         <p>分类：{{ item.category }}</p>
         <p>难度：{{ difficultyMap[item.difficulty] }}</p>
-      </div>
+      </router-link>
     </div>
 
   </div>
@@ -78,4 +78,53 @@ function handleSearch() {
 
 
 <style scoped>
+.question-bank-container {
+  padding: 24px;
+}
+.question-bank-header h1 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  color: #333;
+}
+.question-bank-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.filter-area {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.question-card {
+  display: block;
+  padding: 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  text-decoration: none;
+  color: #333;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+.question-card:hover {
+  border-color: #667eea;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
+}
+.question-id {
+  margin: 0;
+  font-size: 13px;
+  color: #999;
+}
+.question-title {
+  margin: 8px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+.question-card p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #666;
+}
 </style>

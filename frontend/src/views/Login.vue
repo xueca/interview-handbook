@@ -35,21 +35,15 @@ async function handleSubmit() {
         }
     }else{
         res = await userStore.register(form.value.username, form.value.password)
-        // 注册成功，提示成功信息并清空表单
+        // 注册成功，提示成功信息
         if(res.code === 0){
             ElMessage.success('注册成功')
             isLogin.value = true
-            // 清空表单，避免密码保留在输入框（方案A：让用户重新输入）
-            form.value.username = ''
-            form.value.password = ''
         }
         else{
             ElMessage.error(res.message || '注册失败')
         }
     }
-   
-
-
 }
 </script>
 

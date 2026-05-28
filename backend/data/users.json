@@ -19,5 +19,12 @@
     "password": "$2b$10$q7Nyt2OWif3XdGlsydS13O7xghnIVat04lgY2VL262kUGAf.QSv6q",
     "nickname": "xxc",
     "createAt": "2026-05-26T07:08:07.010Z"
+  },
+  {
+    "id": 4,
+    "username": "testuser123",
+    "password": "$2b$10$Uvl86I6D8IB0csvzWoBl3.nw7cHmkgJRw94LuTWCoWYyKSd/Df3/q",
+    "nickname": "testuser123",
+    "createAt": "2026-05-27T10:59:40.870Z"
   }
 ]
