@@ -13,7 +13,7 @@ const userStore = useUserstore()
 
 <style scoped>
 div{
- width: 100%;            /* 继承父容器宽度（不是 100vw） */
+  width: 100%;            /* 继承父容器宽度（不是 100vw） */
   height: 100vh;          /* 占满视口高度 */
   margin: 0;              /* 去掉外边距 */
   padding: 0;             /* 去掉内边距 */
@@ -22,6 +22,7 @@ div{
   justify-content: center; /* 水平居中 */
   top: 50%;
   overflow: hidden;       /* 隐藏溢出，防止滚动条 */
+  margin-left: 220px;
 }
 .dashboard-title{
  font-size: 48px;

@@ -24,6 +24,10 @@
            <el-icon><Document /></el-icon>
            <span> 题库 </span>
          </el-menu-item>
+         <el-menu-item v-if="route.path !== '/quiz'" index="/wrongbook">
+          <el-icon><CircleCloseFilled /></el-icon>
+          <span> 错题本 </span>
+         </el-menu-item>
        </el-menu>
     </el-aside>
     <el-main class="app-main">
@@ -39,7 +43,7 @@ import { useRoute } from 'vue-router';
 import { computed, onMounted } from 'vue'
 import { useUserstore } from './stores/user'
 // 导入 Element Plus 图标
-import { HomeFilled, Document } from '@element-plus/icons-vue'
+import { HomeFilled, Document, CircleCloseFilled } from '@element-plus/icons-vue'
 // 获取当前路由信息
 const route = useRoute()
 // 判断当前页面是否不需要侧边栏（仅登录页全屏显示）

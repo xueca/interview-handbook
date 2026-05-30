@@ -49,6 +49,9 @@ coverage
 # TypeScript
 *.tsbuildinfo
 
+# Markdown（暂时不想提交的文档）
+*.md
+
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*

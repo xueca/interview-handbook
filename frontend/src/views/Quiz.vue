@@ -66,6 +66,9 @@
 <script setup>
 import { ref, onMounted,computed,onUnmounted,watch } from 'vue'
 import { useRoute , useRouter  } from 'vue-router'
+import { getDetail } from '../api/questions'
+import { useRecordStore } from '../stores/record'
+import { submitRecord,markCorrect } from '../api/records'
 import {marked} from 'marked'
 import useTimer from '../utils/timer'
 import { ElMessageBox, ElMessage } from 'element-plus'
@@ -207,32 +210,55 @@ function handleSubmit() {
 }
 
 // 计算得分并提交
-function calculateAndSubmit() {
+async function calculateAndSubmit() {
   let correctCount = 0
+  const questionResults = []
   
   questions.value.forEach(q => {
     const userAnswer = userAnswers.value[q.id]
-    if (!userAnswer || userAnswer.length === 0) return
+    if (!userAnswer || userAnswer.length === 0) {
+      // 未作答不保存记录
+      return
+    }
     
+    let isCorrect = false
     // 多选题需要全部选对才算正确
     if (q.type === 'multiple') {
-      // 将用户答案索引转换为字母
       const userLetters = userAnswer.map(idx => optionLabels[idx]).sort()
-      // 正确答案可能是多个，如 "AB"
       const correctLetters = q.answer.split('').sort()
-      
-      if (userLetters.join('') === correctLetters.join('')) {
-        correctCount++
-      }
+      isCorrect = userLetters.join('') === correctLetters.join('')
     } else {
       // 单选题
       const userLetter = optionLabels[userAnswer[0]]
-      if (userLetter === q.answer) {
-        correctCount++
-      }
+      isCorrect = userLetter === q.answer
     }
+    
+    if (isCorrect) correctCount++
+    
+    // 格式化用户答案
+    const formattedAnswer = q.type === 'multiple'
+      ? userAnswer.map(idx => optionLabels[idx]).sort().join('')
+      : optionLabels[userAnswer[0]]
+    
+    questionResults.push({
+      questionId: q.id,
+      userAnswer: formattedAnswer,
+      isCorrect
+    })
   })
   
+  // 如果是错题重做模式，且答对了，从错题本移除
+  const recordId = route.query.recordId
+  const mode = route.query.mode
+  if (mode === 'wrong' && recordId && correctCount === 1) {
+    try {
+      await markCorrect(parseInt(recordId))
+      ElMessage.success('答对了！已从错题本移除')
+    } catch (error) {
+      console.error('移除错题失败:', error)
+    }
+  }
+
   const score = Math.round((correctCount / questions.value.length) * 100)
   
   // 构造结果数据
@@ -245,25 +271,63 @@ function calculateAndSubmit() {
     questions: questions.value
   }
   
-  // 跳转到结果页，通过 URL 参数传递数据
+  try {
+    // 逐题提交到后端，每道题一条记录（包含 questionId 和 isCorrect）
+    for (const item of questionResults) {
+      await submitRecord({
+        questionId: item.questionId,
+        userAnswer: item.userAnswer,
+        isCorrect: item.isCorrect,
+        score,
+        category: route.query.category || ''
+      })
+    }
+    ElMessage.success('答题记录已保存')
+  } catch (error) {
+    console.error('保存记录失败:', error)
+  }
+  
+    // 把答题结果存到 Pinia Store（避免URL长度限制）
+  const recordStore = useRecordStore()
+  recordStore.saveQuizResult(result)
+
+  // 跳转到结果页（只需要传分类参数，不再传result）
   router.push({
     path: '/quiz/result',
-    query: { result: encodeURIComponent(JSON.stringify(result)) }
+    query: { 
+      category: route.query.category || ''
+    }
   })
 }
 onMounted(async () => {
-    // 开始计时
-    // 加载题目数据
+  const wrongId = route.query.wrongId
+  
+  if (wrongId) {
+    // 错题重做模式：只加载这一道题
+    try {
+      const res = await getDetail(parseInt(wrongId))
+      if (res.code === 0) {
+        questions.value = [res.data]  // 只放一道题
+      }
+    } catch (error) {
+      console.error('加载题目失败:', error)
+    }
+  } else {
+    // 正常答题模式
     const questionsStore = useQuestionsStore()
     await questionsStore.fetchlist({
-        type: '',
-        category: route.query.category || '',
-        difficulty: 'medium',
-        num: 10
+      type: '',
+      category: route.query.category || '',
+      difficulty: 'medium',
+      num: 10
     })
     questions.value = questionsStore.list
-    timer.startTimer()
-
+    if (route.query.random) {
+      questions.value.sort(() => Math.random() - 0.5)
+    }
+  }
+  
+  timer.startTimer()
 })
 onUnmounted(() => {
    //清理计时器
@@ -274,15 +338,19 @@ onUnmounted(() => {
 <style scoped>
 .quiz-container {
   display: flex;
-  gap: 0;
-  height: 100vh;
-  width: calc(100vw - 220px);
-  position: fixed;
-  left: 220px;
+  margin-left: 220px;    
+  min-height: 100vh;
+  overflow-y: auto;
   top: 0;
   padding: 0;
   background: #f5f7fa;
   box-sizing: border-box;
+}
+@media (max-width: 768px) {
+  .quiz-container {
+    margin-left: 0;
+    padding: 12px;
+  }
 }
 .quiz-header{
   display: flex;
@@ -311,6 +379,11 @@ onUnmounted(() => {
   padding: 6px 16px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 20px;
+}
+.time-tag {
+  padding-left: 10px;
+  padding-right: 10px;
+  width: 103px;
 }
 .quiz-content{
   flex: 1;
@@ -356,7 +429,10 @@ onUnmounted(() => {
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding: 20px;  /* 保留一点内边距让内容不贴边 */
+  width: 400px;
+  margin-left: -16px;
+  padding: 20px;
+  padding-left: 23px;
 }
 .quiz-sidebar {
   /*width: 220px;

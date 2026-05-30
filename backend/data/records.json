@@ -1,0 +1,864 @@
+[
+  {
+    "id": 1780109291128,
+    "score": 17,
+    "correctCount": 1,
+    "answeredCount": 6,
+    "totalCount": 6,
+    "userAnswers": {
+      "2": [
+        1
+      ],
+      "4": [
+        0
+      ],
+      "7": [
+        1
+      ],
+      "8": [
+        1
+      ],
+      "9": [
+        2
+      ],
+      "12": [
+        1
+      ]
+    },
+    "questions": [
+      {
+        "id": 4,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "0, 1, 2"
+          },
+          {
+            "key": "B",
+            "text": "3, 3, 3"
+          },
+          {
+            "key": "C",
+            "text": "0, 1, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "B",
+        "analysis": "`var` 声明的变量没有块级作用域，`setTimeout` 的回调在循环结束后执行，此时 `i` 已经变为 `3`。三个回调共享同一个 `i`，所以都输出 `3`。改用 `let` 可以输出 `0, 1, 2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 8,
+        "title": "以下代码的输出结果是什么？\n```javascript\nclass A {}\nclass B extends A {}\nconst b = new B();\nconsole.log(b.__proto__.__proto__ === A.prototype);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "true"
+          },
+          {
+            "key": "B",
+            "text": "false"
+          },
+          {
+            "key": "C",
+            "text": "undefined"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "A",
+        "analysis": "ES6 `class` 的继承通过 `Object.create()` 实现原型链链接。`b.__proto__` 是 `B.prototype`，`B.prototype.__proto__` 是 `A.prototype`，所以结果为 `true`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 12,
+        "title": "以下代码的输出结果是什么？\n```javascript\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "1, 2, 3, 4"
+          },
+          {
+            "key": "B",
+            "text": "1, 4, 3, 2"
+          },
+          {
+            "key": "C",
+            "text": "1, 4, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "1, 3, 4, 2"
+          }
+        ],
+        "answer": "B",
+        "analysis": "同步代码先执行：`1`、`4`。然后微任务（Promise.then）执行：`3`。最后宏任务（setTimeout）执行：`2`。所以顺序是 `1, 4, 3, 2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 2,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfunction foo() {\n  console.log(this.a);\n}\nvar a = 2;\nfoo.call(null);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "2"
+          },
+          {
+            "key": "B",
+            "text": "undefined"
+          },
+          {
+            "key": "C",
+            "text": "null"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "A",
+        "analysis": "当 `call`/`apply`/`bind` 传入 `null` 或 `undefined` 作为 `this` 时，在非严格模式下会替换为全局对象（浏览器中是 `window`），所以 `this.a` 等于全局变量 `a` 的值 `2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 7,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfunction Animal() {}\nfunction Dog() {}\nDog.prototype = new Animal();\nconst dog = new Dog();\nconsole.log(dog.__proto__ === Dog.prototype);\nconsole.log(Dog.prototype.__proto__ === Animal.prototype);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "true, true"
+          },
+          {
+            "key": "B",
+            "text": "true, false"
+          },
+          {
+            "key": "C",
+            "text": "false, true"
+          },
+          {
+            "key": "D",
+            "text": "false, false"
+          }
+        ],
+        "answer": "A",
+        "analysis": "第一行：`dog.__proto__` 指向 `Dog.prototype`，为 `true`。第二行：`Dog.prototype` 是 `Animal` 的实例，所以 `Dog.prototype.__proto__` 指向 `Animal.prototype`，为 `true`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 9,
+        "title": "以下代码的输出结果是什么？\n```javascript\nconst promise = new Promise((resolve, reject) => {\n  console.log(1);\n  resolve();\n  console.log(2);\n});\npromise.then(() => console.log(3));\nconsole.log(4);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "1, 2, 3, 4"
+          },
+          {
+            "key": "B",
+            "text": "1, 2, 4, 3"
+          },
+          {
+            "key": "C",
+            "text": "1, 4, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "4, 1, 2, 3"
+          }
+        ],
+        "answer": "B",
+        "analysis": "Promise 构造函数是同步执行的，所以先输出 `1`、`2`。`then` 回调是微任务，在同步代码 `console.log(4)` 之后执行，所以顺序是 `1, 2, 4, 3`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      }
+    ],
+    "createdAt": "2026-05-30T02:48:11.128Z",
+    "isCorrect": true
+  },
+  {
+    "id": 1780109304897,
+    "score": 17,
+    "correctCount": 1,
+    "answeredCount": 2,
+    "totalCount": 6,
+    "userAnswers": {
+      "2": [
+        0
+      ],
+      "4": [
+        0
+      ]
+    },
+    "questions": [
+      {
+        "id": 2,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfunction foo() {\n  console.log(this.a);\n}\nvar a = 2;\nfoo.call(null);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "2"
+          },
+          {
+            "key": "B",
+            "text": "undefined"
+          },
+          {
+            "key": "C",
+            "text": "null"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "A",
+        "analysis": "当 `call`/`apply`/`bind` 传入 `null` 或 `undefined` 作为 `this` 时，在非严格模式下会替换为全局对象（浏览器中是 `window`），所以 `this.a` 等于全局变量 `a` 的值 `2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 4,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "0, 1, 2"
+          },
+          {
+            "key": "B",
+            "text": "3, 3, 3"
+          },
+          {
+            "key": "C",
+            "text": "0, 1, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "B",
+        "analysis": "`var` 声明的变量没有块级作用域，`setTimeout` 的回调在循环结束后执行，此时 `i` 已经变为 `3`。三个回调共享同一个 `i`，所以都输出 `3`。改用 `let` 可以输出 `0, 1, 2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 7,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfunction Animal() {}\nfunction Dog() {}\nDog.prototype = new Animal();\nconst dog = new Dog();\nconsole.log(dog.__proto__ === Dog.prototype);\nconsole.log(Dog.prototype.__proto__ === Animal.prototype);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "true, true"
+          },
+          {
+            "key": "B",
+            "text": "true, false"
+          },
+          {
+            "key": "C",
+            "text": "false, true"
+          },
+          {
+            "key": "D",
+            "text": "false, false"
+          }
+        ],
+        "answer": "A",
+        "analysis": "第一行：`dog.__proto__` 指向 `Dog.prototype`，为 `true`。第二行：`Dog.prototype` 是 `Animal` 的实例，所以 `Dog.prototype.__proto__` 指向 `Animal.prototype`，为 `true`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 8,
+        "title": "以下代码的输出结果是什么？\n```javascript\nclass A {}\nclass B extends A {}\nconst b = new B();\nconsole.log(b.__proto__.__proto__ === A.prototype);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "true"
+          },
+          {
+            "key": "B",
+            "text": "false"
+          },
+          {
+            "key": "C",
+            "text": "undefined"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "A",
+        "analysis": "ES6 `class` 的继承通过 `Object.create()` 实现原型链链接。`b.__proto__` 是 `B.prototype`，`B.prototype.__proto__` 是 `A.prototype`，所以结果为 `true`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 9,
+        "title": "以下代码的输出结果是什么？\n```javascript\nconst promise = new Promise((resolve, reject) => {\n  console.log(1);\n  resolve();\n  console.log(2);\n});\npromise.then(() => console.log(3));\nconsole.log(4);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "1, 2, 3, 4"
+          },
+          {
+            "key": "B",
+            "text": "1, 2, 4, 3"
+          },
+          {
+            "key": "C",
+            "text": "1, 4, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "4, 1, 2, 3"
+          }
+        ],
+        "answer": "B",
+        "analysis": "Promise 构造函数是同步执行的，所以先输出 `1`、`2`。`then` 回调是微任务，在同步代码 `console.log(4)` 之后执行，所以顺序是 `1, 2, 4, 3`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 12,
+        "title": "以下代码的输出结果是什么？\n```javascript\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "1, 2, 3, 4"
+          },
+          {
+            "key": "B",
+            "text": "1, 4, 3, 2"
+          },
+          {
+            "key": "C",
+            "text": "1, 4, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "1, 3, 4, 2"
+          }
+        ],
+        "answer": "B",
+        "analysis": "同步代码先执行：`1`、`4`。然后微任务（Promise.then）执行：`3`。最后宏任务（setTimeout）执行：`2`。所以顺序是 `1, 4, 3, 2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      }
+    ],
+    "createdAt": "2026-05-30T02:48:24.897Z",
+    "isCorrect": true
+  },
+  {
+    "id": 1780109461163,
+    "score": 33,
+    "correctCount": 2,
+    "answeredCount": 3,
+    "totalCount": 6,
+    "userAnswers": {
+      "2": [
+        0
+      ],
+      "4": [
+        0
+      ],
+      "12": [
+        1
+      ]
+    },
+    "questions": [
+      {
+        "id": 2,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfunction foo() {\n  console.log(this.a);\n}\nvar a = 2;\nfoo.call(null);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "2"
+          },
+          {
+            "key": "B",
+            "text": "undefined"
+          },
+          {
+            "key": "C",
+            "text": "null"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "A",
+        "analysis": "当 `call`/`apply`/`bind` 传入 `null` 或 `undefined` 作为 `this` 时，在非严格模式下会替换为全局对象（浏览器中是 `window`），所以 `this.a` 等于全局变量 `a` 的值 `2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 4,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "0, 1, 2"
+          },
+          {
+            "key": "B",
+            "text": "3, 3, 3"
+          },
+          {
+            "key": "C",
+            "text": "0, 1, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "B",
+        "analysis": "`var` 声明的变量没有块级作用域，`setTimeout` 的回调在循环结束后执行，此时 `i` 已经变为 `3`。三个回调共享同一个 `i`，所以都输出 `3`。改用 `let` 可以输出 `0, 1, 2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 7,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfunction Animal() {}\nfunction Dog() {}\nDog.prototype = new Animal();\nconst dog = new Dog();\nconsole.log(dog.__proto__ === Dog.prototype);\nconsole.log(Dog.prototype.__proto__ === Animal.prototype);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "true, true"
+          },
+          {
+            "key": "B",
+            "text": "true, false"
+          },
+          {
+            "key": "C",
+            "text": "false, true"
+          },
+          {
+            "key": "D",
+            "text": "false, false"
+          }
+        ],
+        "answer": "A",
+        "analysis": "第一行：`dog.__proto__` 指向 `Dog.prototype`，为 `true`。第二行：`Dog.prototype` 是 `Animal` 的实例，所以 `Dog.prototype.__proto__` 指向 `Animal.prototype`，为 `true`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 8,
+        "title": "以下代码的输出结果是什么？\n```javascript\nclass A {}\nclass B extends A {}\nconst b = new B();\nconsole.log(b.__proto__.__proto__ === A.prototype);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "true"
+          },
+          {
+            "key": "B",
+            "text": "false"
+          },
+          {
+            "key": "C",
+            "text": "undefined"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "A",
+        "analysis": "ES6 `class` 的继承通过 `Object.create()` 实现原型链链接。`b.__proto__` 是 `B.prototype`，`B.prototype.__proto__` 是 `A.prototype`，所以结果为 `true`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 9,
+        "title": "以下代码的输出结果是什么？\n```javascript\nconst promise = new Promise((resolve, reject) => {\n  console.log(1);\n  resolve();\n  console.log(2);\n});\npromise.then(() => console.log(3));\nconsole.log(4);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "1, 2, 3, 4"
+          },
+          {
+            "key": "B",
+            "text": "1, 2, 4, 3"
+          },
+          {
+            "key": "C",
+            "text": "1, 4, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "4, 1, 2, 3"
+          }
+        ],
+        "answer": "B",
+        "analysis": "Promise 构造函数是同步执行的，所以先输出 `1`、`2`。`then` 回调是微任务，在同步代码 `console.log(4)` 之后执行，所以顺序是 `1, 2, 4, 3`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 12,
+        "title": "以下代码的输出结果是什么？\n```javascript\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "1, 2, 3, 4"
+          },
+          {
+            "key": "B",
+            "text": "1, 4, 3, 2"
+          },
+          {
+            "key": "C",
+            "text": "1, 4, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "1, 3, 4, 2"
+          }
+        ],
+        "answer": "B",
+        "analysis": "同步代码先执行：`1`、`4`。然后微任务（Promise.then）执行：`3`。最后宏任务（setTimeout）执行：`2`。所以顺序是 `1, 4, 3, 2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      }
+    ],
+    "createdAt": "2026-05-30T02:51:01.163Z",
+    "isCorrect": true
+  },
+  {
+    "id": 1780115017960,
+    "score": 33,
+    "correctCount": 2,
+    "answeredCount": 3,
+    "totalCount": 6,
+    "userAnswers": {
+      "2": [
+        0
+      ],
+      "4": [
+        1
+      ],
+      "7": [
+        1
+      ]
+    },
+    "questions": [
+      {
+        "id": 2,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfunction foo() {\n  console.log(this.a);\n}\nvar a = 2;\nfoo.call(null);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "2"
+          },
+          {
+            "key": "B",
+            "text": "undefined"
+          },
+          {
+            "key": "C",
+            "text": "null"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "A",
+        "analysis": "当 `call`/`apply`/`bind` 传入 `null` 或 `undefined` 作为 `this` 时，在非严格模式下会替换为全局对象（浏览器中是 `window`），所以 `this.a` 等于全局变量 `a` 的值 `2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 4,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "0, 1, 2"
+          },
+          {
+            "key": "B",
+            "text": "3, 3, 3"
+          },
+          {
+            "key": "C",
+            "text": "0, 1, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "B",
+        "analysis": "`var` 声明的变量没有块级作用域，`setTimeout` 的回调在循环结束后执行，此时 `i` 已经变为 `3`。三个回调共享同一个 `i`，所以都输出 `3`。改用 `let` 可以输出 `0, 1, 2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 7,
+        "title": "以下代码的输出结果是什么？\n```javascript\nfunction Animal() {}\nfunction Dog() {}\nDog.prototype = new Animal();\nconst dog = new Dog();\nconsole.log(dog.__proto__ === Dog.prototype);\nconsole.log(Dog.prototype.__proto__ === Animal.prototype);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "true, true"
+          },
+          {
+            "key": "B",
+            "text": "true, false"
+          },
+          {
+            "key": "C",
+            "text": "false, true"
+          },
+          {
+            "key": "D",
+            "text": "false, false"
+          }
+        ],
+        "answer": "A",
+        "analysis": "第一行：`dog.__proto__` 指向 `Dog.prototype`，为 `true`。第二行：`Dog.prototype` 是 `Animal` 的实例，所以 `Dog.prototype.__proto__` 指向 `Animal.prototype`，为 `true`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 8,
+        "title": "以下代码的输出结果是什么？\n```javascript\nclass A {}\nclass B extends A {}\nconst b = new B();\nconsole.log(b.__proto__.__proto__ === A.prototype);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "true"
+          },
+          {
+            "key": "B",
+            "text": "false"
+          },
+          {
+            "key": "C",
+            "text": "undefined"
+          },
+          {
+            "key": "D",
+            "text": "报错"
+          }
+        ],
+        "answer": "A",
+        "analysis": "ES6 `class` 的继承通过 `Object.create()` 实现原型链链接。`b.__proto__` 是 `B.prototype`，`B.prototype.__proto__` 是 `A.prototype`，所以结果为 `true`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 9,
+        "title": "以下代码的输出结果是什么？\n```javascript\nconst promise = new Promise((resolve, reject) => {\n  console.log(1);\n  resolve();\n  console.log(2);\n});\npromise.then(() => console.log(3));\nconsole.log(4);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "1, 2, 3, 4"
+          },
+          {
+            "key": "B",
+            "text": "1, 2, 4, 3"
+          },
+          {
+            "key": "C",
+            "text": "1, 4, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "4, 1, 2, 3"
+          }
+        ],
+        "answer": "B",
+        "analysis": "Promise 构造函数是同步执行的，所以先输出 `1`、`2`。`then` 回调是微任务，在同步代码 `console.log(4)` 之后执行，所以顺序是 `1, 2, 4, 3`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      },
+      {
+        "id": 12,
+        "title": "以下代码的输出结果是什么？\n```javascript\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);\n```",
+        "options": [
+          {
+            "key": "A",
+            "text": "1, 2, 3, 4"
+          },
+          {
+            "key": "B",
+            "text": "1, 4, 3, 2"
+          },
+          {
+            "key": "C",
+            "text": "1, 4, 2, 3"
+          },
+          {
+            "key": "D",
+            "text": "1, 3, 4, 2"
+          }
+        ],
+        "answer": "B",
+        "analysis": "同步代码先执行：`1`、`4`。然后微任务（Promise.then）执行：`3`。最后宏任务（setTimeout）执行：`2`。所以顺序是 `1, 4, 3, 2`。",
+        "tags": [],
+        "difficulty": "medium",
+        "category": "JavaScript",
+        "subcategory": "基础",
+        "type": "single"
+      }
+    ],
+    "createdAt": "2026-05-30T04:23:37.960Z",
+    "isCorrect": true
+  },
+  {
+    "id": 1780121943765,
+    "questionId": 25,
+    "userAnswer": "A",
+    "isCorrect": true,
+    "score": 40,
+    "category": "Vue / React",
+    "createdAt": "2026-05-30T06:19:03.765Z"
+  },
+  {
+    "id": 1780121964248,
+    "questionId": 8,
+    "userAnswer": "",
+    "isCorrect": true,
+    "score": 0,
+    "category": "",
+    "createdAt": "2026-05-30T06:19:24.248Z"
+  },
+  {
+    "id": 1780121964285,
+    "questionId": 21,
+    "userAnswer": "",
+    "isCorrect": true,
+    "score": 0,
+    "category": "",
+    "createdAt": "2026-05-30T06:19:24.285Z"
+  },
+  {
+    "id": 1780122002004,
+    "questionId": 7,
+    "userAnswer": "C",
+    "isCorrect": true,
+    "score": 0,
+    "category": "",
+    "createdAt": "2026-05-30T06:20:02.004Z"
+  },
+  {
+    "id": 1780122002013,
+    "questionId": 8,
+    "userAnswer": "B",
+    "isCorrect": true,
+    "score": 0,
+    "category": "",
+    "createdAt": "2026-05-30T06:20:02.013Z"
+  },
+  {
+    "id": 1780122002023,
+    "questionId": 9,
+    "userAnswer": "A",
+    "isCorrect": true,
+    "score": 0,
+    "category": "",
+    "createdAt": "2026-05-30T06:20:02.023Z"
+  },
+  {
+    "id": 1780122002051,
+    "questionId": 21,
+    "userAnswer": "",
+    "isCorrect": true,
+    "score": 0,
+    "category": "",
+    "createdAt": "2026-05-30T06:20:02.051Z"
+  },
+  {
+    "id": 1780122002060,
+    "questionId": 22,
+    "userAnswer": "",
+    "isCorrect": true,
+    "score": 0,
+    "category": "",
+    "createdAt": "2026-05-30T06:20:02.060Z"
+  }
+]

@@ -80,6 +80,7 @@ function handleSearch() {
 <style scoped>
 .question-bank-container {
   padding: 24px;
+  margin-left: 220px;
 }
 .question-bank-header h1 {
   margin: 0 0 20px 0;

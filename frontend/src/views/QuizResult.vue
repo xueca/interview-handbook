@@ -29,49 +29,142 @@
         <el-button type="primary" @click="retry">再做一次</el-button>
       </div>
     </el-card>
+        <!-- 题目详情列表 -->
+    <el-card class="questions-card">
+      <template #header>
+        <span>答题详情</span>
+      </template>
+      
+      <!-- 用 v-for 循环每道题 -->
+      <div class="questions-list">
+        <div 
+          v-for="(q, index) in questions" 
+          :key="q.id" 
+          class="question-item"
+          :class="{ correct: isCorrect(q), wrong: !isCorrect(q) }"
+        >
+          <!-- 点击头部切换展开/折叠 -->
+          <div class="question-header" @click="toggleExpand(q.id)">
+            <!-- 题号 -->
+            <span class="question-number">{{ index + 1 }}</span>
+            <!-- 对错状态图标 -->
+            <span v-if="isCorrect(q)" class="status-icon correct-icon">✓</span>
+            <span v-else class="status-icon wrong-icon">✗</span>
+            <!-- 题目标题 -->
+            <span class="question-title">{{ q.title }}</span>
+            <!-- 展开/折叠箭头 -->
+            <span class="expand-icon">{{ expandedIds.includes(q.id) ? '▼' : '▶' }}</span>
+          </div>
+          
+          <!-- 展开后显示解析内容 -->
+          <div v-if="expandedIds.includes(q.id)" class="question-detail">
+            <!-- 解析内容 -->
+            <div class="analysis-section">
+              <h4>📖 解析</h4>
+              <p>{{ q.analysis || '暂无解析' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-card>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed,ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useRecordStore } from '../stores/record'
 
 const route = useRoute()
 const router = useRouter()
 
-// 从路由参数获取答题结果
-const result = computed(() => {
-  return JSON.parse(decodeURIComponent(route.query.result || '{}'))
-})
+// 从 Pinia Store 获取答题结果
+const recordStore = useRecordStore()
+const result = computed(() => recordStore.lastQuizResult || {})
 
 const score = computed(() => result.value.score || 0)
 const correctCount = computed(() => result.value.correctCount || 0)
 const answeredCount = computed(() => result.value.answeredCount || 0)
 const totalCount = computed(() => result.value.totalCount || 0)
+const questions = computed(() => result.value.questions || [])
+const userAnswers = computed(() => result.value.userAnswers || {})
+const optionLabels = ['A', 'B', 'C', 'D', 'E', 'F']
+
+// 记录当前展开了哪些题目ID
+const expandedIds = ref([])
+
+// 切换展开,折叠
+function toggleExpand(questionId) {
+  const idx = expandedIds.value.indexOf(questionId)
+  if (idx > -1) {
+    // 已存在，折叠（移除）
+    expandedIds.value.splice(idx, 1)
+  } else {
+    // 不存在，展开（添加）
+    expandedIds.value.push(questionId)
+  }
+}
+
+function isCorrect(question) {
+  // 1. 取出用户的答案（索引数组）
+  const userAnswer = userAnswers.value[question.id]
+
+  // 2. 如果没选这道题，直接返回 false
+  if (!userAnswer || userAnswer.length === 0) return false
+
+  // 3. 处理单选题
+  if (question.type === 'single') {
+    // 把用户选的索引[0] 转成字母 'A'
+    const userLetter = optionLabels[userAnswer[0]]
+    // 跟正确答案的字母比较
+    return userLetter === question.answer
+  }
+  // 处理多选题：把所有选项转成字母，排序后比较
+   if (question.type === 'multiple') {
+    // 把用户的索引数组转成字母，比如 [1,3] → ['B','D']
+    const userLetters = userAnswer.map(idx => optionLabels[idx]).sort()
+    // 把正确答案字符串拆成数组并排序，比如 'BD' → ['B','D']
+    const correctLetters = question.answer.split('').sort()
+    // 比较
+    return userLetters.join('') === correctLetters.join('')
+  }
+  
+}
 
 function goBack() {
   router.push('/')
 }
 
 function retry() {
-  router.push('/quiz')
+  router.push({
+    path: '/quiz',
+    query: { 
+      category: route.query.category || '',
+      random: Date.now()  // ← 加一个随机数参数
+    }
+  })
 }
 </script>
 
 <style scoped>
 .result-container {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
-  width: calc(100vw - 220px);  /* 视口宽度减去侧边栏宽度 */
-  position: fixed;              /* 固定定位 */
-  left: 220px;                  /* 从侧边栏右边开始 */
-  top: 0;                       /* 从顶部开始 */
+  min-height: 100vh;
+  margin-left: 220px;     
+  min-height: 100vh;          
+  top: 0;                      
   background: #f5f7fa;
   padding: 20px;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow-y: auto;
+}
+@media (max-width: 768px) {
+  .result-container {
+    margin-left: 0;
+    padding: 12px;
+  }
 }
 
 .result-card {
@@ -153,4 +246,63 @@ function retry() {
   justify-content: center;
   margin-top: 24px;
 }
+/*--------------------------------------------------------*/
+/* 题目卡片 */
+.questions-card {
+  width: 100%;
+  max-width: 800px;
+  margin-top: 20px;
+}
+/* 每道题的条目 */
+.question-item {
+  border-bottom: 1px solid #eee;
+  padding: 12px 0;
+}
+/* 题目头部（点击区域） */
+.question-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+/* 状态图标 */
+.status-icon {
+  font-size: 18px;
+  font-weight: bold;
+}
+.correct-icon { color: #2faa34; }
+.wrong-icon { color: #e9190aec; }
+
+/*--------------------------------------------------------*/
+/*--------------------------------------------------------*/
+/* 展开后的题目详情区域 */
+.question-detail {
+  margin-top: 12px;
+  padding: 16px;
+  background: #fafafa;
+  border-radius: 8px;
+}
+
+/* 解析区域 */
+.analysis-section {
+  padding: 12px;
+  background: #fff8e1;
+  border-left: 4px solid #f79706;
+  border-radius: 4px;
+}
+
+.analysis-section h4 {
+  margin: 0 0 8px 0;
+  color: #e65100;
+  font-size: 14px;
+}
+
+.analysis-section p {
+  margin: 0;
+  color: #555;
+  font-size: 14px;
+  line-height: 1.8;
+}
+
 </style>

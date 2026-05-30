@@ -32,7 +32,15 @@ const routes = [
         name:'NotFound',
         component: () => import('../views/NotFound.vue')
     
-    }
+    },
+    {
+        path:'/wrongbook',
+        name:'WrongBook',
+        component:() => import('../views/WrongBook.vue'),
+        meta:{
+            title:'错题本'
+        }
+    },
 ]
 
 //创建路由实例
