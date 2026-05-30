@@ -50,5 +50,11 @@ export function getWrongRecords() {
 export function markCorrect(id) {
   return request.put(`/records/${id}/correct`)
 }
-
+/**
+ * 获取学习统计
+ * @returns {Promise}
+ */
+export function getStats() {
+  return request.get('/records/stats')
+}
 

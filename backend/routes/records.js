@@ -8,6 +8,8 @@ router.get('/', recordController.getAllRecords)
 // 创建新记录
 router.post('/', recordController.createRecord)
 
+// 获取学习统计
+router.get('/stats', recordController.getStats)
 // 获取错题本
 router.get('/wrong', recordController.getWrongRecords)
 

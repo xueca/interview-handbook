@@ -24,64 +24,47 @@ exports.getAllRecords = async(req,res) => {
   }
 }
 /**
- * 创建新记录
- */
+* 创建新记录（保存逐题记录，不管对错都保留最新结果）
+*/
 exports.createRecord = async (req, res) => {
   try {
     let records = []
-    
-    // 判断文件是否存在且内容不为空
     if (fs.existsSync(recordsPath)) {
       const data = fs.readFileSync(recordsPath, 'utf8')
       records = data.trim() ? JSON.parse(data) : []
     }
-    
+
     const { questionId, isCorrect } = req.body
-    
-    // 查找是否已有同一题目的记录
-    const existingIndex = records.findIndex(r => r.questionId === questionId)
-    
+    // 兼容旧数据：只处理有 questionId 的逐题记录，跳过套卷格式
+    const existingIndex = records.findIndex(r => r && r.questionId === questionId)
+
     if (existingIndex !== -1) {
-      if (isCorrect) {
-        // 答对了：从错题本中移除该记录
-        records.splice(existingIndex, 1)
-        fs.writeFileSync(recordsPath, JSON.stringify(records, null, 2))
-        return res.json({ code: 0, message: '已移除错题记录' })
-      } else {
-        // 又答错了：更新原有记录（不新增，避免重复）
-        records[existingIndex] = {
-          ...records[existingIndex],
-          ...req.body,
-          updatedAt: new Date().toISOString()
-        }
-        fs.writeFileSync(recordsPath, JSON.stringify(records, null, 2))
-        return res.json({ code: 0, message: '错题记录已更新', data: records[existingIndex] })
+      // 已有这道题的记录，更新为最新结果
+      records[existingIndex] = {
+        ...records[existingIndex],
+        ...req.body,
+        updatedAt: new Date().toISOString()
       }
-    }
-    
-    // 没有旧记录，且是错题 → 新增
-    if (!isCorrect) {
+    } else {
+      // 新题，追加记录
       const newRecord = {
         id: Date.now(),
         ...req.body,
         createdAt: new Date().toISOString()
       }
       records.push(newRecord)
-      fs.writeFileSync(recordsPath, JSON.stringify(records, null, 2))
-      return res.json({ code: 0, message: '记录保存成功', data: newRecord })
     }
-    
-    // 答对了且没有旧记录，无需保存
-    res.json({ code: 0, message: '回答正确，无需记录' })
+    fs.writeFileSync(recordsPath, JSON.stringify(records, null, 2))
+    res.json({ code: 0, message: '记录保存成功' })
   } catch (error) {
     res.status(500).json({ code: -1, message: '保存记录失败', error: error.message })
   }
 }
+
 /**
  * 获取单个记录
  */
 //判断文件是否存在
-  
 exports.getRecordById = async (req, res) => {
     //判断文件是否存在
     if (!fs.existsSync(recordsPath)) {
@@ -94,8 +77,7 @@ exports.getRecordById = async (req, res) => {
     
     if (!record) {
       return res.status(404).json({ code: -1, message: '记录不存在' })
-    }
-    
+    }   
     res.json({ code: 0, data: record })
   } catch (error) {
     res.status(500).json({ code: -1, message: '读取记录失败', error: error.message })
@@ -199,5 +181,107 @@ exports.markCorrect = async (req, res) => {
     res.json({ code: 0, message: '已标记为正确' })
   } catch (error) {
     res.status(500).json({ code: -1, message: '操作失败', error: error.message })
+  }
+}
+/**
+ * 获取学习统计（总正确率、分类统计、难度统计、每日趋势）
+ */
+exports.getStats = async (req, res) => {
+  try {
+    // 1. 读取记录和题目数据
+    let records = []
+    let questions = []
+    if (fs.existsSync(recordsPath)) {
+      const data = fs.readFileSync(recordsPath, 'utf8')
+      records = data.trim() ? JSON.parse(data) : []
+    }
+    if (fs.existsSync(questionsPath)) {
+      const qdata = fs.readFileSync(questionsPath, 'utf8')
+      questions = qdata.trim() ? JSON.parse(qdata) : []
+    }
+
+    // 2. 构建题目信息映射 { questionId: { category, difficulty } }
+    const questionMap = {}
+    questions.forEach(q => {
+      questionMap[q.id] = {
+        category: q.category || '',
+        difficulty: q.difficulty || ''
+      }
+    })
+
+    // 3. 统计结果容器
+    const result = {
+      totalQuestions: 0,
+      correctCount: 0,
+      accuracy: 0,
+      categoryStats: [],
+      difficultyStats: [],
+      dailyTrend: []
+    }
+
+    // 4. 计算总正确率
+    result.totalQuestions = records.length
+    result.correctCount = records.filter(r => r.isCorrect).length
+    result.accuracy = result.totalQuestions > 0
+      ? Math.round((result.correctCount / result.totalQuestions) * 100)
+      : 0
+
+    // 5. 按分类统计
+    const categoryMap = {}
+    records.forEach(r => {
+      const cat = r.category || '未分类'
+      if (!categoryMap[cat]) {
+        categoryMap[cat] = { total: 0, correct: 0 }
+      }
+      categoryMap[cat].total++
+      if (r.isCorrect) categoryMap[cat].correct++
+    })
+    result.categoryStats = Object.entries(categoryMap).map(([category, stat]) => ({
+      category,
+      total: stat.total,
+      correct: stat.correct,
+      accuracy: Math.round((stat.correct / stat.total) * 100)
+    }))
+    // 6. 按难度统计
+    const difficultyMap = {}
+    records.forEach(r => {
+      const qInfo = questionMap[r.questionId]
+      const diff = qInfo?.difficulty || '未知'
+      if (!difficultyMap[diff]) {
+        difficultyMap[diff] = { total: 0, correct: 0 }
+      }
+      difficultyMap[diff].total++
+      if (r.isCorrect) difficultyMap[diff].correct++
+    })
+    result.difficultyStats = Object.entries(difficultyMap).map(([difficulty, stat]) => ({
+      difficulty,
+      total: stat.total,
+      correct: stat.correct,
+      accuracy: Math.round((stat.correct / stat.total) * 100)
+    }))
+    // 7. 按日期统计趋势
+    const dateMap = {}
+    records.forEach(r => {
+      if (!r.createdAt) return
+      const date = r.createdAt.slice(0, 10)
+      if (!dateMap[date]) {
+        dateMap[date] = { total: 0, correct: 0 }
+      }
+      dateMap[date].total++
+      if (r.isCorrect) dateMap[date].correct++
+    })
+
+    result.dailyTrend = Object.entries(dateMap)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, stat]) => ({
+        date,
+        total: stat.total,
+        correct: stat.correct,
+        accuracy: Math.round((stat.correct / stat.total) * 100)
+      }))
+
+    res.json({ code: 0, data: result })
+  } catch (error) {
+    res.status(500).json({ code: -1, message: '统计失败', error: error.message })
   }
 }

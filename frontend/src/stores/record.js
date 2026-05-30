@@ -7,9 +7,20 @@ export const useRecordStore = defineStore('record', () => {
     function saveQuizResult(result) {
         lastQuizResult.value = result
     }
+    const stats = ref(null)
+    async function fetchStats() {
+      const { getStats } = await import('../api/records')
+      const res = await getStats()
+      if (res.code === 0) {
+        stats.value = res.data
+      }
+      return res
+    }
     return {
         lastQuizResult,
-        saveQuizResult
+        saveQuizResult,
+        stats,
+        fetchStats
     }
 })
     
