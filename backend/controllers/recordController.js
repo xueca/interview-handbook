@@ -229,7 +229,9 @@ exports.getStats = async (req, res) => {
     // 5. 按分类统计
     const categoryMap = {}
     records.forEach(r => {
-      const cat = r.category || '未分类'
+      // 如果记录没有分类，从题目信息里补（避免前端传空时显示"未分类"）
+      const cat = r.category || questionMap[r.questionId]?.category || ''
+      if (!cat) return // 跳过实在找不到分类的
       if (!categoryMap[cat]) {
         categoryMap[cat] = { total: 0, correct: 0 }
       }

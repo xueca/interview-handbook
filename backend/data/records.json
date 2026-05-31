@@ -2,38 +2,120 @@
   {
     "id": 1780126471350,
     "questionId": 7,
-    "userAnswer": "B",
-    "isCorrect": false,
-    "score": 33,
+    "userAnswer": "A",
+    "isCorrect": true,
+    "score": 100,
     "category": "JavaScript",
     "createdAt": "2026-05-30T07:34:31.350Z",
-    "updatedAt": "2026-05-30T14:02:21.373Z"
+    "updatedAt": "2026-05-30T14:21:30.137Z"
   },
   {
     "id": 1780126471359,
     "questionId": 8,
-    "userAnswer": "B",
-    "isCorrect": false,
-    "score": 33,
+    "userAnswer": "A",
+    "isCorrect": true,
+    "score": 100,
     "category": "JavaScript",
-    "createdAt": "2026-05-30T07:34:31.359Z"
+    "createdAt": "2026-05-30T07:34:31.359Z",
+    "updatedAt": "2026-05-30T14:21:30.145Z"
   },
   {
     "id": 1780149741353,
     "questionId": 2,
     "userAnswer": "A",
     "isCorrect": true,
-    "score": 33,
+    "score": 100,
     "category": "JavaScript",
-    "createdAt": "2026-05-30T14:02:21.353Z"
+    "createdAt": "2026-05-30T14:02:21.353Z",
+    "updatedAt": "2026-05-30T14:21:30.122Z"
   },
   {
     "id": 1780149741366,
     "questionId": 4,
     "userAnswer": "B",
     "isCorrect": true,
-    "score": 33,
+    "score": 100,
     "category": "JavaScript",
-    "createdAt": "2026-05-30T14:02:21.366Z"
+    "createdAt": "2026-05-30T14:02:21.366Z",
+    "updatedAt": "2026-05-30T14:21:30.130Z"
+  },
+  {
+    "id": 1780150751400,
+    "questionId": 16,
+    "userAnswer": "C",
+    "isCorrect": false,
+    "score": 0,
+    "category": "Vue / React",
+    "createdAt": "2026-05-30T14:19:11.400Z",
+    "updatedAt": "2026-05-30T14:24:48.857Z"
+  },
+  {
+    "id": 1780150751408,
+    "questionId": 21,
+    "userAnswer": "B",
+    "isCorrect": false,
+    "score": 0,
+    "category": "Vue / React",
+    "createdAt": "2026-05-30T14:19:11.408Z",
+    "updatedAt": "2026-05-30T14:24:48.873Z"
+  },
+  {
+    "id": 1780150751416,
+    "questionId": 22,
+    "userAnswer": "D",
+    "isCorrect": false,
+    "score": 0,
+    "category": "Vue / React",
+    "createdAt": "2026-05-30T14:19:11.416Z",
+    "updatedAt": "2026-05-30T14:24:48.881Z"
+  },
+  {
+    "id": 1780150751424,
+    "questionId": 23,
+    "userAnswer": "A",
+    "isCorrect": true,
+    "score": 100,
+    "category": "",
+    "createdAt": "2026-05-30T14:19:11.424Z",
+    "updatedAt": "2026-05-30T14:20:11.469Z"
+  },
+  {
+    "id": 1780150751431,
+    "questionId": 25,
+    "userAnswer": "D",
+    "isCorrect": false,
+    "score": 0,
+    "category": "Vue / React",
+    "createdAt": "2026-05-30T14:19:11.431Z",
+    "updatedAt": "2026-05-30T14:25:23.992Z"
+  },
+  {
+    "id": 1780150862731,
+    "questionId": 9,
+    "userAnswer": "B",
+    "isCorrect": true,
+    "score": 100,
+    "category": "JavaScript",
+    "createdAt": "2026-05-30T14:21:02.731Z",
+    "updatedAt": "2026-05-30T14:21:30.153Z"
+  },
+  {
+    "id": 1780150862739,
+    "questionId": 12,
+    "userAnswer": "B",
+    "isCorrect": true,
+    "score": 100,
+    "category": "JavaScript",
+    "createdAt": "2026-05-30T14:21:02.739Z",
+    "updatedAt": "2026-05-30T14:21:30.161Z"
+  },
+  {
+    "id": 1780151108773,
+    "questionId": 30,
+    "userAnswer": "B",
+    "isCorrect": false,
+    "score": 0,
+    "category": "CSS",
+    "createdAt": "2026-05-30T14:25:08.773Z"
   }
 ]
