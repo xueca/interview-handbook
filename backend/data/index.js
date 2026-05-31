@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 
-readjson = (filename) => {
+const readjson = (filename) => {
   try{
   const fullpath = path.join(__dirname,filename)
   if (!fs.existsSync(fullpath)){
@@ -13,7 +13,7 @@ readjson = (filename) => {
   return []
 }
 }
-writejson = (filename,data) => {
+const writejson = (filename,data) => {
   try{
   if(!data || Object.keys(data).length === 0){
     console.log('data is empty or null')

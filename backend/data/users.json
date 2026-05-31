@@ -26,5 +26,12 @@
     "password": "$2b$10$Uvl86I6D8IB0csvzWoBl3.nw7cHmkgJRw94LuTWCoWYyKSd/Df3/q",
     "nickname": "testuser123",
     "createAt": "2026-05-27T10:59:40.870Z"
+  },
+  {
+    "id": 5,
+    "username": "testai",
+    "password": "$2b$10$NzknGkyQF1fNynq8jZIg3ezLq/gyG2C3fhlEVUAGXxOBKxl08JK0q",
+    "nickname": "testai",
+    "createAt": "2026-05-31T13:11:11.508Z"
   }
 ]

@@ -22,9 +22,9 @@ const questionController = {
     
     res.json({
         total:filteredQuestions.length,
-        msg:'success',
-        code:0,
-        data:filteredQuestions
+        code: 0, 
+        message: 'ok',
+        data: filteredQuestions
     })
 },
     getDetail: (req, res) => {
@@ -33,17 +33,19 @@ const questionController = {
         // 2. 读取题目列表
         const questions = readjson('questions.json')||[]
         // 3. 查找匹配的题目
-        let question = questions.find(question => question.id === queId)
+        let question = questions.find(q => q.id === queId)
         // 4. 返回结果或 404
         if(question){
             res.json({
-                msg:'success',
-                code:0,
-                data:question
+                code: 0, 
+                data: question,
+                 message: 'ok'
             })
         }else{
             res.status(404).json({
-                msg:'question not found'
+                code: -1, 
+                message: '题目不存在',
+                 data: null
             })
         }
         
@@ -55,24 +57,7 @@ const questionController = {
     }
     
 }
-/**
- * 根据ID获取单题详情
- */
-exports.getQuestionById = async (req, res) => {
-    const fs = require('fs')
-  try {
-    const data = fs.readFileSync(questionsPath, 'utf8')
-    const questions = JSON.parse(data)
-    const question = questions.find(q => q.id === parseInt(req.params.id))
-    
-    if (!question) {
-      return res.status(404).json({ code: -1, message: '题目不存在' })
-    }
-    
-    res.json({ code: 0, data: question, message: 'ok' })
-  } catch (error) {
-    res.status(500).json({ code: -1, message: '获取题目失败', error: error.message })
-  }
-}
+
+
 
 module.exports = questionController
