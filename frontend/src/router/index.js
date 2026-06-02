@@ -28,12 +28,6 @@ const routes = [
         component:() => import('../views/QuizResult.vue')
     },
     {
-        path:'/:pathMatch(.*)*',
-        name:'NotFound',
-        component: () => import('../views/NotFound.vue')
-    
-    },
-    {
         path:'/wrongbook',
         name:'WrongBook',
         component:() => import('../views/WrongBook.vue'),
@@ -41,6 +35,17 @@ const routes = [
             title:'错题本'
         }
     },
+    {
+        path: '/aichat',
+        name: 'AiChat',
+        component: () => import('../views/AiChat.vue')
+    },
+    {
+        path:'/:pathMatch(.*)*',
+        name:'NotFound',
+        component: () => import('../views/NotFound.vue')
+    
+    }
 ]
 
 //创建路由实例

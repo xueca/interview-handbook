@@ -43,6 +43,7 @@
       <div class="quick-buttons">
         <el-button type="primary" @click="router.push('/questions')">去刷题</el-button>
         <el-button @click="router.push('/wrongbook')">错题本</el-button>
+        <el-button @click="router.push('/aichat')">AI出题</el-button>
       </div>
     </div>
   </div>

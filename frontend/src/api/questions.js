@@ -18,3 +18,7 @@ export function getDetail(id){
 export function collectQuestionApi(id){
     return request.post(`/questions/${id}/collect`)
 }
+
+export function addQuestionsApi(questions){
+    return request.post('/questions', { questions })
+}

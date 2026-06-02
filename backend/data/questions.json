@@ -1448,5 +1448,103 @@
     "category": "工程化",
     "subcategory": "基础",
     "type": "single"
+  },
+  {
+    "title": "以下代码的输出顺序是什么？\nconsole.log('1');\nsetTimeout(() => console.log('2'), 0);\nPromise.resolve().then(() => console.log('3'));\nconsole.log('4');",
+    "options": [
+      {
+        "key": "A",
+        "text": "1, 4, 2, 3"
+      },
+      {
+        "key": "B",
+        "text": "1, 4, 3, 2"
+      },
+      {
+        "key": "C",
+        "text": "1, 2, 3, 4"
+      },
+      {
+        "key": "D",
+        "text": "4, 1, 3, 2"
+      }
+    ],
+    "answer": "B",
+    "analysis": "JavaScript事件循环中，同步代码先执行，微任务（如Promise.then）在宏任务（如setTimeout）之前执行。因此先输出1和4，然后执行微任务输出3，最后执行宏任务输出2。",
+    "category": "JavaScript",
+    "difficulty": "medium",
+    "type": "single",
+    "tags": [
+      "Promise",
+      "事件循环",
+      "微任务"
+    ],
+    "id": 51,
+    "createdAt": "2026-06-02T04:33:01.624Z"
+  },
+  {
+    "title": "在CSS中，用于设置元素背景颜色的属性是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "color"
+      },
+      {
+        "key": "B",
+        "text": "background-color"
+      },
+      {
+        "key": "C",
+        "text": "background-image"
+      },
+      {
+        "key": "D",
+        "text": "font-color"
+      }
+    ],
+    "answer": "B",
+    "analysis": "color属性用于设置文本颜色；background-color属性用于设置元素的背景颜色；background-image属性用于设置背景图片；font-color不是有效的CSS属性。",
+    "category": "CSS",
+    "difficulty": "easy",
+    "type": "single",
+    "tags": [
+      "CSS",
+      "基础知识",
+      "属性"
+    ],
+    "id": 52,
+    "createdAt": "2026-06-02T04:33:31.808Z"
+  },
+  {
+    "title": "在 Vue 中，用于在模板中循环渲染列表的指令是？",
+    "options": [
+      {
+        "key": "A",
+        "text": "v-if"
+      },
+      {
+        "key": "B",
+        "text": "v-for"
+      },
+      {
+        "key": "C",
+        "text": "v-bind"
+      },
+      {
+        "key": "D",
+        "text": "v-on"
+      }
+    ],
+    "answer": "B",
+    "analysis": "v-for 是 Vue 中用于循环渲染列表的指令，它可以遍历数组或对象，并渲染多个元素。v-if 用于条件渲染，v-bind 用于绑定属性，v-on 用于绑定事件。",
+    "category": "Vue / React",
+    "difficulty": "easy",
+    "type": "single",
+    "tags": [
+      "Vue",
+      "指令"
+    ],
+    "id": 53,
+    "createdAt": "2026-06-02T06:50:18.972Z"
   }
 ]

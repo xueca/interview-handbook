@@ -5,6 +5,8 @@ const auth = require('../middleware/auth')
 
 //获取题目列表
 router.get('/',auth,questionController.getList)
+//添加题目
+router.post('/',auth,questionController.addQuestion)
 //获取题目详情
 router.get('/:id',auth,questionController.getDetail)
 

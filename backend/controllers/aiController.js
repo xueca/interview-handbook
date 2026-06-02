@@ -14,7 +14,7 @@ async function callDeepSeek({ prompt, systemPrompt, stream = false }) {
   messages.push({ role: 'user', content: prompt })
 
   const response = await axios.post(
-    'https://api.deepseek.com/chat/completions',  
+    'https://api.deepseek.com/chat/completions',
     {
       model: 'deepseek-v4-flash',
       messages,
@@ -27,20 +27,20 @@ async function callDeepSeek({ prompt, systemPrompt, stream = false }) {
         'Authorization': `Bearer ${apiKey}`,
         'Content-Type': 'application/json'
       },
-      timeout: stream ? 30000 : 10000,  // 流式给 30 秒首包时间
+      timeout: stream ? 30000 : 10000,
       responseType: stream ? 'stream' : 'json'
     }
   )
 
   return response
 }
-// 2. 非流式接口：exports.generate = async (req, res) => {}
-  exports.generate = async (req,res) => {
-    try{
-      // 1. 接收参数
-      const { category = 'vue', difficulty= 'medium',count= 1} = req.body
-      // 2. 构造 Prompt
-      const systemPrompt = '你是一个专业的前端面试出题专家。请严格按照要求的格式输出题目 JSON。'
+
+// 2. 非流式接口：exports.generate
+exports.generate = async (req, res) => {
+  try {
+    const { category = 'vue', difficulty = 'medium', count = 1 } = req.body
+
+    const systemPrompt = '你是一个专业的前端面试出题专家。请严格按照要求的格式输出题目 JSON。必须确保输出的 JSON 语法正确：所有字符串值必须用双引号包围，不能有尾随逗号，数组和对象必须完整闭合。'
 
       const prompt = `请出 ${count} 道关于 "${category}" 的面试题，难度：${difficulty}。
 要求是选择题。
@@ -62,53 +62,55 @@ async function callDeepSeek({ prompt, systemPrompt, stream = false }) {
     "type": "single",
     "tags": ["相关标签"]
   }
-      ]`
+]
 
-      // 3. 调 DeepSeek
-      const response = await callDeepSeek({ prompt, systemPrompt, stream: false })
-      // 4. 解析返回
-      // 4.1 从 response 中取出 AI 返回的文本字符串
-      const content = response.data.choices[0].message.content
-      // 4.2 把这个字符串解析成 JavaScript 对象（题目数组）
-      let cleanContent = content.trim()
-      if (cleanContent.startsWith('```')) {
-        // 去掉第一行（```json 或 ```）
-        cleanContent = cleanContent.slice(cleanContent.indexOf('\n') + 1)
-        // 去掉最后一行（```）
-        const lastIndex = cleanContent.lastIndexOf('```')
-        if (lastIndex !== -1) {
-          cleanContent = cleanContent.slice(0, lastIndex).trim()
-        }
+重要：answer 字段的值必须是双引号包围的字符串，例如 "answer": "A"，不要写成 "answer":A。必须输出完整的 JSON 数组，以 [ 开头以 ] 结尾。`
+
+    const response = await callDeepSeek({ prompt, systemPrompt, stream: false })
+    const content = response.data.choices[0].message.content
+    let cleanContent = content.trim()
+
+    if (cleanContent.startsWith('```')) {
+      cleanContent = cleanContent.slice(cleanContent.indexOf('\n') + 1)
+      const lastIndex = cleanContent.lastIndexOf('```')
+      if (lastIndex !== -1) {
+        cleanContent = cleanContent.slice(0, lastIndex).trim()
       }
-      // 4.3 解析成 JavaScript 对象
-      const questions = JSON.parse(cleanContent)
-      // 5. 返回给前端
-      res.json({
-        code: 0,
-        message:'生成成功',
-        data: questions
+    }
 
+    const questions = JSON.parse(cleanContent)
+    res.json({ code: 0, message: '生成成功', data: questions })
+  } catch (e) {
+    console.error('JSON 解析失败，尝试正则提取...', e.message)
+    const content = e.message
+    const titleMatch = content.match(/"title"\s*:\s*"([^"]+)"/)
+    const answerMatch = content.match(/"answer"\s*:\s*"([^"]+)"/)
+
+    if (titleMatch && answerMatch) {
+      res.json({
+        code: 1,
+        message: 'JSON解析失败，已用正则提取部分数据',
+        data: [{
+          title: titleMatch[1],
+          options: [],
+          answer: answerMatch[1],
+          analysis: '解析提取失败，请查看原始返回'
+        }]
       })
-    }catch(error){
-      //错误处理
-      res.status(500).json({
-        code: 500,
-        message: '生成失败',
-        data: null
-      })
+    } else {
+      res.status(500).json({ code: -1, message: '生成失败', data: null })
     }
   }
-// 3. 流式接口：exports.generateStream = async (req, res) => {}
-  exports.generateStream = async (req,res) => {
-    try{
-    // 1. 接收参数
-    const { category = 'vue', difficulty = 'medium', count = 1 } = req.query
-    // 2. 构造 Prompt
-    const systemPrompt = '你是一个专业的前端面试出题专家。请严格按照要求的格式输出题目 JSON。'
-const prompt = `请出 ${count} 道关于 "${category}" 的面试题，难度：${difficulty}。
-要求是选择题。
+}
 
-请严格按照以下 JSON 数组格式输出，只输出 JSON，不要包含任何其他文字：
+// 3. 流式接口：exports.generateStream
+exports.generateStream = async (req, res) => {
+  try {
+    const { category = 'vue', difficulty = 'medium', count = 1 } = req.query
+
+    const systemPrompt = '你是一个专业的前端面试出题专家。请严格按照要求的格式输出题目 JSON。必须确保输出的 JSON 语法正确：所有字符串值必须用双引号包围，不能有尾随逗号，数组和对象必须完整闭合。'
+
+    const prompt = `请出 ${count} 道关于 "${category}" 的面试题，难度：${difficulty}。要求是选择题。请严格按照以下 JSON 数组格式输出，只输出 JSON，不要包含任何其他文字：
 [
   {
     "title": "题目内容",
@@ -125,64 +127,65 @@ const prompt = `请出 ${count} 道关于 "${category}" 的面试题，难度：
     "type": "single",
     "tags": ["相关标签"]
   }
-]`
-    // 3. 调 DeepSeek（流式）
+]
+
+重要：answer 字段的值必须是双引号包围的字符串，例如 "answer": "A"，不要写成 "answer":A。必须输出完整的 JSON 数组，以 [ 开头以 ] 结尾。`
+
     const response = await callDeepSeek({ prompt, systemPrompt, stream: true })
-    // 4. SSE 转发
-    //   4a. 设置 SSE 响应头
+
     res.writeHead(200, {
-    'Content-Type': 'text/event-stream',
-    'Cache-Control': 'no-cache',
-    'Connection': 'keep-alive'
-     })
-    //   4b. 监听 DeepSeek 流数据
-response.data.on('data', (chunk) => {
-  // chunk 是一个 Buffer，转成字符串
-  const lines = chunk.toString().split('\n')
-  
-  for (const line of lines) {
-    // SSE 格式：每行以 "data: " 开头
-    if (line.startsWith('data: ')) {
-      const data = line.slice(6) // 去掉 "data: " 前缀
-      
-      // 判断是否是结束信号
-      if (data === '[DONE]') {
-        // 4e. 流结束
-        res.write('data: [DONE]\n\n')
-        res.end()
-        return
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive'
+    })
+    res.write(':connected\n\n')
+
+    response.data.on('data', (chunk) => {
+      const lines = chunk.toString().split('\n')
+
+      for (const line of lines) {
+        if (line.startsWith('data: ')) {
+          const data = line.slice(6)
+
+          if (data === '[DONE]') {
+            res.write('data: [DONE]\n\n')
+            res.end()
+            return
+          }
+
+          try {
+            const parsed = JSON.parse(data)
+            const text = parsed.choices[0].delta.content || ''
+            if (text) {
+              res.write(`data: ${JSON.stringify({ content: text })}\n\n`)
+            }
+          } catch (err) {
+            // 跳过解析失败的行
+          }
+        }
       }
-      
-      // 4c. 解析 chunk
-      try {
-        const parsed = JSON.parse(data)
-        const content = parsed.choices[0].delta.content || ''
-if (content) {
-  res.write(`data: ${JSON.stringify({ text: content })}\n\n`)
-}
-        // 4d. res.write() 推给前端
-      } catch (e) {
-        // 跳过解析失败的行
-      }
-    }
-  }
-})
-// 流正常结束的兜底 
-response.data.on('end', () => {
-  res.write('data: [DONE]\n\n')
-  res.end()
-})
-// 流出错的兜底
-response.data.on('error', (err) => {
-  res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`)
-  res.write('data: [DONE]\n\n')
-  res.end()
-})
-    } catch (error) {
-      // SSE 错误处理
+    })
+
+    response.data.on('end', () => {
+      res.write('data: [DONE]\n\n')
+      res.end()
+    })
+
+    response.data.on('error', (err) => {
+      res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`)
+      res.write('data: [DONE]\n\n')
+      res.end()
+    })
+  } catch (error) {
+    console.error('DeepSeek API 错误:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status,
+      headers: error.response?.headers
+    })
+
     res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`)
     res.write('data: [DONE]\n\n')
     res.end()
-    }
-    }
-  
+  }
+}

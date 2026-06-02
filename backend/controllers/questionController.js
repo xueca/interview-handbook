@@ -1,4 +1,4 @@
-const { readjson } = require('../data/index')
+const { readjson, writejson } = require('../data/index')
 
 
 const questionController = {
@@ -54,6 +54,22 @@ const questionController = {
         // 读取题目，标记为已收藏（在题目数据中添加 collected: true 字段）
         // 写回文件
         res.json({ code: 0, message: '收藏成功' })
+    },
+    addQuestion: (req, res) => {
+        const questions = readjson('questions.json') || []
+        const newQuestions = req.body.questions
+        if (!Array.isArray(newQuestions) || newQuestions.length === 0) {
+            return res.status(400).json({ code: -1, message: '题目数据格式错误', data: null })
+        }
+        // 为每道新题生成 ID 并加入数组
+        const maxId = questions.reduce((max, q) => Math.max(max, q.id || 0), 0)
+        newQuestions.forEach((q, i) => {
+            q.id = maxId + i + 1
+            q.createdAt = new Date().toISOString()
+            questions.push(q)
+        })
+        writejson('questions.json', questions)
+        res.json({ code: 0, message: `成功添加 ${newQuestions.length} 道题目`, data: null })
     }
     
 }

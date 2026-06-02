@@ -33,5 +33,19 @@
     "password": "$2b$10$NzknGkyQF1fNynq8jZIg3ezLq/gyG2C3fhlEVUAGXxOBKxl08JK0q",
     "nickname": "testai",
     "createAt": "2026-05-31T13:11:11.508Z"
+  },
+  {
+    "id": 6,
+    "username": "testai2",
+    "password": "$2b$10$IxfRWQ/44ZN1DxkuOYr3suPFbuzCO.d7nfB5tKEBVB08LZeLMJBp.",
+    "nickname": "testai2",
+    "createAt": "2026-06-02T04:29:55.103Z"
+  },
+  {
+    "id": 7,
+    "username": "sse_test",
+    "password": "$2b$10$nsAxGLxwVdeDpqRmzdkCkeWTi27wK4kA8gh111y5aX0CyrOiGSxUS",
+    "nickname": "sse_test",
+    "createAt": "2026-06-02T04:54:10.483Z"
   }
 ]
