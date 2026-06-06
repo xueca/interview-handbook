@@ -1,0 +1,155 @@
+<script setup>
+import { onMounted, onUnmounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import * as echarts from 'echarts'
+import { useUserStore } from '../stores/user'
+import { useRecordStore } from '../stores/record'
+
+const router = useRouter()
+const userStore = useUserStore()
+const recordStore = useRecordStore()
+const { stats } = recordStore
+
+const correctRate = computed(() =>
+  stats.totalQuestions ? Math.round((stats.totalCorrect / stats.totalQuestions) * 100) : 0
+)
+
+let lineChart = null, barChart = null, pieChart = null
+
+function initCharts() {
+  // 每日正确率折线图
+  const lineEl = document.getElementById('line-chart')
+  if (lineEl) {
+    lineChart = echarts.init(lineEl)
+    lineChart.setOption({
+      title: { text: '每日正确率趋势', left: 'center', textStyle: { fontSize: 14 } },
+      tooltip: { trigger: 'axis', formatter: '{b}: {c}%' },
+      xAxis: { type: 'category', data: stats.dailyTrend.map(d => d.date.slice(5)) },
+      yAxis: { type: 'value', max: 100, axisLabel: { formatter: '{value}%' } },
+      series: [{ type: 'line', data: stats.dailyTrend.map(d => d.rate), smooth: true, areaStyle: { opacity: 0.15 }, itemStyle: { color: '#409eff' } }],
+      grid: { left: 40, right: 20, top: 40, bottom: 20 }
+    })
+  }
+  // 分类正确率柱状图
+  const barEl = document.getElementById('bar-chart')
+  if (barEl) {
+    barChart = echarts.init(barEl)
+    barChart.setOption({
+      title: { text: '分类正确率', left: 'center', textStyle: { fontSize: 14 } },
+      tooltip: { trigger: 'axis', formatter: '{b}: {c}%' },
+      xAxis: { type: 'category', data: stats.categoryStats.map(c => c.category) },
+      yAxis: { type: 'value', max: 100, axisLabel: { formatter: '{value}%' } },
+      series: [{ type: 'bar', data: stats.categoryStats.map(c => c.rate), itemStyle: { color: '#67c23a' }, barWidth: '40%' }],
+      grid: { left: 40, right: 20, top: 40, bottom: 20 }
+    })
+  }
+  // 薄弱知识点饼图
+  const pieEl = document.getElementById('pie-chart')
+  if (pieEl) {
+    pieChart = echarts.init(pieEl)
+    pieChart.setOption({
+      title: { text: '薄弱知识点', left: 'center', textStyle: { fontSize: 14 } },
+      tooltip: { trigger: 'item', formatter: '{b}: {c}题 ({d}%)' },
+      series: [{ type: 'pie', radius: ['35%', '65%'], data: stats.weakTopics.map(w => ({ name: w.topic, value: w.wrongCount })), label: { formatter: '{b}\n{d}%' } }],
+      color: ['#f56c6c', '#e6a23c', '#409eff', '#67c23a', '#909399']
+    })
+  }
+}
+
+function handleResize() {
+  lineChart?.resize(); barChart?.resize(); pieChart?.resize()
+}
+
+onMounted(async () => {
+  await recordStore.fetchStats()
+  initCharts()
+  window.addEventListener('resize', handleResize)
+})
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+  lineChart?.dispose(); barChart?.dispose(); pieChart?.dispose()
+})
+</script>
+
+<template>
+  <div class="dashboard">
+    <h2>欢迎，{{ userStore.userInfo?.username || '用户' }}！</h2>
+    <!-- 数据卡片 -->
+    <el-row :gutter="16" class="stat-cards">
+      <el-col :span="6">
+        <el-card shadow="hover" class="stat-card">
+          <el-statistic title="总答题数" :value="stats.totalQuestions" />
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover" class="stat-card">
+          <el-statistic title="正确率" :value="correctRate" suffix="%" />
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover" class="stat-card">
+          <el-statistic title="平均分" :value="stats.avgScore" />
+        </el-card>
+      </el-col>
+      <el-col :span="6">
+        <el-card shadow="hover" class="stat-card">
+          <el-statistic title="答题次数" :value="stats.totalQuizzes" />
+        </el-card>
+      </el-col>
+    </el-row>
+    <!-- 快速开始 -->
+    <el-card shadow="hover" class="quick-start">
+      <div class="quick-start-content">
+        <div>
+          <h3>今日快速开始</h3>
+          <p>继续刷题，保持手感！</p>
+        </div>
+        <el-button type="primary" size="large" @click="router.push('/question-bank')">前往题库</el-button>
+      </div>
+    </el-card>
+    <!-- 图表 -->
+    <el-row :gutter="16" class="chart-row">
+      <el-col :span="12">
+        <el-card shadow="hover"><div id="line-chart" class="chart-box" /></el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card shadow="hover"><div id="bar-chart" class="chart-box" /></el-card>
+      </el-col>
+    </el-row>
+    <el-row :gutter="16" class="chart-row">
+      <el-col :span="12">
+        <el-card shadow="hover"><div id="pie-chart" class="chart-box" /></el-card>
+      </el-col>
+      <el-col :span="12">
+        <el-card shadow="hover" class="weak-list-card">
+          <h4>薄弱知识点详情</h4>
+          <div v-if="stats.weakTopics.length === 0" class="empty-tip">暂无薄弱项，继续保持！</div>
+          <div v-for="(w, i) in stats.weakTopics" :key="i" class="weak-item">
+            <span class="weak-rank">{{ i + 1 }}</span>
+            <span class="weak-topic">{{ w.topic }}</span>
+            <el-tag type="danger" size="small">错{{ w.wrongCount }}题</el-tag>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+  </div>
+</template>
+
+<style scoped>
+.dashboard { max-width: 1100px; margin: 0 auto; }
+.dashboard h2 { margin: 0 0 20px 0; font-size: 22px; color: #303133; }
+.stat-cards { margin-bottom: 20px; }
+.stat-card { text-align: center; }
+.quick-start { margin-bottom: 20px; }
+.quick-start-content { display: flex; justify-content: space-between; align-items: center; }
+.quick-start-content h3 { margin: 0 0 4px 0; font-size: 16px; color: #303133; }
+.quick-start-content p { margin: 0; color: #909399; font-size: 14px; }
+.chart-row { margin-bottom: 16px; }
+.chart-box { height: 280px; }
+.weak-list-card { height: 312px; }
+.weak-list-card h4 { margin: 0 0 12px 0; font-size: 15px; color: #303133; }
+.empty-tip { text-align: center; color: #909399; padding: 40px 0; font-size: 14px; }
+.weak-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f2f5; }
+.weak-rank { display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: #fef0f0; color: #f56c6c; font-size: 12px; font-weight: 600; }
+.weak-topic { flex: 1; font-size: 14px; color: #303133; }
+</style>

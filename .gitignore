@@ -17,3 +17,17 @@ build/
 # OS
 .DS_Store
 Thumbs.db
+
+.trae/
+.husky/
+chatgpt-web/
+
+# 外部工具
+shushu-internship-tool-main/
+
+# 后端日志
+backend.log
+backend.err.log
+
+# 系统残留文件
+kDownload*

@@ -1,0 +1,2185 @@
+[
+  {
+    "id": "rec_1780721077358",
+    "score": 0,
+    "correct": 0,
+    "total": 1,
+    "timeUsed": 3,
+    "category": "",
+    "details": [
+      {
+        "questionId": 1,
+        "title": "以下代码中 this 的指向是什么？",
+        "options": [
+          "window/global",
+          "undefined",
+          "调用对象",
+          "箭头函数外层"
+        ],
+        "userAnswer": "A",
+        "correctAnswer": "2",
+        "analysis": "普通函数中 this 指向调用它的对象；箭头函数 this 指向定义时的外层作用域。",
+        "isCorrect": false
+      }
+    ],
+    "createdAt": "2026-06-06T04:44:37.358Z"
+  },
+  {
+    "id": "rec_1780721093650",
+    "score": 4,
+    "correct": 2,
+    "total": 50,
+    "timeUsed": 13,
+    "category": "",
+    "details": [
+      {
+        "questionId": 1,
+        "title": "以下代码中 this 的指向是什么？",
+        "options": [
+          "window/global",
+          "undefined",
+          "调用对象",
+          "箭头函数外层"
+        ],
+        "userAnswer": "C",
+        "correctAnswer": "2",
+        "analysis": "普通函数中 this 指向调用它的对象；箭头函数 this 指向定义时的外层作用域。",
+        "isCorrect": true
+      },
+      {
+        "questionId": 2,
+        "title": "闭包是什么？有什么作用和缺点？",
+        "options": [
+          "能访问外部函数变量的函数",
+          "一种数据类型",
+          "一个内置对象",
+          "一种循环结构"
+        ],
+        "userAnswer": "A",
+        "correctAnswer": "0",
+        "analysis": "闭包是函数与其词法环境的组合，能访问外部函数变量。作用：封装私有变量、创建模块。缺点：可能造成内存泄漏。",
+        "isCorrect": true
+      },
+      {
+        "questionId": 3,
+        "title": "原型链的终点是什么？",
+        "options": [
+          "Object.prototype",
+          "null",
+          "undefined",
+          "Function.prototype"
+        ],
+        "userAnswer": "A",
+        "correctAnswer": "1",
+        "analysis": "原型链的尽头是 null。Object.prototype 是原型链的最后一站，它的原型是 null。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 4,
+        "title": "Promise.all 和 Promise.race 的区别是什么？",
+        "options": [
+          "all 等所有成功，race 等第一个",
+          "all 等第一个，race 等所有",
+          "没区别",
+          "all 只用于异步，race 用于同步"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Promise.all 等待所有 Promise 完成（一个失败则整体失败），Promise.race 等待第一个完成（无论成功或失败）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 5,
+        "title": "以下代码输出顺序正确的是？",
+        "options": [
+          "1 4 3 2",
+          "1 4 2 3",
+          "1 2 3 4",
+          "4 1 2 3"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "同步代码先执行（1,4），微任务（Promise.then）先于宏任务（setTimeout），所以 3 在 2 之前。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 6,
+        "title": "防抖（debounce）和节流（throttle）的区别是什么？",
+        "options": [
+          "防抖只执行最后一次，节流限制执行频率",
+          "防抖限制频率，节流只执行最后一次",
+          "没有区别",
+          "防抖用于滚动，节流用于输入"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "防抖在连续触发后只执行最后一次；节流在单位时间内只执行一次。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 7,
+        "title": "深拷贝和浅拷贝的区别？",
+        "options": [
+          "浅拷贝只复制引用，深拷贝递归复制所有层",
+          "深拷贝只复制引用",
+          "两者相同",
+          "浅拷贝用 JSON.parse(JSON.stringify())"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "浅拷贝只复制第一层属性（对象属性复制引用），深拷贝递归复制所有层级，生成独立对象。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 8,
+        "title": "箭头函数和普通函数的区别有哪些？",
+        "options": [
+          "箭头函数没有 this 绑定",
+          "箭头函数有 arguments",
+          "箭头函数可以用作构造函数",
+          "箭头函数有 prototype"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "箭头函数没有自己的 this、arguments、prototype，不能用作构造函数。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 9,
+        "title": "var、let、const 的区别是什么？",
+        "options": [
+          "var 函数级作用域，let/const 块级作用域",
+          "let 和 var 完全一样",
+          "const 不能赋值但可以修改对象属性",
+          "A 和 C"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "var 有函数提升和函数作用域；let/const 有块级作用域和暂存死区；const 声明常量，引用类型内部可修改。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 10,
+        "title": "事件冒泡和事件捕获的执行顺序是？",
+        "options": [
+          "先捕获后冒泡",
+          "先冒泡后捕获",
+          "同时执行",
+          "只执行冒泡"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "DOM 事件流顺序：捕获阶段 → 目标阶段 → 冒泡阶段。addEventListener 第三个参数 true 为捕获。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 11,
+        "title": "typeof null 返回值是什么？",
+        "options": [
+          "\"object\"",
+          "\"null\"",
+          "\"undefined\"",
+          "\"boolean\""
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "这是 JavaScript 的经典 Bug，typeof null 返回 \"object\"，null 本身是基本类型。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 12,
+        "title": "JavaScript 实现异步编程的方式有哪些？",
+        "options": [
+          "回调函数",
+          "Promise",
+          "async/await",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "异步编程发展：回调函数（Callback）→ Promise → Generator → async/await。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 13,
+        "title": "Map 和 WeakMap 的区别是什么？",
+        "options": [
+          "WeakMap 的键必须是对象且弱引用",
+          "Map 的键可以是任何类型",
+          "WeakMap 不可遍历",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "Map 键可以是任意类型，可遍历；WeakMap 键必须是对象（弱引用），不可遍历，用于防止内存泄漏。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 14,
+        "title": "[] == ![] 的结果是什么？",
+        "options": [
+          "true",
+          "false",
+          "undefined",
+          "报错"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "![] 为 false，[] == false 进行类型转换后两边都为 0，所以返回 true。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 15,
+        "title": "setTimeout(fn, 0) 会在什么时候执行？",
+        "options": [
+          "立即执行",
+          "同步代码执行完后",
+          "下一个事件循环",
+          "当前事件循环结束前"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "2",
+        "analysis": "setTimeout(fn, 0) 会在当前同步代码和微任务执行完后，在下一个事件循环的宏任务阶段执行。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 16,
+        "title": "Vue 的响应式原理是什么？",
+        "options": [
+          "Object.defineProperty",
+          "Proxy",
+          "虚拟 DOM",
+          "以上都是，3.x 用 Proxy"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "Vue 2.x 用 Object.defineProperty，Vue 3.x 用 Proxy，配合依赖收集实现响应式。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 17,
+        "title": "Vue 的生命周期钩子有哪些？",
+        "options": [
+          "created、mounted、updated、unmounted",
+          "init、render、destroy",
+          "start、stop",
+          "load、ready、end"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Vue 3 生命周期：setup、onBeforeMount、onMounted、onBeforeUpdate、onUpdated、onBeforeUnmount、onUnmounted。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 18,
+        "title": "Vue 组件通信方式有哪些？",
+        "options": [
+          "props/$emit",
+          "provide/inject",
+          "Pinia/Vuex",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "父子通信用 props/$emit，跨层级用 provide/inject，全局共享用 Pinia/Vuex。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 19,
+        "title": "v-if 和 v-show 的区别？",
+        "options": [
+          "v-if 条件渲染（增删DOM），v-show 切换 display",
+          "v-show 条件渲染",
+          "v-if 性能更好",
+          "没有区别"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "v-if 是真正的条件渲染（有销毁和重建），v-show 只是切换 CSS display 属性。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 20,
+        "title": "computed 和 watch 的区别？",
+        "options": [
+          "computed 有缓存，watch 没有",
+          "computed 异步，watch 同步",
+          "两者完全一样",
+          "watch 用于模板渲染"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "computed 基于依赖缓存计算结果（只有依赖变化才重新计算），watch 监听特定数据变化执行回调。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 21,
+        "title": "nextTick 的作用是什么？",
+        "options": [
+          "在 DOM 更新后执行回调",
+          "延迟执行",
+          "异步请求",
+          "定时器"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "nextTick 回调在 Vue 完成 DOM 更新后执行，用于获取更新后的 DOM 状态。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 22,
+        "title": "Vue Router 的两种模式是什么？",
+        "options": [
+          "hash 和 history",
+          "push 和 replace",
+          "前端和后端",
+          "同步和异步"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "hash 模式使用 URL hash（#），history 模式使用 HTML5 History API，需服务端配合。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 23,
+        "title": "Vue 中 key 的作用是什么？",
+        "options": [
+          "唯一标识，优化虚拟 DOM diff",
+          "设置样式",
+          "绑定事件",
+          "定义变量"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "key 帮助 Vue 识别节点，在 diff 算法中复用和重排元素，提高渲染性能。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 24,
+        "title": "虚拟 DOM 是什么？有什么优点？",
+        "options": [
+          "用 JS 对象模拟真实 DOM，减少操作次数",
+          "真实 DOM 的拷贝",
+          "HTML 字符串",
+          "浏览器 API"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "虚拟 DOM 是真实 DOM 的 JS 对象表示，通过 diff 算法最小化 DOM 操作，提高性能。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 25,
+        "title": "Vue 插槽（slot）的作用？",
+        "options": [
+          "内容分发，父组件向子组件传递模板内容",
+          "传递数据",
+          "绑定事件",
+          "定义样式"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "slot 允许父组件向子组件特定位置插入模板内容，包括默认插槽、具名插槽、作用域插槽。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 26,
+        "title": "CSS 盒模型包括哪些部分？",
+        "options": [
+          "content、padding、border、margin",
+          "width、height",
+          "内边距和外边距",
+          "内容和边框"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "标准盒模型由 content、padding、border、margin 构成。box-sizing 可切换盒模型计算方式。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 27,
+        "title": "Flex 布局中 justify-content: center 的作用？",
+        "options": [
+          "主轴居中",
+          "交叉轴居中",
+          "两端对齐",
+          "等分空间"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "justify-content 控制主轴对齐方式，center 为主轴居中。align-items 控制交叉轴。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 28,
+        "title": "Grid 布局和 Flex 布局的适用场景？",
+        "options": [
+          "Grid 二维布局，Flex 一维布局",
+          "两者相同",
+          "Grid 用于移动端",
+          "Flex 用于网格"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Grid 适用于二维网格布局（行+列），Flex 适用于一维布局（单行或单列）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 29,
+        "title": "什么是 BFC？",
+        "options": [
+          "块级格式化上下文，独立渲染区域",
+          "一种选择器",
+          "盒模型",
+          "动画效果"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "BFC（Block Formatting Context）是独立的渲染区域，内部元素不影响外部。触发条件：overflow: hidden、float、position: absolute 等。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 30,
+        "title": "position 属性有哪些取值？",
+        "options": [
+          "static、relative、absolute、fixed、sticky",
+          "只有 relative 和 absolute",
+          "static 和 fixed",
+          "只有 static"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "static（默认）、relative（相对自身）、absolute（相对最近定位祖先）、fixed（视口）、sticky（粘性定位）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 31,
+        "title": "实现水平垂直居中的方式有哪些？",
+        "options": [
+          "flex + align-items/justify-content",
+          "absolute + transform",
+          "grid + place-items",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "flex 方案：父元素 display:flex + align-items:center + justify-content:center；grid 方案：place-items:center；定位方案：absolute + transform。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 32,
+        "title": "CSS 选择器优先级顺序是？",
+        "options": [
+          "!important > 内联 > id > class > 标签",
+          "标签 > class > id",
+          "内联 > !important",
+          "class 和 id 同级"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "!important > 内联样式 > id 选择器 > class/属性/伪类 > 标签/伪元素。相同优先级按后出现覆盖。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 33,
+        "title": "伪类和伪元素的区别？",
+        "options": [
+          "伪类用单冒号（:），伪元素用双冒号（::）",
+          "完全一样",
+          "伪类操作内容，伪元素操作状态",
+          "伪元素用单冒号"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "伪类（:hover、:focus）表示元素状态；伪元素（::before、::after）创建虚拟元素。CSS3 规范区分单双冒号。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 34,
+        "title": "transition 和 animation 的区别？",
+        "options": [
+          "transition 需要触发，animation 自动播放",
+          "两者一样",
+          "animation 需要触发",
+          "transition 可以循环"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "transition 需要事件触发（如 hover），只有开始和结束状态；animation 可自动播放，定义关键帧可控制多阶段动画。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 35,
+        "title": "响应式布局的实现方式？",
+        "options": [
+          "媒体查询（@media）",
+          "百分比/rem/vw/vh",
+          "flex/grid",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "响应式布局结合媒体查询、相对单位、弹性布局，适配不同屏幕尺寸。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 36,
+        "title": "HTTP 缓存有哪些类型？",
+        "options": [
+          "强缓存和协商缓存",
+          "浏览器缓存和服务器缓存",
+          "内存缓存和磁盘缓存",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "强缓存（200 from cache，Cache-Control/Expires）不请求服务器；协商缓存（304，ETag/Last-Modified）向服务器验证是否可用缓存。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 37,
+        "title": "什么是跨域？如何解决？",
+        "options": [
+          "CORS",
+          "JSONP",
+          "代理服务器",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "跨域是浏览器同源策略限制。解决方案：CORS（后端设置响应头）、JSONP（仅 GET）、代理服务器（开发环境 vite/webpack proxy）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 38,
+        "title": "浏览器从输入 URL 到页面显示的过程？",
+        "options": [
+          "DNS 解析 → TCP 连接 → HTTP 请求 → 渲染",
+          "直接渲染",
+          "先渲染后请求",
+          "只下载 HTML"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "DNS 解析 → TCP 三次握手 → 发送 HTTP 请求 → 服务器响应 → 浏览器解析 HTML/CSS/JS → 构建渲染树 → 布局 → 绘制。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 39,
+        "title": "HTTPS 和 HTTP 的区别？",
+        "options": [
+          "HTTPS 有 SSL/TLS 加密",
+          "HTTPS 更快",
+          "HTTP 更安全",
+          "没有区别"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "HTTPS 在 HTTP 基础上加入 SSL/TLS 协议，提供加密传输、身份认证、数据完整性校验。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 40,
+        "title": "Cookie、localStorage、sessionStorage 的区别？",
+        "options": [
+          "Cookie 4KB，自动带请求头；localStorage 5MB，持久化；sessionStorage 标签页隔离",
+          "三者完全一样",
+          "Cookie 容量最大",
+          "localStorage 会过期"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Cookie 容量小（4KB）且每次请求自动携带；localStorage 持久化存储（5MB+）；sessionStorage 标签页级隔离，关闭即清除。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 41,
+        "title": "TCP 三次握手的过程？",
+        "options": [
+          "SYN → SYN-ACK → ACK",
+          "ACK → SYN → SYN-ACK",
+          "SYN → ACK → SYN",
+          "两次握手"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "第一次客户端发 SYN；第二次服务端回复 SYN-ACK；第三次客户端发 ACK 确认。建立可靠连接。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 42,
+        "title": "什么是回流和重绘？",
+        "options": [
+          "回流改变布局，重绘改变外观",
+          "两者相同",
+          "重绘影响布局",
+          "回流只改变颜色"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "回流（reflow）是布局变化引起的重新计算，开销大；重绘（repaint）是外观变化引起的重新绘制。回流一定触发重绘。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 43,
+        "title": "浏览器的渲染流程是什么？",
+        "options": [
+          "HTML 解析 → CSS 解析 → 渲染树 → 布局 → 绘制",
+          "JS 执行 → HTML 解析",
+          "直接绘制",
+          "先布局后解析"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "解析 HTML 生成 DOM 树 → 解析 CSS 生成 CSSOM 树 → 合并为渲染树 → 布局计算位置 → 绘制像素。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 44,
+        "title": "强缓存和协商缓存的请求状态码分别是什么？",
+        "options": [
+          "强缓存 200，协商缓存 304",
+          "强缓存 304，协商缓存 200",
+          "强缓存 301",
+          "强缓存 404"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "强缓存命中返回 200（from disk/memory cache），协商缓存命中返回 304 Not Modified。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 45,
+        "title": "Event Loop 中宏任务和微任务的执行顺序？",
+        "options": [
+          "同步代码 → 微任务 → 宏任务",
+          "宏任务 → 微任务",
+          "同步代码 → 宏任务 → 微任务",
+          "随机执行"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "当前宏任务执行完 → 清空微任务队列 → 取下一个宏任务。微任务包括 Promise.then、MutationObserver 等。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 46,
+        "title": "Webpack 和 Vite 的主要区别？",
+        "options": [
+          "Webpack 打包，Vite 基于 ES Module 开发时按需编译",
+          "两者一样",
+          "Vite 更慢",
+          "Webpack 不支持模块化"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Webpack 开发时全量打包；Vite 利用浏览器原生 ES Module，开发时按需编译，速度更快。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 47,
+        "title": "Tree Shaking 是什么？",
+        "options": [
+          "删除未使用的代码",
+          "优化图片",
+          "压缩 CSS",
+          "代码分割"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Tree Shaking 指在打包时移除未被引用的代码（dead code elimination），依赖 ES Module 的静态分析。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 48,
+        "title": "前端模块化规范有哪些？",
+        "options": [
+          "CommonJS（require）、ES Module（import）、AMD、CMD",
+          "只有 CommonJS",
+          "只有 ES Module",
+          "只有 AMD"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "CommonJS（Node.js 用 require/module.exports）、ES Module（浏览器用 import/export）、AMD（require.js）、CMD（sea.js）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 49,
+        "title": "Webpack 的打包流程是什么？",
+        "options": [
+          "读取配置 → 解析入口 → 递归解析依赖 → loader 转换 → 输出 bundle",
+          "直接输出",
+          "先输出后解析",
+          "只转换 JS"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Webpack 从入口文件开始，递归解析依赖图，用 loader 转换非 JS 文件，最后合并输出 bundle。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 50,
+        "title": "Source Map 的作用是什么？",
+        "options": [
+          "将压缩代码映射回源码，方便调试",
+          "加密代码",
+          "压缩代码",
+          "优化性能"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Source Map 建立压缩/转换后代码与源码的映射关系，浏览器 devtools 可显示原始源码，方便调试。",
+        "isCorrect": false
+      }
+    ],
+    "createdAt": "2026-06-06T04:44:53.650Z"
+  },
+  {
+    "id": "rec_1780721132600",
+    "score": 100,
+    "correct": 1,
+    "total": 1,
+    "timeUsed": 4,
+    "category": "",
+    "details": [
+      {
+        "questionId": 1,
+        "title": "以下代码中 this 的指向是什么？",
+        "options": [
+          "window/global",
+          "undefined",
+          "调用对象",
+          "箭头函数外层"
+        ],
+        "userAnswer": "C",
+        "correctAnswer": "2",
+        "analysis": "普通函数中 this 指向调用它的对象；箭头函数 this 指向定义时的外层作用域。",
+        "isCorrect": true
+      }
+    ],
+    "createdAt": "2026-06-06T04:45:32.600Z"
+  },
+  {
+    "id": "rec_1780721183193",
+    "score": 2,
+    "correct": 1,
+    "total": 50,
+    "timeUsed": 2,
+    "category": "",
+    "details": [
+      {
+        "questionId": 1,
+        "title": "以下代码中 this 的指向是什么？",
+        "options": [
+          "window/global",
+          "undefined",
+          "调用对象",
+          "箭头函数外层"
+        ],
+        "userAnswer": "C",
+        "correctAnswer": "2",
+        "analysis": "普通函数中 this 指向调用它的对象；箭头函数 this 指向定义时的外层作用域。",
+        "isCorrect": true
+      },
+      {
+        "questionId": 2,
+        "title": "闭包是什么？有什么作用和缺点？",
+        "options": [
+          "能访问外部函数变量的函数",
+          "一种数据类型",
+          "一个内置对象",
+          "一种循环结构"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "闭包是函数与其词法环境的组合，能访问外部函数变量。作用：封装私有变量、创建模块。缺点：可能造成内存泄漏。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 3,
+        "title": "原型链的终点是什么？",
+        "options": [
+          "Object.prototype",
+          "null",
+          "undefined",
+          "Function.prototype"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "1",
+        "analysis": "原型链的尽头是 null。Object.prototype 是原型链的最后一站，它的原型是 null。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 4,
+        "title": "Promise.all 和 Promise.race 的区别是什么？",
+        "options": [
+          "all 等所有成功，race 等第一个",
+          "all 等第一个，race 等所有",
+          "没区别",
+          "all 只用于异步，race 用于同步"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Promise.all 等待所有 Promise 完成（一个失败则整体失败），Promise.race 等待第一个完成（无论成功或失败）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 5,
+        "title": "以下代码输出顺序正确的是？",
+        "options": [
+          "1 4 3 2",
+          "1 4 2 3",
+          "1 2 3 4",
+          "4 1 2 3"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "同步代码先执行（1,4），微任务（Promise.then）先于宏任务（setTimeout），所以 3 在 2 之前。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 6,
+        "title": "防抖（debounce）和节流（throttle）的区别是什么？",
+        "options": [
+          "防抖只执行最后一次，节流限制执行频率",
+          "防抖限制频率，节流只执行最后一次",
+          "没有区别",
+          "防抖用于滚动，节流用于输入"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "防抖在连续触发后只执行最后一次；节流在单位时间内只执行一次。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 7,
+        "title": "深拷贝和浅拷贝的区别？",
+        "options": [
+          "浅拷贝只复制引用，深拷贝递归复制所有层",
+          "深拷贝只复制引用",
+          "两者相同",
+          "浅拷贝用 JSON.parse(JSON.stringify())"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "浅拷贝只复制第一层属性（对象属性复制引用），深拷贝递归复制所有层级，生成独立对象。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 8,
+        "title": "箭头函数和普通函数的区别有哪些？",
+        "options": [
+          "箭头函数没有 this 绑定",
+          "箭头函数有 arguments",
+          "箭头函数可以用作构造函数",
+          "箭头函数有 prototype"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "箭头函数没有自己的 this、arguments、prototype，不能用作构造函数。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 9,
+        "title": "var、let、const 的区别是什么？",
+        "options": [
+          "var 函数级作用域，let/const 块级作用域",
+          "let 和 var 完全一样",
+          "const 不能赋值但可以修改对象属性",
+          "A 和 C"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "var 有函数提升和函数作用域；let/const 有块级作用域和暂存死区；const 声明常量，引用类型内部可修改。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 10,
+        "title": "事件冒泡和事件捕获的执行顺序是？",
+        "options": [
+          "先捕获后冒泡",
+          "先冒泡后捕获",
+          "同时执行",
+          "只执行冒泡"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "DOM 事件流顺序：捕获阶段 → 目标阶段 → 冒泡阶段。addEventListener 第三个参数 true 为捕获。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 11,
+        "title": "typeof null 返回值是什么？",
+        "options": [
+          "\"object\"",
+          "\"null\"",
+          "\"undefined\"",
+          "\"boolean\""
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "这是 JavaScript 的经典 Bug，typeof null 返回 \"object\"，null 本身是基本类型。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 12,
+        "title": "JavaScript 实现异步编程的方式有哪些？",
+        "options": [
+          "回调函数",
+          "Promise",
+          "async/await",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "异步编程发展：回调函数（Callback）→ Promise → Generator → async/await。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 13,
+        "title": "Map 和 WeakMap 的区别是什么？",
+        "options": [
+          "WeakMap 的键必须是对象且弱引用",
+          "Map 的键可以是任何类型",
+          "WeakMap 不可遍历",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "Map 键可以是任意类型，可遍历；WeakMap 键必须是对象（弱引用），不可遍历，用于防止内存泄漏。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 14,
+        "title": "[] == ![] 的结果是什么？",
+        "options": [
+          "true",
+          "false",
+          "undefined",
+          "报错"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "![] 为 false，[] == false 进行类型转换后两边都为 0，所以返回 true。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 15,
+        "title": "setTimeout(fn, 0) 会在什么时候执行？",
+        "options": [
+          "立即执行",
+          "同步代码执行完后",
+          "下一个事件循环",
+          "当前事件循环结束前"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "2",
+        "analysis": "setTimeout(fn, 0) 会在当前同步代码和微任务执行完后，在下一个事件循环的宏任务阶段执行。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 16,
+        "title": "Vue 的响应式原理是什么？",
+        "options": [
+          "Object.defineProperty",
+          "Proxy",
+          "虚拟 DOM",
+          "以上都是，3.x 用 Proxy"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "Vue 2.x 用 Object.defineProperty，Vue 3.x 用 Proxy，配合依赖收集实现响应式。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 17,
+        "title": "Vue 的生命周期钩子有哪些？",
+        "options": [
+          "created、mounted、updated、unmounted",
+          "init、render、destroy",
+          "start、stop",
+          "load、ready、end"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Vue 3 生命周期：setup、onBeforeMount、onMounted、onBeforeUpdate、onUpdated、onBeforeUnmount、onUnmounted。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 18,
+        "title": "Vue 组件通信方式有哪些？",
+        "options": [
+          "props/$emit",
+          "provide/inject",
+          "Pinia/Vuex",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "父子通信用 props/$emit，跨层级用 provide/inject，全局共享用 Pinia/Vuex。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 19,
+        "title": "v-if 和 v-show 的区别？",
+        "options": [
+          "v-if 条件渲染（增删DOM），v-show 切换 display",
+          "v-show 条件渲染",
+          "v-if 性能更好",
+          "没有区别"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "v-if 是真正的条件渲染（有销毁和重建），v-show 只是切换 CSS display 属性。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 20,
+        "title": "computed 和 watch 的区别？",
+        "options": [
+          "computed 有缓存，watch 没有",
+          "computed 异步，watch 同步",
+          "两者完全一样",
+          "watch 用于模板渲染"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "computed 基于依赖缓存计算结果（只有依赖变化才重新计算），watch 监听特定数据变化执行回调。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 21,
+        "title": "nextTick 的作用是什么？",
+        "options": [
+          "在 DOM 更新后执行回调",
+          "延迟执行",
+          "异步请求",
+          "定时器"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "nextTick 回调在 Vue 完成 DOM 更新后执行，用于获取更新后的 DOM 状态。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 22,
+        "title": "Vue Router 的两种模式是什么？",
+        "options": [
+          "hash 和 history",
+          "push 和 replace",
+          "前端和后端",
+          "同步和异步"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "hash 模式使用 URL hash（#），history 模式使用 HTML5 History API，需服务端配合。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 23,
+        "title": "Vue 中 key 的作用是什么？",
+        "options": [
+          "唯一标识，优化虚拟 DOM diff",
+          "设置样式",
+          "绑定事件",
+          "定义变量"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "key 帮助 Vue 识别节点，在 diff 算法中复用和重排元素，提高渲染性能。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 24,
+        "title": "虚拟 DOM 是什么？有什么优点？",
+        "options": [
+          "用 JS 对象模拟真实 DOM，减少操作次数",
+          "真实 DOM 的拷贝",
+          "HTML 字符串",
+          "浏览器 API"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "虚拟 DOM 是真实 DOM 的 JS 对象表示，通过 diff 算法最小化 DOM 操作，提高性能。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 25,
+        "title": "Vue 插槽（slot）的作用？",
+        "options": [
+          "内容分发，父组件向子组件传递模板内容",
+          "传递数据",
+          "绑定事件",
+          "定义样式"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "slot 允许父组件向子组件特定位置插入模板内容，包括默认插槽、具名插槽、作用域插槽。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 26,
+        "title": "CSS 盒模型包括哪些部分？",
+        "options": [
+          "content、padding、border、margin",
+          "width、height",
+          "内边距和外边距",
+          "内容和边框"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "标准盒模型由 content、padding、border、margin 构成。box-sizing 可切换盒模型计算方式。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 27,
+        "title": "Flex 布局中 justify-content: center 的作用？",
+        "options": [
+          "主轴居中",
+          "交叉轴居中",
+          "两端对齐",
+          "等分空间"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "justify-content 控制主轴对齐方式，center 为主轴居中。align-items 控制交叉轴。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 28,
+        "title": "Grid 布局和 Flex 布局的适用场景？",
+        "options": [
+          "Grid 二维布局，Flex 一维布局",
+          "两者相同",
+          "Grid 用于移动端",
+          "Flex 用于网格"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Grid 适用于二维网格布局（行+列），Flex 适用于一维布局（单行或单列）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 29,
+        "title": "什么是 BFC？",
+        "options": [
+          "块级格式化上下文，独立渲染区域",
+          "一种选择器",
+          "盒模型",
+          "动画效果"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "BFC（Block Formatting Context）是独立的渲染区域，内部元素不影响外部。触发条件：overflow: hidden、float、position: absolute 等。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 30,
+        "title": "position 属性有哪些取值？",
+        "options": [
+          "static、relative、absolute、fixed、sticky",
+          "只有 relative 和 absolute",
+          "static 和 fixed",
+          "只有 static"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "static（默认）、relative（相对自身）、absolute（相对最近定位祖先）、fixed（视口）、sticky（粘性定位）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 31,
+        "title": "实现水平垂直居中的方式有哪些？",
+        "options": [
+          "flex + align-items/justify-content",
+          "absolute + transform",
+          "grid + place-items",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "flex 方案：父元素 display:flex + align-items:center + justify-content:center；grid 方案：place-items:center；定位方案：absolute + transform。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 32,
+        "title": "CSS 选择器优先级顺序是？",
+        "options": [
+          "!important > 内联 > id > class > 标签",
+          "标签 > class > id",
+          "内联 > !important",
+          "class 和 id 同级"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "!important > 内联样式 > id 选择器 > class/属性/伪类 > 标签/伪元素。相同优先级按后出现覆盖。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 33,
+        "title": "伪类和伪元素的区别？",
+        "options": [
+          "伪类用单冒号（:），伪元素用双冒号（::）",
+          "完全一样",
+          "伪类操作内容，伪元素操作状态",
+          "伪元素用单冒号"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "伪类（:hover、:focus）表示元素状态；伪元素（::before、::after）创建虚拟元素。CSS3 规范区分单双冒号。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 34,
+        "title": "transition 和 animation 的区别？",
+        "options": [
+          "transition 需要触发，animation 自动播放",
+          "两者一样",
+          "animation 需要触发",
+          "transition 可以循环"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "transition 需要事件触发（如 hover），只有开始和结束状态；animation 可自动播放，定义关键帧可控制多阶段动画。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 35,
+        "title": "响应式布局的实现方式？",
+        "options": [
+          "媒体查询（@media）",
+          "百分比/rem/vw/vh",
+          "flex/grid",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "响应式布局结合媒体查询、相对单位、弹性布局，适配不同屏幕尺寸。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 36,
+        "title": "HTTP 缓存有哪些类型？",
+        "options": [
+          "强缓存和协商缓存",
+          "浏览器缓存和服务器缓存",
+          "内存缓存和磁盘缓存",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "强缓存（200 from cache，Cache-Control/Expires）不请求服务器；协商缓存（304，ETag/Last-Modified）向服务器验证是否可用缓存。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 37,
+        "title": "什么是跨域？如何解决？",
+        "options": [
+          "CORS",
+          "JSONP",
+          "代理服务器",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "跨域是浏览器同源策略限制。解决方案：CORS（后端设置响应头）、JSONP（仅 GET）、代理服务器（开发环境 vite/webpack proxy）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 38,
+        "title": "浏览器从输入 URL 到页面显示的过程？",
+        "options": [
+          "DNS 解析 → TCP 连接 → HTTP 请求 → 渲染",
+          "直接渲染",
+          "先渲染后请求",
+          "只下载 HTML"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "DNS 解析 → TCP 三次握手 → 发送 HTTP 请求 → 服务器响应 → 浏览器解析 HTML/CSS/JS → 构建渲染树 → 布局 → 绘制。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 39,
+        "title": "HTTPS 和 HTTP 的区别？",
+        "options": [
+          "HTTPS 有 SSL/TLS 加密",
+          "HTTPS 更快",
+          "HTTP 更安全",
+          "没有区别"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "HTTPS 在 HTTP 基础上加入 SSL/TLS 协议，提供加密传输、身份认证、数据完整性校验。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 40,
+        "title": "Cookie、localStorage、sessionStorage 的区别？",
+        "options": [
+          "Cookie 4KB，自动带请求头；localStorage 5MB，持久化；sessionStorage 标签页隔离",
+          "三者完全一样",
+          "Cookie 容量最大",
+          "localStorage 会过期"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Cookie 容量小（4KB）且每次请求自动携带；localStorage 持久化存储（5MB+）；sessionStorage 标签页级隔离，关闭即清除。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 41,
+        "title": "TCP 三次握手的过程？",
+        "options": [
+          "SYN → SYN-ACK → ACK",
+          "ACK → SYN → SYN-ACK",
+          "SYN → ACK → SYN",
+          "两次握手"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "第一次客户端发 SYN；第二次服务端回复 SYN-ACK；第三次客户端发 ACK 确认。建立可靠连接。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 42,
+        "title": "什么是回流和重绘？",
+        "options": [
+          "回流改变布局，重绘改变外观",
+          "两者相同",
+          "重绘影响布局",
+          "回流只改变颜色"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "回流（reflow）是布局变化引起的重新计算，开销大；重绘（repaint）是外观变化引起的重新绘制。回流一定触发重绘。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 43,
+        "title": "浏览器的渲染流程是什么？",
+        "options": [
+          "HTML 解析 → CSS 解析 → 渲染树 → 布局 → 绘制",
+          "JS 执行 → HTML 解析",
+          "直接绘制",
+          "先布局后解析"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "解析 HTML 生成 DOM 树 → 解析 CSS 生成 CSSOM 树 → 合并为渲染树 → 布局计算位置 → 绘制像素。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 44,
+        "title": "强缓存和协商缓存的请求状态码分别是什么？",
+        "options": [
+          "强缓存 200，协商缓存 304",
+          "强缓存 304，协商缓存 200",
+          "强缓存 301",
+          "强缓存 404"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "强缓存命中返回 200（from disk/memory cache），协商缓存命中返回 304 Not Modified。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 45,
+        "title": "Event Loop 中宏任务和微任务的执行顺序？",
+        "options": [
+          "同步代码 → 微任务 → 宏任务",
+          "宏任务 → 微任务",
+          "同步代码 → 宏任务 → 微任务",
+          "随机执行"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "当前宏任务执行完 → 清空微任务队列 → 取下一个宏任务。微任务包括 Promise.then、MutationObserver 等。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 46,
+        "title": "Webpack 和 Vite 的主要区别？",
+        "options": [
+          "Webpack 打包，Vite 基于 ES Module 开发时按需编译",
+          "两者一样",
+          "Vite 更慢",
+          "Webpack 不支持模块化"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Webpack 开发时全量打包；Vite 利用浏览器原生 ES Module，开发时按需编译，速度更快。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 47,
+        "title": "Tree Shaking 是什么？",
+        "options": [
+          "删除未使用的代码",
+          "优化图片",
+          "压缩 CSS",
+          "代码分割"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Tree Shaking 指在打包时移除未被引用的代码（dead code elimination），依赖 ES Module 的静态分析。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 48,
+        "title": "前端模块化规范有哪些？",
+        "options": [
+          "CommonJS（require）、ES Module（import）、AMD、CMD",
+          "只有 CommonJS",
+          "只有 ES Module",
+          "只有 AMD"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "CommonJS（Node.js 用 require/module.exports）、ES Module（浏览器用 import/export）、AMD（require.js）、CMD（sea.js）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 49,
+        "title": "Webpack 的打包流程是什么？",
+        "options": [
+          "读取配置 → 解析入口 → 递归解析依赖 → loader 转换 → 输出 bundle",
+          "直接输出",
+          "先输出后解析",
+          "只转换 JS"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Webpack 从入口文件开始，递归解析依赖图，用 loader 转换非 JS 文件，最后合并输出 bundle。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 50,
+        "title": "Source Map 的作用是什么？",
+        "options": [
+          "将压缩代码映射回源码，方便调试",
+          "加密代码",
+          "压缩代码",
+          "优化性能"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Source Map 建立压缩/转换后代码与源码的映射关系，浏览器 devtools 可显示原始源码，方便调试。",
+        "isCorrect": false
+      }
+    ],
+    "createdAt": "2026-06-06T04:46:23.193Z"
+  },
+  {
+    "id": "rec_1780721295162",
+    "score": 2,
+    "correct": 1,
+    "total": 50,
+    "timeUsed": 2,
+    "category": "",
+    "details": [
+      {
+        "questionId": 1,
+        "title": "以下代码中 this 的指向是什么？",
+        "options": [
+          "window/global",
+          "undefined",
+          "调用对象",
+          "箭头函数外层"
+        ],
+        "userAnswer": "C",
+        "correctAnswer": "2",
+        "analysis": "普通函数中 this 指向调用它的对象；箭头函数 this 指向定义时的外层作用域。",
+        "isCorrect": true
+      },
+      {
+        "questionId": 2,
+        "title": "闭包是什么？有什么作用和缺点？",
+        "options": [
+          "能访问外部函数变量的函数",
+          "一种数据类型",
+          "一个内置对象",
+          "一种循环结构"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "闭包是函数与其词法环境的组合，能访问外部函数变量。作用：封装私有变量、创建模块。缺点：可能造成内存泄漏。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 3,
+        "title": "原型链的终点是什么？",
+        "options": [
+          "Object.prototype",
+          "null",
+          "undefined",
+          "Function.prototype"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "1",
+        "analysis": "原型链的尽头是 null。Object.prototype 是原型链的最后一站，它的原型是 null。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 4,
+        "title": "Promise.all 和 Promise.race 的区别是什么？",
+        "options": [
+          "all 等所有成功，race 等第一个",
+          "all 等第一个，race 等所有",
+          "没区别",
+          "all 只用于异步，race 用于同步"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Promise.all 等待所有 Promise 完成（一个失败则整体失败），Promise.race 等待第一个完成（无论成功或失败）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 5,
+        "title": "以下代码输出顺序正确的是？",
+        "options": [
+          "1 4 3 2",
+          "1 4 2 3",
+          "1 2 3 4",
+          "4 1 2 3"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "同步代码先执行（1,4），微任务（Promise.then）先于宏任务（setTimeout），所以 3 在 2 之前。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 6,
+        "title": "防抖（debounce）和节流（throttle）的区别是什么？",
+        "options": [
+          "防抖只执行最后一次，节流限制执行频率",
+          "防抖限制频率，节流只执行最后一次",
+          "没有区别",
+          "防抖用于滚动，节流用于输入"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "防抖在连续触发后只执行最后一次；节流在单位时间内只执行一次。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 7,
+        "title": "深拷贝和浅拷贝的区别？",
+        "options": [
+          "浅拷贝只复制引用，深拷贝递归复制所有层",
+          "深拷贝只复制引用",
+          "两者相同",
+          "浅拷贝用 JSON.parse(JSON.stringify())"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "浅拷贝只复制第一层属性（对象属性复制引用），深拷贝递归复制所有层级，生成独立对象。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 8,
+        "title": "箭头函数和普通函数的区别有哪些？",
+        "options": [
+          "箭头函数没有 this 绑定",
+          "箭头函数有 arguments",
+          "箭头函数可以用作构造函数",
+          "箭头函数有 prototype"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "箭头函数没有自己的 this、arguments、prototype，不能用作构造函数。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 9,
+        "title": "var、let、const 的区别是什么？",
+        "options": [
+          "var 函数级作用域，let/const 块级作用域",
+          "let 和 var 完全一样",
+          "const 不能赋值但可以修改对象属性",
+          "A 和 C"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "var 有函数提升和函数作用域；let/const 有块级作用域和暂存死区；const 声明常量，引用类型内部可修改。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 10,
+        "title": "事件冒泡和事件捕获的执行顺序是？",
+        "options": [
+          "先捕获后冒泡",
+          "先冒泡后捕获",
+          "同时执行",
+          "只执行冒泡"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "DOM 事件流顺序：捕获阶段 → 目标阶段 → 冒泡阶段。addEventListener 第三个参数 true 为捕获。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 11,
+        "title": "typeof null 返回值是什么？",
+        "options": [
+          "\"object\"",
+          "\"null\"",
+          "\"undefined\"",
+          "\"boolean\""
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "这是 JavaScript 的经典 Bug，typeof null 返回 \"object\"，null 本身是基本类型。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 12,
+        "title": "JavaScript 实现异步编程的方式有哪些？",
+        "options": [
+          "回调函数",
+          "Promise",
+          "async/await",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "异步编程发展：回调函数（Callback）→ Promise → Generator → async/await。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 13,
+        "title": "Map 和 WeakMap 的区别是什么？",
+        "options": [
+          "WeakMap 的键必须是对象且弱引用",
+          "Map 的键可以是任何类型",
+          "WeakMap 不可遍历",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "Map 键可以是任意类型，可遍历；WeakMap 键必须是对象（弱引用），不可遍历，用于防止内存泄漏。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 14,
+        "title": "[] == ![] 的结果是什么？",
+        "options": [
+          "true",
+          "false",
+          "undefined",
+          "报错"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "![] 为 false，[] == false 进行类型转换后两边都为 0，所以返回 true。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 15,
+        "title": "setTimeout(fn, 0) 会在什么时候执行？",
+        "options": [
+          "立即执行",
+          "同步代码执行完后",
+          "下一个事件循环",
+          "当前事件循环结束前"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "2",
+        "analysis": "setTimeout(fn, 0) 会在当前同步代码和微任务执行完后，在下一个事件循环的宏任务阶段执行。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 16,
+        "title": "Vue 的响应式原理是什么？",
+        "options": [
+          "Object.defineProperty",
+          "Proxy",
+          "虚拟 DOM",
+          "以上都是，3.x 用 Proxy"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "Vue 2.x 用 Object.defineProperty，Vue 3.x 用 Proxy，配合依赖收集实现响应式。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 17,
+        "title": "Vue 的生命周期钩子有哪些？",
+        "options": [
+          "created、mounted、updated、unmounted",
+          "init、render、destroy",
+          "start、stop",
+          "load、ready、end"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Vue 3 生命周期：setup、onBeforeMount、onMounted、onBeforeUpdate、onUpdated、onBeforeUnmount、onUnmounted。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 18,
+        "title": "Vue 组件通信方式有哪些？",
+        "options": [
+          "props/$emit",
+          "provide/inject",
+          "Pinia/Vuex",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "父子通信用 props/$emit，跨层级用 provide/inject，全局共享用 Pinia/Vuex。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 19,
+        "title": "v-if 和 v-show 的区别？",
+        "options": [
+          "v-if 条件渲染（增删DOM），v-show 切换 display",
+          "v-show 条件渲染",
+          "v-if 性能更好",
+          "没有区别"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "v-if 是真正的条件渲染（有销毁和重建），v-show 只是切换 CSS display 属性。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 20,
+        "title": "computed 和 watch 的区别？",
+        "options": [
+          "computed 有缓存，watch 没有",
+          "computed 异步，watch 同步",
+          "两者完全一样",
+          "watch 用于模板渲染"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "computed 基于依赖缓存计算结果（只有依赖变化才重新计算），watch 监听特定数据变化执行回调。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 21,
+        "title": "nextTick 的作用是什么？",
+        "options": [
+          "在 DOM 更新后执行回调",
+          "延迟执行",
+          "异步请求",
+          "定时器"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "nextTick 回调在 Vue 完成 DOM 更新后执行，用于获取更新后的 DOM 状态。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 22,
+        "title": "Vue Router 的两种模式是什么？",
+        "options": [
+          "hash 和 history",
+          "push 和 replace",
+          "前端和后端",
+          "同步和异步"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "hash 模式使用 URL hash（#），history 模式使用 HTML5 History API，需服务端配合。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 23,
+        "title": "Vue 中 key 的作用是什么？",
+        "options": [
+          "唯一标识，优化虚拟 DOM diff",
+          "设置样式",
+          "绑定事件",
+          "定义变量"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "key 帮助 Vue 识别节点，在 diff 算法中复用和重排元素，提高渲染性能。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 24,
+        "title": "虚拟 DOM 是什么？有什么优点？",
+        "options": [
+          "用 JS 对象模拟真实 DOM，减少操作次数",
+          "真实 DOM 的拷贝",
+          "HTML 字符串",
+          "浏览器 API"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "虚拟 DOM 是真实 DOM 的 JS 对象表示，通过 diff 算法最小化 DOM 操作，提高性能。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 25,
+        "title": "Vue 插槽（slot）的作用？",
+        "options": [
+          "内容分发，父组件向子组件传递模板内容",
+          "传递数据",
+          "绑定事件",
+          "定义样式"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "slot 允许父组件向子组件特定位置插入模板内容，包括默认插槽、具名插槽、作用域插槽。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 26,
+        "title": "CSS 盒模型包括哪些部分？",
+        "options": [
+          "content、padding、border、margin",
+          "width、height",
+          "内边距和外边距",
+          "内容和边框"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "标准盒模型由 content、padding、border、margin 构成。box-sizing 可切换盒模型计算方式。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 27,
+        "title": "Flex 布局中 justify-content: center 的作用？",
+        "options": [
+          "主轴居中",
+          "交叉轴居中",
+          "两端对齐",
+          "等分空间"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "justify-content 控制主轴对齐方式，center 为主轴居中。align-items 控制交叉轴。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 28,
+        "title": "Grid 布局和 Flex 布局的适用场景？",
+        "options": [
+          "Grid 二维布局，Flex 一维布局",
+          "两者相同",
+          "Grid 用于移动端",
+          "Flex 用于网格"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Grid 适用于二维网格布局（行+列），Flex 适用于一维布局（单行或单列）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 29,
+        "title": "什么是 BFC？",
+        "options": [
+          "块级格式化上下文，独立渲染区域",
+          "一种选择器",
+          "盒模型",
+          "动画效果"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "BFC（Block Formatting Context）是独立的渲染区域，内部元素不影响外部。触发条件：overflow: hidden、float、position: absolute 等。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 30,
+        "title": "position 属性有哪些取值？",
+        "options": [
+          "static、relative、absolute、fixed、sticky",
+          "只有 relative 和 absolute",
+          "static 和 fixed",
+          "只有 static"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "static（默认）、relative（相对自身）、absolute（相对最近定位祖先）、fixed（视口）、sticky（粘性定位）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 31,
+        "title": "实现水平垂直居中的方式有哪些？",
+        "options": [
+          "flex + align-items/justify-content",
+          "absolute + transform",
+          "grid + place-items",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "flex 方案：父元素 display:flex + align-items:center + justify-content:center；grid 方案：place-items:center；定位方案：absolute + transform。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 32,
+        "title": "CSS 选择器优先级顺序是？",
+        "options": [
+          "!important > 内联 > id > class > 标签",
+          "标签 > class > id",
+          "内联 > !important",
+          "class 和 id 同级"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "!important > 内联样式 > id 选择器 > class/属性/伪类 > 标签/伪元素。相同优先级按后出现覆盖。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 33,
+        "title": "伪类和伪元素的区别？",
+        "options": [
+          "伪类用单冒号（:），伪元素用双冒号（::）",
+          "完全一样",
+          "伪类操作内容，伪元素操作状态",
+          "伪元素用单冒号"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "伪类（:hover、:focus）表示元素状态；伪元素（::before、::after）创建虚拟元素。CSS3 规范区分单双冒号。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 34,
+        "title": "transition 和 animation 的区别？",
+        "options": [
+          "transition 需要触发，animation 自动播放",
+          "两者一样",
+          "animation 需要触发",
+          "transition 可以循环"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "transition 需要事件触发（如 hover），只有开始和结束状态；animation 可自动播放，定义关键帧可控制多阶段动画。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 35,
+        "title": "响应式布局的实现方式？",
+        "options": [
+          "媒体查询（@media）",
+          "百分比/rem/vw/vh",
+          "flex/grid",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "响应式布局结合媒体查询、相对单位、弹性布局，适配不同屏幕尺寸。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 36,
+        "title": "HTTP 缓存有哪些类型？",
+        "options": [
+          "强缓存和协商缓存",
+          "浏览器缓存和服务器缓存",
+          "内存缓存和磁盘缓存",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "强缓存（200 from cache，Cache-Control/Expires）不请求服务器；协商缓存（304，ETag/Last-Modified）向服务器验证是否可用缓存。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 37,
+        "title": "什么是跨域？如何解决？",
+        "options": [
+          "CORS",
+          "JSONP",
+          "代理服务器",
+          "以上都是"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "3",
+        "analysis": "跨域是浏览器同源策略限制。解决方案：CORS（后端设置响应头）、JSONP（仅 GET）、代理服务器（开发环境 vite/webpack proxy）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 38,
+        "title": "浏览器从输入 URL 到页面显示的过程？",
+        "options": [
+          "DNS 解析 → TCP 连接 → HTTP 请求 → 渲染",
+          "直接渲染",
+          "先渲染后请求",
+          "只下载 HTML"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "DNS 解析 → TCP 三次握手 → 发送 HTTP 请求 → 服务器响应 → 浏览器解析 HTML/CSS/JS → 构建渲染树 → 布局 → 绘制。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 39,
+        "title": "HTTPS 和 HTTP 的区别？",
+        "options": [
+          "HTTPS 有 SSL/TLS 加密",
+          "HTTPS 更快",
+          "HTTP 更安全",
+          "没有区别"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "HTTPS 在 HTTP 基础上加入 SSL/TLS 协议，提供加密传输、身份认证、数据完整性校验。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 40,
+        "title": "Cookie、localStorage、sessionStorage 的区别？",
+        "options": [
+          "Cookie 4KB，自动带请求头；localStorage 5MB，持久化；sessionStorage 标签页隔离",
+          "三者完全一样",
+          "Cookie 容量最大",
+          "localStorage 会过期"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Cookie 容量小（4KB）且每次请求自动携带；localStorage 持久化存储（5MB+）；sessionStorage 标签页级隔离，关闭即清除。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 41,
+        "title": "TCP 三次握手的过程？",
+        "options": [
+          "SYN → SYN-ACK → ACK",
+          "ACK → SYN → SYN-ACK",
+          "SYN → ACK → SYN",
+          "两次握手"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "第一次客户端发 SYN；第二次服务端回复 SYN-ACK；第三次客户端发 ACK 确认。建立可靠连接。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 42,
+        "title": "什么是回流和重绘？",
+        "options": [
+          "回流改变布局，重绘改变外观",
+          "两者相同",
+          "重绘影响布局",
+          "回流只改变颜色"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "回流（reflow）是布局变化引起的重新计算，开销大；重绘（repaint）是外观变化引起的重新绘制。回流一定触发重绘。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 43,
+        "title": "浏览器的渲染流程是什么？",
+        "options": [
+          "HTML 解析 → CSS 解析 → 渲染树 → 布局 → 绘制",
+          "JS 执行 → HTML 解析",
+          "直接绘制",
+          "先布局后解析"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "解析 HTML 生成 DOM 树 → 解析 CSS 生成 CSSOM 树 → 合并为渲染树 → 布局计算位置 → 绘制像素。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 44,
+        "title": "强缓存和协商缓存的请求状态码分别是什么？",
+        "options": [
+          "强缓存 200，协商缓存 304",
+          "强缓存 304，协商缓存 200",
+          "强缓存 301",
+          "强缓存 404"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "强缓存命中返回 200（from disk/memory cache），协商缓存命中返回 304 Not Modified。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 45,
+        "title": "Event Loop 中宏任务和微任务的执行顺序？",
+        "options": [
+          "同步代码 → 微任务 → 宏任务",
+          "宏任务 → 微任务",
+          "同步代码 → 宏任务 → 微任务",
+          "随机执行"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "当前宏任务执行完 → 清空微任务队列 → 取下一个宏任务。微任务包括 Promise.then、MutationObserver 等。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 46,
+        "title": "Webpack 和 Vite 的主要区别？",
+        "options": [
+          "Webpack 打包，Vite 基于 ES Module 开发时按需编译",
+          "两者一样",
+          "Vite 更慢",
+          "Webpack 不支持模块化"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Webpack 开发时全量打包；Vite 利用浏览器原生 ES Module，开发时按需编译，速度更快。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 47,
+        "title": "Tree Shaking 是什么？",
+        "options": [
+          "删除未使用的代码",
+          "优化图片",
+          "压缩 CSS",
+          "代码分割"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Tree Shaking 指在打包时移除未被引用的代码（dead code elimination），依赖 ES Module 的静态分析。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 48,
+        "title": "前端模块化规范有哪些？",
+        "options": [
+          "CommonJS（require）、ES Module（import）、AMD、CMD",
+          "只有 CommonJS",
+          "只有 ES Module",
+          "只有 AMD"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "CommonJS（Node.js 用 require/module.exports）、ES Module（浏览器用 import/export）、AMD（require.js）、CMD（sea.js）。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 49,
+        "title": "Webpack 的打包流程是什么？",
+        "options": [
+          "读取配置 → 解析入口 → 递归解析依赖 → loader 转换 → 输出 bundle",
+          "直接输出",
+          "先输出后解析",
+          "只转换 JS"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Webpack 从入口文件开始，递归解析依赖图，用 loader 转换非 JS 文件，最后合并输出 bundle。",
+        "isCorrect": false
+      },
+      {
+        "questionId": 50,
+        "title": "Source Map 的作用是什么？",
+        "options": [
+          "将压缩代码映射回源码，方便调试",
+          "加密代码",
+          "压缩代码",
+          "优化性能"
+        ],
+        "userAnswer": "",
+        "correctAnswer": "0",
+        "analysis": "Source Map 建立压缩/转换后代码与源码的映射关系，浏览器 devtools 可显示原始源码，方便调试。",
+        "isCorrect": false
+      }
+    ],
+    "createdAt": "2026-06-06T04:48:15.162Z"
+  }
+]

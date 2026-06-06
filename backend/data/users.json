@@ -1,0 +1,14 @@
+[
+  {
+    "id": "user_mq20j3u2",
+    "username": "testuser",
+    "password": "$2b$10$8MYQWJp5TextyYDtqDEvw.6RkRkr44AOvaZQzwceZyiwnAqP2W6L2",
+    "createdAt": "2026-06-06T07:09:34.634Z"
+  },
+  {
+    "id": "user_mq21mub3",
+    "username": "testuser2",
+    "password": "$2b$10$amva8b2pKmJMe.3XK6OfyuOYy1sjUhwvuulL258mGYvWYtQG4eQqC",
+    "createdAt": "2026-06-06T07:40:28.527Z"
+  }
+]
