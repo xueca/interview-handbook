@@ -1,6 +1,17 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { useQuestionsStore } from '../stores/questions'
+import { removeQuestion } from '../api/questions'
+
+// 防止关键词输入时频繁请求: 延迟 delay 毫秒后才执行真正的过滤
+function debounce(fn, delay) {
+  let timer = null
+  return (...args) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => fn(...args), delay)
+  }
+}
 
 export default function useQuestionBank() {
   const router = useRouter()
@@ -36,6 +47,9 @@ export default function useQuestionBank() {
     loadData()
   }
 
+  // 关键词搜索防抖版: 输入停止 300ms 后才触发筛选, 减少无谓请求
+  const handleFilterDebounced = debounce(handleFilter, 300)
+
   function handlePageChange(page) {
     currentPage.value = page
   }
@@ -59,6 +73,30 @@ export default function useQuestionBank() {
     return store.list.slice(start, start + pageSize.value)
   })
 
+  // 删除题目: 二次确认 → 调 DELETE 接口 → 刷新列表
+  // 注意: ElMessageBox.confirm 取消时会 reject('cancel'), 用 catch 静默吞掉
+  async function handleDelete(question) {
+    try {
+      await ElMessageBox.confirm(
+        `确认删除题目 #${question.id}「${question.title.slice(0, 20)}…」？此操作不可恢复。`,
+        '删除确认',
+        { type: 'warning', confirmButtonText: '删除', cancelButtonText: '取消' }
+      )
+    } catch {
+      return  // 用户取消
+    }
+    try {
+      await removeQuestion(question.id)
+      ElMessage.success('题目已删除')
+      // 删除后若当前页变空, 回退到上一页, 避免空白页
+      const lastPage = Math.max(1, Math.ceil((store.list.length - 1) / pageSize.value))
+      if (currentPage.value > lastPage) currentPage.value = lastPage
+      await loadData()
+    } catch {
+      // request.js 拦截器已弹 ElMessage.error, 这里不重复
+    }
+  }
+
   return {
     store,
     categories,
@@ -70,9 +108,11 @@ export default function useQuestionBank() {
     difficultyColor,
     loadData,
     handleFilter,
+    handleFilterDebounced,
     handlePageChange,
     goToQuiz,
     startQuiz,
+    handleDelete,
     displayList,
   }
 }

@@ -3,13 +3,38 @@ const RECORDS_FILE = 'records.json'
 const QUESTIONS_FILE = 'questions.json'
 const MARKS_FILE = 'marks.json'
 
+// 查找该题最近一次有效（已作答）记录
+function findLastValid(questionId, userId, records) {
+  for (let i = records.length - 1; i >= 0; i--) {
+    const r = records[i]
+    if (r.userId !== userId) continue
+    const d = (r.details || []).find(d => d.questionId === questionId && d.isCorrect !== null)
+    if (d) return d
+  }
+  return null
+}
+
+// 计算每道题的连续正确次数（答错归零，答对+1，未作答保持上次值）
+function calcConsecutive(questionId, userId, isCorrect, records) {
+  if (isCorrect === false) return 0
+  const last = findLastValid(questionId, userId, records)
+  if (isCorrect === null) return last ? (last.consecutiveCorrect || 0) : 0
+  return last ? (last.consecutiveCorrect || 0) + 1 : 1
+}
+
 function submit(req, res) {
-  const { score, correct, total, timeUsed, details, category } = req.body
+  const { score, correct, total, timeUsed, details, category, source } = req.body
   const answered = req.body.answered
   const userId = req.user.id
   if (!score && score !== 0) return res.status(400).json({ error: '缺少分数' })
   const records = readJSON(RECORDS_FILE)
-  const record = { id: `rec_${Date.now()}`, userId, score, correct, total, answered, timeUsed, category, details, createdAt: new Date().toISOString() }
+  // 为每道题计算consecutiveCorrect
+  const enrichedDetails = (details || []).map(d => ({
+    ...d,
+    consecutiveCorrect: calcConsecutive(d.questionId, userId, d.isCorrect, records)
+  }))
+  // source='wrong-book' 表示错题本重答，仅更新连续答对进度，不计入答题统计
+  const record = { id: `rec_${Date.now()}`, userId, score, correct, total, answered, timeUsed, category, source: source || 'normal', details: enrichedDetails, createdAt: new Date().toISOString() }
   records.push(record)
   writeJSON(RECORDS_FILE, records)
   res.json({ message: '记录已保存', record })
@@ -21,7 +46,9 @@ function getRecords(req, res) {
 }
 
 function getStats(req, res) {
-  const userRecords = readJSON(RECORDS_FILE).filter(r => r.userId === req.user.id)
+  const allUserRecords = readJSON(RECORDS_FILE).filter(r => r.userId === req.user.id)
+  // 错题本重答记录只用于更新连续正确进度，不参与答题统计
+  const userRecords = allUserRecords.filter(r => r.source !== 'wrong-book')
   const empty = { totalQuizzes: 0, avgScore: 0, totalQuestions: 0, totalCorrect: 0, dailyTrend: [], categoryStats: [], weakTopics: [] }
   if (!userRecords.length) return res.json(empty)
   const totalQuizzes = userRecords.length
@@ -50,12 +77,29 @@ function getWrong(req, res) {
   const userId = req.user.id
   const records = readJSON(RECORDS_FILE)
   const qMap = Object.fromEntries(readJSON(QUESTIONS_FILE).map(q => [q.id, q]))
-  const wrongIds = new Set()
+  // 按题目聚合历史：everWrong 标记是否曾经做错过，latest 保留最新一条 detail
+  // 错题本的语义是「做错过的题」，所以必须按整条历史判断，不能只看最新一条
+  const perQ = {}
   records.filter(r => r.userId === userId).forEach(r => {
-    (r.details || []).forEach(d => { if (d.isCorrect === false) wrongIds.add(d.questionId) })
+    (r.details || []).forEach(d => {
+      if (d.isCorrect === null) return // 跳过未作答记录
+      if (!perQ[d.questionId]) perQ[d.questionId] = { everWrong: false, latest: null }
+      if (d.isCorrect === false) perQ[d.questionId].everWrong = true
+      // records 按时间顺序 push，覆盖即可保留最新
+      perQ[d.questionId].latest = d
+    })
   })
-  const wrongList = [...wrongIds].map(id => { const q = qMap[id]; return q ? { id: q.id, title: q.title, options: q.options, answer: q.answer, analysis: q.analysis, category: q.category, difficulty: q.difficulty } : null }).filter(Boolean)
-  res.json({ total: wrongList.length, list: wrongList })
+  // 错题本：曾经做错过 且 最新一次的连续正确次数<3
+  const wrongList = Object.entries(perQ)
+    .filter(([, v]) => v.everWrong && (v.latest.consecutiveCorrect || 0) < 3)
+    .map(([questionId, v]) => {
+      const q = qMap[questionId]
+      return q ? { id: q.id, title: q.title, options: q.options, answer: q.answer, analysis: q.analysis, category: q.category, difficulty: q.difficulty, userAnswer: v.latest.userAnswer, consecutiveCorrect: v.latest.consecutiveCorrect || 0 } : null
+    }).filter(Boolean)
+  // 已掌握（自动移除）的题数：曾经做错过 且 已连续答对≥3次
+  const masteredCount = Object.values(perQ)
+    .filter(v => v.everWrong && (v.latest.consecutiveCorrect || 0) >= 3).length
+  res.json({ total: wrongList.length, list: wrongList, masteredCount })
 }
 
 function toggleMark(req, res) {

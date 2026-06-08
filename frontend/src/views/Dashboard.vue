@@ -1,59 +1,78 @@
 <script setup>
-import { onMounted, onUnmounted, computed } from 'vue'
+import { onMounted, onUnmounted, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { ElMessage } from 'element-plus'
 import * as echarts from 'echarts'
 import { useUserStore } from '../stores/user'
 import { useRecordStore } from '../stores/record'
+import { useDarkMode } from '../composables/useDarkMode'
 
 const router = useRouter()
 const userStore = useUserStore()
 const recordStore = useRecordStore()
+const { isDark } = useDarkMode()
 const { stats } = recordStore
 
 const correctRate = computed(() =>
   stats.totalQuestions ? Math.round((stats.totalCorrect / stats.totalQuestions) * 100) : 0
 )
 
+// 暗黑模式下的ECharts配色
+const darkColors = computed(() => ({
+  text: isDark.value ? '#cfd3dc' : '#333',
+  subText: isDark.value ? '#a3a6ad' : '#aaa',
+  axisLine: isDark.value ? '#4c4d4f' : '#ccc',
+  splitLine: isDark.value ? '#333' : '#eee',
+  areaOpacity: isDark.value ? 0.08 : 0.15,
+}))
+
 let lineChart = null, barChart = null, pieChart = null
 
+// 每日正确率折线图
+function initLineChart() {
+  const el = document.getElementById('line-chart')
+  if (!el) return
+  lineChart = echarts.init(el)
+  lineChart.setOption({
+    title: { text: '每日正确率趋势', left: 'center', textStyle: { fontSize: 14, color: darkColors.value.text } },
+    tooltip: { trigger: 'axis', formatter: '{b}: {c}%' },
+    xAxis: { type: 'category', data: stats.dailyTrend.map(d => d.date.slice(5)), axisLine: { lineStyle: { color: darkColors.value.axisLine } }, axisLabel: { color: darkColors.value.subText } },
+    yAxis: { type: 'value', max: 100, axisLabel: { formatter: '{value}%', color: darkColors.value.subText }, splitLine: { lineStyle: { color: darkColors.value.splitLine } } },
+    series: [{ type: 'line', data: stats.dailyTrend.map(d => d.rate), smooth: true, areaStyle: { opacity: darkColors.value.areaOpacity }, itemStyle: { color: '#409eff' } }],
+    grid: { left: 40, right: 20, top: 40, bottom: 20 }
+  })
+}
+
+// 分类正确率柱状图
+function initBarChart() {
+  const el = document.getElementById('bar-chart')
+  if (!el) return
+  barChart = echarts.init(el)
+  barChart.setOption({
+    title: { text: '分类正确率', left: 'center', textStyle: { fontSize: 14, color: darkColors.value.text } },
+    tooltip: { trigger: 'axis', formatter: '{b}: {c}%' },
+    xAxis: { type: 'category', data: stats.categoryStats.map(c => c.category), axisLine: { lineStyle: { color: darkColors.value.axisLine } }, axisLabel: { color: darkColors.value.subText } },
+    yAxis: { type: 'value', max: 100, axisLabel: { formatter: '{value}%', color: darkColors.value.subText }, splitLine: { lineStyle: { color: darkColors.value.splitLine } } },
+    series: [{ type: 'bar', data: stats.categoryStats.map(c => c.rate), itemStyle: { color: '#67c23a' }, barWidth: '40%' }],
+    grid: { left: 40, right: 20, top: 40, bottom: 20 }
+  })
+}
+
+// 薄弱知识点饼图
+function initPieChart() {
+  const el = document.getElementById('pie-chart')
+  if (!el) return
+  pieChart = echarts.init(el)
+  pieChart.setOption({
+    title: { text: '薄弱知识点', left: 'center', textStyle: { fontSize: 14, color: darkColors.value.text } },
+    tooltip: { trigger: 'item', formatter: '{b}: {c}题 ({d}%)' },
+    series: [{ type: 'pie', radius: ['35%', '65%'], data: stats.weakTopics.map(w => ({ name: w.topic, value: w.wrongCount })), label: { color: darkColors.value.subText, formatter: '{b}\n{d}%' } }],
+    color: ['#f56c6c', '#e6a23c', '#409eff', '#67c23a', '#909399']
+  })
+}
+
 function initCharts() {
-  // 每日正确率折线图
-  const lineEl = document.getElementById('line-chart')
-  if (lineEl) {
-    lineChart = echarts.init(lineEl)
-    lineChart.setOption({
-      title: { text: '每日正确率趋势', left: 'center', textStyle: { fontSize: 14 } },
-      tooltip: { trigger: 'axis', formatter: '{b}: {c}%' },
-      xAxis: { type: 'category', data: stats.dailyTrend.map(d => d.date.slice(5)) },
-      yAxis: { type: 'value', max: 100, axisLabel: { formatter: '{value}%' } },
-      series: [{ type: 'line', data: stats.dailyTrend.map(d => d.rate), smooth: true, areaStyle: { opacity: 0.15 }, itemStyle: { color: '#409eff' } }],
-      grid: { left: 40, right: 20, top: 40, bottom: 20 }
-    })
-  }
-  // 分类正确率柱状图
-  const barEl = document.getElementById('bar-chart')
-  if (barEl) {
-    barChart = echarts.init(barEl)
-    barChart.setOption({
-      title: { text: '分类正确率', left: 'center', textStyle: { fontSize: 14 } },
-      tooltip: { trigger: 'axis', formatter: '{b}: {c}%' },
-      xAxis: { type: 'category', data: stats.categoryStats.map(c => c.category) },
-      yAxis: { type: 'value', max: 100, axisLabel: { formatter: '{value}%' } },
-      series: [{ type: 'bar', data: stats.categoryStats.map(c => c.rate), itemStyle: { color: '#67c23a' }, barWidth: '40%' }],
-      grid: { left: 40, right: 20, top: 40, bottom: 20 }
-    })
-  }
-  // 薄弱知识点饼图
-  const pieEl = document.getElementById('pie-chart')
-  if (pieEl) {
-    pieChart = echarts.init(pieEl)
-    pieChart.setOption({
-      title: { text: '薄弱知识点', left: 'center', textStyle: { fontSize: 14 } },
-      tooltip: { trigger: 'item', formatter: '{b}: {c}题 ({d}%)' },
-      series: [{ type: 'pie', radius: ['35%', '65%'], data: stats.weakTopics.map(w => ({ name: w.topic, value: w.wrongCount })), label: { formatter: '{b}\n{d}%' } }],
-      color: ['#f56c6c', '#e6a23c', '#409eff', '#67c23a', '#909399']
-    })
-  }
+  initLineChart(); initBarChart(); initPieChart()
 }
 
 function handleResize() {
@@ -69,10 +88,22 @@ onUnmounted(() => {
   window.removeEventListener('resize', handleResize)
   lineChart?.dispose(); barChart?.dispose(); pieChart?.dispose()
 })
+
+// 暗黑模式切换时: 先销毁旧实例再重建, 防止 ECharts 实例叠加导致的内存泄漏
+watch(isDark, () => {
+  lineChart?.dispose(); barChart?.dispose(); pieChart?.dispose()
+  lineChart = null; barChart = null; pieChart = null
+  initCharts()
+})
+
+// 统计数据加载失败时给出提示, 避免页面静默空白
+watch(() => recordStore.error, (val) => {
+  if (val) ElMessage.error('统计数据加载失败，请刷新重试')
+})
 </script>
 
 <template>
-  <div class="dashboard">
+  <div class="dashboard" v-loading="recordStore.loading">
     <h2>欢迎，{{ userStore.userInfo?.username || '用户' }}！</h2>
     <!-- 数据卡片 -->
     <el-row :gutter="16" class="stat-cards">

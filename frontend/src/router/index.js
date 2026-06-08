@@ -3,8 +3,8 @@ import Login from '../views/Login.vue'
 import Dashboard from '../views/Dashboard.vue'
 import QuestionBank from '../views/QuestionBank.vue'
 import Quiz from '../views/Quiz.vue'
-import Stats from '../views/Stats.vue'
 import WrongBook from '../views/WrongBook.vue'
+import AiChat from '../views/AiChat.vue'
 import NotFound from '../views/NotFound.vue'
 
 const routes = [
@@ -30,14 +30,14 @@ const routes = [
     component: Quiz,
   },
   {
-    path: '/stats',
-    name: 'Stats',
-    component: Stats,
-  },
-  {
     path: '/wrong-book',
     name: 'WrongBook',
     component: WrongBook,
+  },
+  {
+    path: '/ai-chat',
+    name: 'AiChat',
+    component: AiChat,
   },
   {
     path: '/:pathMatch(.*)*',

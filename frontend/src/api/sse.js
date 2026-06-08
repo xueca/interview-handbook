@@ -1,7 +1,18 @@
-/**
- * SSE 流式请求封装
- * 只负责 HTTP 连接，不处理业务状态
- */
+// SSE 流式请求封装 | 数据流: createSSE → fetch → ReadableStream → onMessage/onError
+
+function processBuffer(buffer, onMessage) {
+  const lines = buffer.split('\n\n')
+  const remaining = lines.pop() || ''
+  lines.forEach(line => {
+    if (line.startsWith('data: ')) {
+      try {
+        const data = JSON.parse(line.slice(6))
+        onMessage(data)
+      } catch { /* ignore parse error */ }
+    }
+  })
+  return remaining
+}
 
 export function createSSE(url, body, onMessage, onError) {
   const controller = new AbortController()
@@ -24,21 +35,12 @@ export function createSSE(url, body, onMessage, onError) {
       reader.read().then(({ done, value }) => {
         if (done) return
         buffer += decoder.decode(value, { stream: true })
-        const lines = buffer.split('\n\n')
-        buffer = lines.pop() || ''
-        lines.forEach(line => {
-          if (line.startsWith('data: ')) {
-            try {
-              const data = JSON.parse(line.slice(6))
-              onMessage(data)
-            } catch (e) { /* ignore parse error */ }
-          }
-        })
+        buffer = processBuffer(buffer, onMessage)
         read()
-      }).catch(onError)
+      }).catch(e => { if (e.name !== 'AbortError') onError(e) })
     }
     read()
-  }).catch(onError)
+  }).catch(e => { if (e.name !== 'AbortError') onError(e) })
 
-  return { close: () => controller.abort() }
+  return () => controller.abort()
 }

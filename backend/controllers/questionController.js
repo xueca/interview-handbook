@@ -1,6 +1,7 @@
 const { readJSON } = require('../data')
 
 const QUESTIONS_FILE = 'questions.json'
+const MARKS_FILE = 'marks.json'  // 删题时级联清理
 
 /**
  * 自动拆分 title 中的行内代码
@@ -63,4 +64,50 @@ function getDetail(req, res) {
   res.json({ ...question, title, ...(code ? { code } : {}) })
 }
 
-module.exports = { getList, getDetail }
+function createQuestion(req, res) {
+  const { title, options, answer, analysis, category, difficulty } = req.body
+  if (!title || !Array.isArray(options) || typeof answer !== 'number') {
+    return res.status(400).json({ error: '缺少必要字段' })
+  }
+  const questions = readJSON(QUESTIONS_FILE)
+  const maxId = questions.reduce((max, q) => Math.max(max, q.id || 0), 0)
+  const newQuestion = {
+    id: maxId + 1,
+    title,
+    options,
+    answer,
+    analysis: analysis || '',
+    category: category || '其他',
+    difficulty: difficulty || 'medium',
+    type: 'single'
+  }
+  questions.push(newQuestion)
+  const { writeJSON } = require('../data')
+  writeJSON(QUESTIONS_FILE, questions)
+  res.status(201).json(newQuestion)
+}
+
+/**
+ * 删除题目（物理删除）+ 级联清理 marks
+ * @sideEffect 写入 questions.json 和 marks.json
+ * 注意：不动 records.json，错题本读取已做容错（recordController.getWrong 过滤 null）
+ */
+function removeQuestion(req, res) {
+  const id = parseInt(req.params.id)
+  if (isNaN(id)) return res.status(400).json({ error: '题目ID无效' })
+
+  const questions = readJSON(QUESTIONS_FILE)
+  const idx = questions.findIndex(q => q.id === id)
+  if (idx === -1) return res.status(404).json({ error: '题目不存在' })
+
+  const { writeJSON } = require('../data')
+  questions.splice(idx, 1)
+  writeJSON(QUESTIONS_FILE, questions)
+  // 级联：把所有指向该题的标记删掉，避免孤儿记录
+  const marks = readJSON(MARKS_FILE).filter(m => m.questionId !== id)
+  writeJSON(MARKS_FILE, marks)
+
+  res.json({ message: '题目已删除', id })
+}
+
+module.exports = { getList, getDetail, createQuestion, removeQuestion }

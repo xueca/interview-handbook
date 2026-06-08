@@ -1,3 +1,4 @@
+// 错题本业务: 状态=wrongList/loading/expandedId/markedIds/filter 方法=loadWrong/handleToggleMark/toggleExpand | 数据流: getWrong+getMarks → wrongList+markedIds → 筛选展示
 import { ref, computed } from 'vue'
 import { getWrong, getMarks, toggleMark } from '../api/records'
 import { ElMessage } from 'element-plus'
@@ -10,6 +11,8 @@ export default function useWrongBook() {
   const wrongList = ref([])
   const loading = ref(false)
   const expandedId = ref(null)
+  // 已掌握被移除的错题数（连续答对3次）
+  const masteredCount = ref(0)
 
   // 用户标记的题目ID集合
   const markedIds = ref(new Set())
@@ -47,6 +50,7 @@ export default function useWrongBook() {
     try {
       const [wrongRes, marksRes] = await Promise.all([getWrong(), getMarks()])
       wrongList.value = wrongRes.list || []
+      masteredCount.value = wrongRes.masteredCount || 0
       markedIds.value = new Set(marksRes.list || [])
     } finally {
       loading.value = false
@@ -62,7 +66,7 @@ export default function useWrongBook() {
       } else {
         markedIds.value.delete(questionId)
       }
-    } catch (e) {
+    } catch {
       ElMessage.error('标记失败')
     }
   }
@@ -94,7 +98,7 @@ export default function useWrongBook() {
   }
 
   return {
-    wrongList, loading, expandedId, markedIds,
+    wrongList, loading, expandedId, markedIds, masteredCount,
     filter, selectedIds, categories, filteredList,
     diffMap, diffColor,
     loadWrong, handleToggleMark, toggleExpand, toggleSelect, selectAll, clearFilter

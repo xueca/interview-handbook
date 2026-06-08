@@ -67,23 +67,39 @@ async function chat(req, res) {
 
 const MAX_OUTPUT_CHARS = 16000
 
+function parseEvents(buffer) {
+  const events = buffer.split('\n\n')
+  const remaining = events.pop() || ''
+  let content = ''
+  for (const event of events) {
+    const c = parseStreamChunk(event)
+    if (c) content += c
+  }
+  return { content: content || null, remaining }
+}
+
 function handleStreamResponse(apiRes, res) {
   let buffer = ''
   let accumulated = 0
+  let hasStarted = false
   apiRes.on('data', chunk => {
+    if (!hasStarted) {
+      hasStarted = true
+      res.write(`data: ${JSON.stringify({ type: 'status', status: 'thinking' })}\n\n`)
+    }
     buffer += chunk.toString()
-    const content = parseStreamChunk(buffer)
-    if (content) {
-      accumulated += content.length
+    const result = parseEvents(buffer)
+    if (result.content) {
+      accumulated += result.content.length
       if (accumulated > MAX_OUTPUT_CHARS) {
         apiRes.destroy()
         res.write(`data: ${JSON.stringify({ type: 'status', status: 'truncated' })}\n\n`)
         res.end()
         return
       }
-      res.write(`data: ${JSON.stringify({ type: 'content', content })}\n\n`)
-      buffer = ''
+      res.write(`data: ${JSON.stringify({ type: 'content', content: result.content })}\n\n`)
     }
+    buffer = result.remaining
   })
   apiRes.on('end', () => {
     res.write(`data: ${JSON.stringify({ type: 'status', status: 'done' })}\n\n`)

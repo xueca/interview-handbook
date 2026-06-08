@@ -1,7 +1,24 @@
+// user store: token/userInfo/login()/register()/logout()
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import { ElMessage } from 'element-plus'
 import { login as loginApi, register as registerApi } from '../api/auth'
+
+// 登录
+async function loginUser(saveUser, username, password) {
+  const res = await loginApi(username, password)
+  saveUser(res.token, res.user)
+  ElMessage.success('登录成功')
+  return res
+}
+
+// 注册
+async function registerUser(saveUser, username, password) {
+  const res = await registerApi(username, password)
+  saveUser(res.token, res.user)
+  ElMessage.success('注册成功')
+  return res
+}
 
 export const useUserStore = defineStore('user', () => {
   const token = ref(localStorage.getItem('token') || '')
@@ -14,20 +31,6 @@ export const useUserStore = defineStore('user', () => {
     localStorage.setItem('userInfo', JSON.stringify(user))
   }
 
-  async function login(username, password) {
-    const res = await loginApi(username, password)
-    saveUser(res.token, res.user)
-    ElMessage.success('登录成功')
-    return res
-  }
-
-  async function register(username, password) {
-    const res = await registerApi(username, password)
-    saveUser(res.token, res.user)
-    ElMessage.success('注册成功')
-    return res
-  }
-
   function logout() {
     token.value = ''
     userInfo.value = null
@@ -35,5 +38,11 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('userInfo')
   }
 
-  return { token, userInfo, login, register, logout }
+  return {
+    token, userInfo,
+    saveUser,
+    login: (u, p) => loginUser(saveUser, u, p).catch(e => { ElMessage.error(e.response?.data?.error || '登录失败'); throw e }),
+    register: (u, p) => registerUser(saveUser, u, p).catch(e => { ElMessage.error(e.response?.data?.error || '注册失败'); throw e }),
+    logout
+  }
 })

@@ -37,10 +37,10 @@ export default [
     rules: { 'max-lines': ['error', { max: 50 }] }
   },
 
-  // Composable文件不超过150行
+  // Composable文件不超过150行，工厂函数豁免30行限制（内部为多个小函数聚合）
   {
     files: ['src/composables/**/*.js'],
-    rules: { 'max-lines': ['error', { max: 150 }] }
+    rules: { 'max-lines': ['error', { max: 150 }], 'max-lines-per-function': 'off' }
   },
 
   // 视图层约束

@@ -1,5 +1,5 @@
 import { ref, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { getList, getDetail } from '../api/questions'
 import { submitRecord } from '../api/records'
 import { calcScore, calcTimeUsed } from '../utils/stats'
@@ -7,12 +7,13 @@ import { ElMessageBox, ElMessage } from 'element-plus'
 
 export default function useQuiz(initialSeconds = 180) {
   const route = useRoute()
-  const router = useRouter()
   const questions = ref([])
   const currentIndex = ref(0)
   const userAnswers = ref({})
   const submitted = ref(false)
   const result = ref(null)
+  // 提交后由后端返回的连续答对次数（questionId → consecutiveCorrect）
+  const ccMap = ref({})
 
   const currentQuestion = computed(() => questions.value[currentIndex.value])
   const answeredCount = computed(() => Object.keys(userAnswers.value).length)
@@ -65,7 +66,15 @@ export default function useQuiz(initialSeconds = 180) {
     submitted.value = true
     try {
       const category = route.query.category || questions.value[0]?.category || '未分类'
-      await submitRecord({ score, correct, total, answered, timeUsed, details, category })
+      // 错题本重答标记来源，避免被统计进总答题数
+      const source = route.query.from === 'wrong-book' ? 'wrong-book' : 'normal'
+      const res = await submitRecord({ score, correct, total, answered, timeUsed, details, category, source })
+      // 解析后端返回的连续答对次数，供结果页展示每题进度
+      if (res?.record?.details) {
+        const map = {}
+        res.record.details.forEach(d => { map[d.questionId] = d.consecutiveCorrect || 0 })
+        ccMap.value = map
+      }
       ElMessage.success('答题记录已保存')
     } catch (e) {
       console.error('保存记录失败:', e)
@@ -108,7 +117,7 @@ export default function useQuiz(initialSeconds = 180) {
   }
 
   return {
-    questions, currentIndex, userAnswers, submitted, result,
+    questions, currentIndex, userAnswers, submitted, result, ccMap,
     currentQuestion, answeredCount,
     isSelected, isAnswered,
     handleSelect, prevQuestion, nextQuestion, jumpTo,

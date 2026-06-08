@@ -31,3 +31,8 @@ backend.err.log
 
 # 系统残留文件
 kDownload*
+
+.claude/
+
+*.md 
+!README.md
