@@ -34,5 +34,15 @@ kDownload*
 
 .claude/
 
+# ML模型文件（太大不适合git）
+backend/models/
+
 *.md 
 !README.md
+resume-xueca/
+resume/
+scrapers/
+resume-revision/
+shushu-internship-tool-main/
+
+.log

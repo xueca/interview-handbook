@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>薛× — 前端开发 / 全栈 / AI+前端 简历</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#f5f5f5;color:#333;line-height:1.6}
+.container{max-width:800px;margin:20px auto;background:#fff;padding:40px;box-shadow:0 2px 12px rgba(0,0,0,.1)}
+h1{font-size:24px;margin-bottom:4px}
+.subtitle{color:#666;font-size:14px;margin-bottom:16px}
+.section{margin-bottom:24px}
+.section h2{font-size:16px;border-bottom:2px solid #409eff;padding-bottom:4px;margin-bottom:12px}
+.info-row{display:flex;gap:20px;flex-wrap:wrap;font-size:14px;color:#555;margin-bottom:8px}
+.info-row span{white-space:nowrap}
+.tag-group{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px}
+.tag-group .label{font-weight:700;font-size:13px;color:#409eff;min-width:80px}
+.tag{background:#ecf5ff;color:#409eff;padding:2px 8px;border-radius:3px;font-size:12px}
+.project-item{margin-bottom:16px}
+.project-item h3{font-size:15px;margin-bottom:2px}
+.project-item .meta{font-size:12px;color:#999;margin-bottom:6px}
+.project-item ul{padding-left:18px;font-size:13px}
+.project-item li{margin-bottom:4px}
+.doc-line{font-size:13px;color:#555;margin-top:8px;padding:8px;background:#f9fafb;border-radius:4px}
+.doc-line a{color:#409eff;text-decoration:none}
+.doc-line a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="container">
+
+<h1>薛 ×</h1>
+<div class="subtitle">意向岗位：前端开发 / 全栈开发 / AI+前端 &nbsp;|&nbsp; 期望城市：福建 · 杭州 · 广州 · 深圳 · 武汉</div>
+<div class="info-row">
+  <span>📧 xueca@example.com</span>
+  <span>📱 138-xxxx-xxxx</span>
+  <span>🌐 github.com/xueca</span>
+</div>
+
+<!-- 教育背景 -->
+<div class="section">
+  <h2>教育背景</h2>
+  <div style="font-size:14px">
+    <strong>闽南科技学院</strong> &nbsp; 网络工程 · 本科 &nbsp; 2023 — 2027
+  </div>
+  <div style="font-size:13px;color:#666;margin-top:2px">主修课程：Web前端开发、数据库原理、计算机网络、操作系统</div>
+</div>
+
+<!-- 技术能力 -->
+<div class="section">
+  <h2>技术能力</h2>
+  <div class="tag-group">
+    <span class="label">前端基础</span>
+    <span class="tag">JavaScript</span><span class="tag">CSS3</span><span class="tag">HTML5</span><span class="tag">Ajax / Axios</span>
+  </div>
+  <div class="tag-group">
+    <span class="label">框架 & 可视化</span>
+    <span class="tag">Vue3</span><span class="tag">Vite</span><span class="tag">Element Plus</span><span class="tag">Pinia</span><span class="tag">Vue Router</span><span class="tag">ECharts</span>
+  </div>
+  <div class="tag-group">
+    <span class="label">后端 & 工程化</span>
+    <span class="tag">Node.js</span><span class="tag">Express5</span><span class="tag">REST API</span><span class="tag">JWT 认证</span><span class="tag">Git</span><span class="tag">ESLint</span>
+  </div>
+  <div class="tag-group">
+    <span class="label">AI 工具链</span>
+    <span class="tag">DeepSeek API</span><span class="tag">SSE 流式</span><span class="tag">Prompt Engineering</span><span class="tag">Spec Coding</span>
+  </div>
+</div>
+
+<!-- 项目经历 -->
+<div class="section">
+  <h2>项目经历</h2>
+  <div class="project-item">
+    <h3>面试宝典 — AI 面试刷题助手</h3>
+    <div class="meta">2026.05 — 至今 &nbsp;|&nbsp; 独立全栈开发 &nbsp;|&nbsp; GitHub：<a href="https://github.com/xueca/interview-handbook" target="_blank">xueca/interview-handbook</a></div>
+    <div class="meta">线上地址：xxx.com（即将上线）</div>
+    <div class="meta" style="margin-bottom:6px">技术栈：Vue3(Composition API) + Express5 + DeepSeek API + ECharts + SSE 流式输出</div>
+    <ul>
+      <li>独立完成全栈 AI 应用：17 个 REST API + 9 个路由页面，覆盖 JWT 认证、题库管理、在线答题（支持单选/多选/判断三种题型）、错题本、学习统计大屏，实现功能闭环</li>
+      <li>接入 DeepSeek API 实现流式 AI 出题，采用 SSE 协议逐字推送打字机效果；解决 Vite 代理默认超时导致 SSE 断开、多字节 UTF-8 字符 TCP 分包截断、DeepSeek V4 reasoning_content 与 content 混排等工程问题</li>
+      <li>设计 6 条 AI 编码约束规则（架构分层单向流动 / .vue ≤ 200 行 / 函数 ≤ 30 行 / 反模式 6 禁 / SSE 契约 / 编码纪律），配合 ESLint + pre-commit 实现代码合规率 100%</li>
+      <li>建立 4 个 AI 协作工作流（约束化生成 / 安全重构 / 交叉验证 / 项目知识萃取），用 PROJECT_STATE.md 统一管理 AI 上下文、接口契约和技术债，确保多轮 AI 协作一致性</li>
+    </ul>
+    <div class="doc-line">
+      📝 <strong>技术博客</strong>：<a href="https://juejin.cn" target="_blank">掘金《Spec Coding 实践：用6条规则约束AI代码输出》</a> &nbsp;|&nbsp;
+      📐 <strong>架构设计</strong>：<a href="https://github.com/xueca/interview-handbook" target="_blank">.trae/ AI协作规则体系架构文档（含数据流图）</a> &nbsp;|&nbsp;
+      📋 <strong>开发日志</strong>：<a href="https://github.com/xueca/interview-handbook" target="_blank">完整踩坑记录（SSE代理超时 / V4 reasoning_content / JSON并发写分析）</a>
+    </div>
+  </div>
+</div>
+
+<!-- 证书 -->
+<div class="section">
+  <h2>证书</h2>
+  <div style="font-size:13px">CET-4 · 大学英语四级</div>
+</div>
+
+</div>
+</body>
+</html>
