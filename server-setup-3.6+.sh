@@ -92,12 +92,14 @@ fi
 log_info "JWT_SECRET: ${JWT_SECRET:0:8}... (已隐藏)"
 log_info "DEEPSEEK_API_KEY: ${DEEPSEEK_API_KEY:0:8}... (已隐藏)"
 
-# 启动 PM2（使用 env 注入环境变量）
-pm2 start backend/app.js --name interview-handbook-api \
-  --env NODE_ENV=production \
-  --env PORT=5000 \
-  --env JWT_SECRET="$JWT_SECRET" \
-  --env DEEPSEEK_API_KEY="$DEEPSEEK_API_KEY"
+# 导出环境变量（确保 PM2 子进程能继承）
+export NODE_ENV=production
+export PORT=5000
+export JWT_SECRET="$JWT_SECRET"
+export DEEPSEEK_API_KEY="$DEEPSEEK_API_KEY"
+
+# 启动 PM2
+pm2 start backend/app.js --name interview-handbook-api
 
 sleep 3
 
