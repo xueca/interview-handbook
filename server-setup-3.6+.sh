@@ -2,6 +2,7 @@
 # 文件功能: interview-handbook 从步骤 3.6 开始的自动化脚本 | 数据流: deploy → 启动后端 → 构建前端 → Nginx → 验证
 # 前置条件: 步骤 3.6 之前全部完成（服务器初始化、代码拉取、环境变量、依赖安装）
 # 使用方式: 以 deploy 用户执行: bash server-setup-3.6+.sh
+# 执行后进度: 阶段四完成（Day31），到达步骤 4.3，下一步是 4.4（浏览器验证）
 
 set -e
 
@@ -12,12 +13,21 @@ LOG_DIR="/var/log/pm2"
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
 NC='\033[0m'
 
 log_info() { echo -e "${GREEN}[INFO]${NC} $1"; }
 log_warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
-log_step() { echo -e "\n${GREEN}========================================${NC}"; echo -e "${GREEN}$1${NC}"; echo -e "${GREEN}========================================${NC}"; }
+log_step() {
+    echo -e "\n${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${BLUE}  $1${NC}"
+    echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+}
+log_progress() {
+    echo -e "\n${GREEN}▶ 当前进度: $1${NC}"
+    echo -e "${GREEN}▶ 下一步: $2${NC}\n"
+}
 
 # ==================== 检查当前用户 ====================
 if [ "$(whoami)" != "deploy" ]; then
@@ -27,7 +37,7 @@ if [ "$(whoami)" != "deploy" ]; then
 fi
 
 # ==================== 检查前置条件 ====================
-log_info "检查前置条件..."
+log_step "前置条件检查"
 
 if [ ! -f "$APP_DIR/backend/.env.production.active" ]; then
     log_error "环境变量文件不存在: $APP_DIR/backend/.env.production.active"
@@ -57,6 +67,7 @@ if ! command -v pm2 &> /dev/null; then
 fi
 
 log_info "前置条件检查通过 ✓"
+log_progress "步骤 3.5 完成（前置条件就绪）" "步骤 3.6: 启动 PM2"
 
 # ==================== 步骤 3.6: 启动 PM2 ====================
 log_step "[3.6] 启动 PM2"
@@ -100,6 +111,7 @@ if [ "$PM2_STATUS" != "online" ]; then
 fi
 
 log_info "PM2 启动成功，状态: online ✓"
+log_progress "步骤 3.6 完成（PM2 已启动）" "步骤 3.7: 验证后端"
 
 # ==================== 步骤 3.7: 验证后端 ====================
 log_step "[3.7] 验证后端"
@@ -138,6 +150,8 @@ else
     log_warn "SSE 接口测试未收到预期数据，可能需要配置 API Key"
 fi
 
+log_progress "步骤 3.7 完成（后端验证通过）" "步骤 3.8: PM2 开机自启"
+
 # ==================== 步骤 3.8: PM2 开机自启 ====================
 log_step "[3.8] 设置 PM2 开机自启"
 
@@ -151,6 +165,8 @@ if [ -n "$STARTUP_CMD" ]; then
 else
     log_warn "PM2 开机自启命令获取失败，请手动执行: pm2 startup systemd"
 fi
+
+log_progress "步骤 3.8 完成（PM2 开机自启已设置）" "步骤 4.1: 构建前端"
 
 # ==================== 步骤 4.1: 构建前端 ====================
 log_step "[4.1] 构建前端"
@@ -167,6 +183,8 @@ fi
 log_info "前端构建完成 ✓"
 log_info "构建产物:"
 ls -la "$APP_DIR/frontend/dist/"
+
+log_progress "步骤 4.1 完成（前端已构建）" "步骤 4.2-4.3: 配置 Nginx"
 
 # ==================== 步骤 4.2-4.3: 配置 Nginx ====================
 log_step "[4.2-4.3] 配置 Nginx"
@@ -207,6 +225,7 @@ if ! systemctl is-active --quiet nginx; then
 fi
 
 log_info "Nginx 启动成功 ✓"
+log_progress "步骤 4.3 完成（Nginx 已配置）" "步骤 4.4: 浏览器验证"
 
 # ==================== 最终验证 ====================
 log_step "最终验证"
@@ -232,26 +251,41 @@ fi
 log_step "部署完成！"
 
 echo ""
-log_info "========================================"
-log_info "  interview-handbook 部署成功！"
-log_info "========================================"
+echo -e "${GREEN}========================================${NC}"
+echo -e "${GREEN}  interview-handbook 部署成功！${NC}"
+echo -e "${GREEN}========================================${NC}"
 echo ""
 log_info "公网访问地址: http://$PUBLIC_IP"
 log_info "后端本地地址: http://127.0.0.1:5000"
 echo ""
 log_info "常用命令:"
-echo "  pm2 status                    # 查看进程状态"
-echo "  pm2 logs interview-handbook-api  # 查看应用日志"
+echo "  pm2 status                          # 查看进程状态"
+echo "  pm2 logs interview-handbook-api     # 查看应用日志"
 echo "  pm2 restart interview-handbook-api  # 重启后端"
-echo "  sudo nginx -t                 # 检查 Nginx 配置"
-echo "  sudo systemctl status nginx   # 查看 Nginx 状态"
+echo "  sudo nginx -t                       # 检查 Nginx 配置"
+echo "  sudo systemctl status nginx         # 查看 Nginx 状态"
 echo ""
-log_warn "后续步骤（需手动完成）:"
-log_warn "  1. [阶段五] 配置域名 + HTTPS (如有域名)"
-log_warn "  2. [阶段六] 浏览器全流程测试 + Bug 修复"
-log_warn "  3. [阶段六] 录制 Demo 视频"
-log_warn "  4. [阶段七] 写 README.md + 踩坑记录"
-log_warn "  5. [阶段八] 更新简历"
+echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${YELLOW}  脚本执行后进度说明${NC}"
+echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
-log_info "当前进度: 阶段四完成 (Day31)"
-log_info "下一步: 阶段五 (域名+HTTPS) 或 阶段六 (测试+视频)"
+echo -e "${GREEN}✓ 已完成步骤:${NC}"
+echo "  3.6  启动 PM2"
+echo "  3.7  验证后端"
+echo "  3.8  PM2 开机自启"
+echo "  4.1  构建前端"
+echo "  4.2  配置 Nginx"
+echo "  4.3  启用站点 + 重启 Nginx"
+echo ""
+echo -e "${YELLOW}⏳ 下一步（需手动完成）:${NC}"
+echo "  4.4  浏览器验证 — 在浏览器打开 http://$PUBLIC_IP"
+echo "  4.5  全流程测试 — 注册/登录/答题/AI/SSE"
+echo ""
+echo -e "${YELLOW}📋 后续阶段（可选）:${NC}"
+echo "  阶段五: 配置域名 + HTTPS（如有域名）"
+echo "  阶段六: 线上 Bug 修复 + Demo 视频"
+echo "  阶段七: README + 踩坑记录"
+echo "  阶段八: 更新简历"
+echo ""
+echo -e "${GREEN}当前总体进度: 阶段四完成（Day31）${NC}"
+echo ""
