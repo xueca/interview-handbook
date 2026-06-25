@@ -7,8 +7,8 @@ const {
   store, categories, difficulties,
   filter, currentPage, pageSize,
   difficultyMap, difficultyColor,
-  loadData, handleFilter, handlePageChange,
-  goToQuiz, startQuiz, displayList,
+  loadData, handleFilter, handleFilterDebounced, handlePageChange,
+  goToQuiz, startQuiz, handleDelete, displayList,
 } = useQuestionBank()
 
 onMounted(() => { loadData() })
@@ -57,6 +57,7 @@ onMounted(() => { loadData() })
             placeholder="搜索题目关键词"
             clearable
             :prefix-icon="Search"
+            @input="handleFilterDebounced"
             @keyup.enter="handleFilter"
             @clear="handleFilter"
           />
@@ -85,6 +86,7 @@ onMounted(() => { loadData() })
         :key="q.id"
         class="question-card"
         shadow="hover"
+        @click="goToQuiz(q)"
       >
         <div class="card-header">
           <span class="question-id">#{{ q.id }}</span>
@@ -98,7 +100,7 @@ onMounted(() => { loadData() })
         </div>
         <p class="question-title">{{ q.title }}</p>
         <div class="card-actions">
-          <el-button type="primary" size="small" @click.stop="goToQuiz(q)">查看详情</el-button>
+          <el-button type="danger" size="small" @click.stop="handleDelete(q)">删除</el-button>
         </div>
       </el-card>
 
@@ -115,4 +117,51 @@ onMounted(() => { loadData() })
         @current-change="handlePageChange"
       />
     </div>
-  </div
+  </div>
+</template>
+
+<style scoped>
+.question-bank {
+  max-width: 960px;
+  margin: 0 auto;
+}
+.filter-card {
+  margin-bottom: 16px;
+}
+.question-list {
+  min-height: 400px;
+}
+.question-card {
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.question-card:hover {
+  transform: translateY(-2px);
+}
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.question-id {
+  color: #909399;
+  font-size: 13px;
+}
+.question-title {
+  font-size: 15px;
+  color: #303133;
+  margin: 0 0 8px 0;
+  line-height: 1.6;
+}
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+</style>
