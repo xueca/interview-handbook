@@ -187,8 +187,8 @@ else
     fail "按分类筛选: HTTP $CAT_HTTP"
 fi
 
-# 3.3 搜索
-SEARCH_RESP=$(curl -s -w "\n%{http_code}" -m 10 "${API_URL}/questions?keyword=闭包" \
+# 3.3 搜索（中文需URL编码，避免Nginx 400）
+SEARCH_RESP=$(curl -s -w "\n%{http_code}" -m 10 "${API_URL}/questions?keyword=%E9%97%AD%E5%8C%85" \
     -H "Authorization: Bearer ${TOKEN}" 2>/dev/null || echo -e "\n000")
 SEARCH_HTTP=$(echo "$SEARCH_RESP" | tail -1)
 if [ "$SEARCH_HTTP" = "200" ]; then
