@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { User, Lock } from '@element-plus/icons-vue'
 import { useUserStore } from '../stores/user'
+import { validateUsername, validatePassword } from '../utils/validator'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -23,9 +24,17 @@ async function handleSubmit() {
     ElMessage.warning('请填写用户名和密码')
     return
   }
-  if (isRegister.value && form.value.password !== form.value.confirmPassword) {
-    ElMessage.warning('两次密码不一致')
-    return
+  // 仅注册做格式/强度校验，登录放行以兼容旧账号
+  if (isRegister.value) {
+    const vErr = validateUsername(form.value.username) || validatePassword(form.value.password)
+    if (vErr) {
+      ElMessage.warning(vErr)
+      return
+    }
+    if (form.value.password !== form.value.confirmPassword) {
+      ElMessage.warning('两次密码不一致')
+      return
+    }
   }
 
   loading.value = true
@@ -48,7 +57,10 @@ async function handleSubmit() {
   <div class="login-container">
     <el-card class="login-card">
       <h2>{{ isRegister ? '注册' : '登录' }}</h2>
-      <el-form :model="form" @keyup.enter="handleSubmit">
+      <el-form
+        :model="form"
+        @keyup.enter="handleSubmit"
+      >
         <el-form-item>
           <el-input
             v-model="form.username"
@@ -60,7 +72,7 @@ async function handleSubmit() {
           <el-input
             v-model="form.password"
             type="password"
-            placeholder="密码"
+            :placeholder="isRegister ? '6-32位，需包含字母和数字' : '密码'"
             show-password
             :prefix-icon="Lock"
           />
@@ -83,4 +95,40 @@ async function handleSubmit() {
           >
             {{ isRegister ? '注册' : '登录' }}
           </el-button>
-   
+        </el-form-item>
+      </el-form>
+      <p
+        class="toggle"
+        @click="toggleMode"
+      >
+        {{ isRegister ? '已有账号？去登录' : '没有账号？去注册' }}
+      </p>
+    </el-card>
+  </div>
+</template>
+
+<style scoped>
+.login-container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f0f2f5;
+}
+.login-card {
+  width: 400px;
+}
+.login-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.toggle {
+  text-align: center;
+  color: #409eff;
+  cursor: pointer;
+  font-size: 14px;
+}
+.toggle:hover {
+  color: #79bbff;
+}
+</style>

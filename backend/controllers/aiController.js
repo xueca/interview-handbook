@@ -1,149 +1,48 @@
-const https = require('https')
-const { SYSTEM_PROMPTS } = require('./aiPrompt')
-const { repairJSON, parseStreamChunk } = require('./aiParser')
+// 出题控制器: generate(非流式) / generateStream(SSE流式) | 数据流: routes/ai.js → callDeepSeek → DeepSeek → JSON/SS
+const { callDeepSeek, initSSE, relaySSE } = require('../services/deepseekService')
+const { repairJSON } = require('./aiParser')
+const { GENERATE_SYSTEM, buildGeneratePrompt, buildAvoidHint } = require('./aiPrompt')
 
-const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY || ''
-const DEEPSEEK_MODEL = 'deepseek-chat'
-
-function buildRequestBody(prompt, systemKey, stream) {
-  return JSON.stringify({
-    model: DEEPSEEK_MODEL,
-    messages: [
-      { role: 'system', content: SYSTEM_PROMPTS[systemKey] },
-      { role: 'user', content: prompt }
-    ],
-    stream
-  })
+// 构造出题消息：system prompt + user prompt + 避重提示
+function buildGenerateMessages({ category, difficulty, count }) {
+  const prompt = buildGeneratePrompt({ category, difficulty, count }) + buildAvoidHint()
+  return [
+    { role: 'system', content: GENERATE_SYSTEM },
+    { role: 'user', content: prompt }
+  ]
 }
 
-function callDeepSeek(prompt, systemKey = 'chat', stream = false) {
-  return new Promise((resolve, reject) => {
-    const body = buildRequestBody(prompt, systemKey, stream)
-    let data = ''
-    const req = https.request({
-      hostname: 'api.deepseek.com',
-      port: 443,
-      path: '/chat/completions',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
-        'Content-Length': Buffer.byteLength(body)
-      }
-    }, (res) => {
-      res.on('data', chunk => { data += chunk })
-      res.on('end', () => {
-        try {
-          const json = JSON.parse(data)
-          if (json.error) return reject(new Error(json.error.message))
-          resolve(json.choices[0].message.content)
-        } catch (e) { reject(e) }
-      })
-    })
-    req.on('error', reject)
-    req.write(body)
-    req.end()
-  })
-}
-
-async function generate(req, res) {
-  const { topic } = req.body
-  if (!topic) return res.status(400).json({ error: '缺少主题' })
+// 非流式出题：调用 DeepSeek → 解析/修复 JSON → 返回题目数组
+exports.generate = async (req, res) => {
   try {
-    const result = await callDeepSeek(topic, 'generate', false)
-    const question = repairJSON(result)
-    res.json({ question })
-  } catch (e) { res.status(500).json({ error: e.message }) }
-}
-
-async function chat(req, res) {
-  const { message } = req.body
-  if (!message) return res.status(400).json({ error: '缺少消息' })
-  try {
-    const reply = await callDeepSeek(message, 'chat', false)
-    res.json({ reply })
-  } catch (e) { res.status(500).json({ error: e.message }) }
-}
-
-const MAX_OUTPUT_CHARS = 16000
-
-function parseEvents(buffer) {
-  const events = buffer.split('\n\n')
-  const remaining = events.pop() || ''
-  let content = ''
-  for (const event of events) {
-    const c = parseStreamChunk(event)
-    if (c) content += c
+    const { category = 'vue', difficulty = 'medium', count = 1 } = req.body
+    const response = await callDeepSeek({ messages: buildGenerateMessages({ category, difficulty, count }), stream: false })
+    const content = response.data.choices[0].message.content
+    const questions = repairJSON(content)
+    res.json({ code: 0, message: '生成成功', data: questions })
+  } catch (e) {
+    console.error('[generate] 错误:', e.message)
+    res.status(500).json({ code: -1, message: '生成失败: ' + e.message, data: null })
   }
-  return { content: content || null, remaining }
 }
 
-function handleStreamResponse(apiRes, res) {
-  let buffer = ''
-  let accumulated = 0
-  let hasStarted = false
-  apiRes.on('data', chunk => {
-    if (!hasStarted) {
-      hasStarted = true
-      res.write(`data: ${JSON.stringify({ type: 'status', status: 'thinking' })}\n\n`)
+// 流式出题：SSE 转发 DeepSeek 流式响应，前端逐字渲染
+exports.generateStream = async (req, res) => {
+  try {
+    // 修复：从 req.body 读取参数（前端 POST JSON），而非 req.query
+    const { category = 'vue', difficulty = 'medium', count = 1 } = req.body
+    // 先建立 SSE 通道再调上游：失败时 catch 里的错误事件才带正确的 text/event-stream 头（与 chatStream 对称）
+    initSSE(res)
+    const response = await callDeepSeek({ messages: buildGenerateMessages({ category, difficulty, count }), stream: true })
+    relaySSE(response, res)
+  } catch (error) {
+    console.error('[generateStream] DeepSeek API 错误:', error.message)
+    try {
+      res.write(`data: ${JSON.stringify({ type: 'error', error: error.message })}\n\n`)
+      res.write('data: [DONE]\n\n')
+      res.end()
+    } catch {
+      // 响应可能已关闭
     }
-    buffer += chunk.toString()
-    const result = parseEvents(buffer)
-    if (result.content) {
-      accumulated += result.content.length
-      if (accumulated > MAX_OUTPUT_CHARS) {
-        apiRes.destroy()
-        res.write(`data: ${JSON.stringify({ type: 'status', status: 'truncated' })}\n\n`)
-        res.end()
-        return
-      }
-      res.write(`data: ${JSON.stringify({ type: 'content', content: result.content })}\n\n`)
-    }
-    buffer = result.remaining
-  })
-  apiRes.on('end', () => {
-    res.write(`data: ${JSON.stringify({ type: 'status', status: 'done' })}\n\n`)
-    res.end()
-  })
+  }
 }
-
-function streamDeepSeek(prompt, systemKey, res) {
-  const body = buildRequestBody(prompt, systemKey, true)
-  const req = https.request({
-    hostname: 'api.deepseek.com',
-    port: 443,
-    path: '/chat/completions',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
-      'Content-Length': Buffer.byteLength(body)
-    }
-  }, (apiRes) => handleStreamResponse(apiRes, res))
-  req.on('error', (e) => {
-    res.write(`data: ${JSON.stringify({ type: 'error', error: e.message })}\n\n`)
-    res.end()
-  })
-  req.write(body)
-  req.end()
-}
-
-function generateStream(req, res) {
-  const { topic } = req.body
-  if (!topic) return res.status(400).json({ error: '缺少主题' })
-  res.setHeader('Content-Type', 'text/event-stream')
-  res.setHeader('Cache-Control', 'no-cache')
-  res.setHeader('Connection', 'keep-alive')
-  streamDeepSeek(topic, 'generate', res)
-}
-
-function chatStream(req, res) {
-  const { message } = req.body
-  if (!message) return res.status(400).json({ error: '缺少消息' })
-  res.setHeader('Content-Type', 'text/event-stream')
-  res.setHeader('Cache-Control', 'no-cache')
-  res.setHeader('Connection', 'keep-alive')
-  streamDeepSeek(message, 'chat', res)
-}
-
-module.exports = { generate, chat, generateStream, chatStream }
