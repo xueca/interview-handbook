@@ -17,8 +17,8 @@ function callDeepSeek({ messages, stream = false, timeout }) {
     { model: 'deepseek-v4-flash', messages, stream, temperature: 0.7, max_tokens: 2048 },
     {
       headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      // 非流式/流式默认 30s（非流式需要等完整响应，DeepSeek 可能超过 10s）
-      timeout: timeout || (stream ? 30000 : 30000),
+      // 非流式 60s（等完整响应 DeepSeek 可能超过 30s），流式 30s（逐 token 返回较快）
+      timeout: timeout || (stream ? 30000 : 60000),
       responseType: stream ? 'stream' : 'json'
     }
   )
