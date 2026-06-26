@@ -148,6 +148,28 @@ html.dark .ai-question-card .opt-label:not(.correct) {
   color: #9ca3af;
 }
 
+/* Profile 个人中心页 */
+html.dark .info-id,
+html.dark .info-label {
+  color: var(--dark-text-secondary);
+}
+
+/* QuestionDetail 页 */
+html.dark .q-title { color: var(--dark-text-primary); }
+html.dark .q-code { background: var(--dark-bg-secondary); color: var(--dark-text-primary); }
+html.dark .q-option { border-color: var(--dark-border); background: var(--dark-bg-secondary); }
+html.dark .q-option:hover { border-color: #409eff; background: var(--dark-bg-hover); }
+html.dark .q-option.selected { background: #2563eb; border-color: #2563eb; }
+html.dark .q-option.selected .opt-label { background: rgba(255,255,255,0.15); color: #fff; }
+html.dark .opt-label { background: #374151; color: #9ca3af; }
+html.dark .opt-text { color: var(--dark-text-regular); }
+html.dark .q-analysis { background: var(--dark-bg-secondary); color: var(--dark-text-regular); }
+
+/* Quiz 页补充 */
+html.dark .result-score { color: #93c5fd; }
+html.dark .result-pct { color: var(--dark-text-secondary); }
+html.dark .keyboard-hint { color: var(--dark-text-secondary); }
+
 /* 通用文字色覆盖 */
 html.dark .progress,
 html.dark .question-title,
@@ -156,6 +178,9 @@ html.dark .quick-start-content h3,
 html.dark .weak-list-card h4,
 html.dark .weak-topic,
 html.dark .page-header h2,
+html.dark .page-title,
+html.dark .info-username,
+html.dark .info-value,
 html.dark .detail-analysis,
 html.dark .detail-user-answer,
 html.dark .analysis-text {

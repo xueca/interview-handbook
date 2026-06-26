@@ -23,9 +23,9 @@
 
 /* ========== 暗黑模式变量 ========== */
 html.dark {
-  --chat-user-bg: rgba(64, 158, 255, 0.15);
+  --chat-user-bg: rgba(64, 158, 255, 0.25);
   --chat-user-text: #e5eaf3;
-  --chat-assistant-bg: #1d1d1d;
+  --chat-assistant-bg: #2b2b2d;
   --chat-assistant-text: #e5eaf3;
   --chat-role-text: #a3a6ad;
   --chat-code-bg: #262626;
@@ -69,9 +69,19 @@ html.dark {
 .message-content code { font-family: 'Courier New', monospace; font-size: 13px; background: var(--chat-inline-code-bg); padding: 2px 6px; border-radius: 4px; }
 .message-content pre code { background: none; padding: 0; border-radius: 0; }
 .message-content strong { font-weight: 600; }
+/* 标题：紧凑边距，避免浏览器默认大间距撑开气泡 */
+.message-content h1, .message-content h2, .message-content h3,
+.message-content h4, .message-content h5, .message-content h6 { margin: 10px 0 6px; font-weight: 600; line-height: 1.4; color: var(--chat-title-text); }
+.message-content h1 { font-size: 18px; }
+.message-content h2 { font-size: 16px; }
+.message-content h3, .message-content h4, .message-content h5, .message-content h6 { font-size: 15px; }
+/* 水平分隔线 */
+.message-content hr { border: none; border-top: 1px solid var(--chat-code-border); margin: 12px 0; }
 .input-row { display: flex; gap: 12px; }
-.thinking-indicator { display: flex; align-items: center; gap: 8px; color: var(--chat-thinking-text); font-size: 14px; }
-.thinking-icon { animation: pulse 1.5s infinite; }
+.thinking-indicator { display: flex; align-items: flex-start; gap: 8px; color: var(--chat-thinking-text); font-size: 14px; }
+/* 模型推理文字：逐字打字渲染，过长时气泡内滚动，不撑爆消息区 */
+.thinking-text { white-space: pre-wrap; line-height: 1.6; max-height: 160px; overflow-y: auto; flex: 1; }
+.thinking-icon { animation: pulse 1.5s infinite; line-height: 1.6; }
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 .cursor-blink { animation: blink 1s infinite; color: #409eff; }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }

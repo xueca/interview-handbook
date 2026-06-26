@@ -1,6 +1,8 @@
 <script setup>
 defineProps({
-  question: { type: Object, required: true }
+  question: { type: Object, required: true },
+  // 该题是否已加入题库：true 时按钮禁用，防止重复入库
+  added: { type: Boolean, default: false }
 })
 defineEmits(['addToBank'])
 
@@ -25,7 +27,9 @@ const diffColor = { easy: 'success', medium: 'warning', hard: 'danger' }
     </div>
     <div class="q-answer"><strong>正确答案：</strong>{{ LABELS[question.answer] }}</div>
     <div class="q-analysis"><strong>解析：</strong>{{ question.analysis }}</div>
-    <el-button type="primary" size="small" @click="$emit('addToBank')">加入题库</el-button>
+    <el-button type="primary" size="small" :disabled="added" @click="$emit('addToBank')">
+      {{ added ? '已加入题库' : '加入题库' }}
+    </el-button>
   </div>
 </template>
 

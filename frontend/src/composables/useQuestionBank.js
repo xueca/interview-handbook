@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { useQuestionsStore } from '../stores/questions'
 import { removeQuestion } from '../api/questions'
+import { CATEGORIES } from '../constants/categories'
 
 // 防止关键词输入时频繁请求: 延迟 delay 毫秒后才执行真正的过滤
 function debounce(fn, delay) {
@@ -17,7 +18,7 @@ export default function useQuestionBank() {
   const router = useRouter()
   const store = useQuestionsStore()
 
-  const categories = ['JavaScript', 'Vue', 'CSS', '网络', '浏览器', '工程化']
+  const categories = CATEGORIES
   const difficulties = [
     { label: '简单', value: 'easy' },
     { label: '中等', value: 'medium' },
@@ -56,8 +57,7 @@ export default function useQuestionBank() {
 
   function goToQuiz(question) {
     router.push({
-      path: '/quiz',
-      query: { id: question.id, category: question.category },
+      path: `/question/${question.id}`,
     })
   }
 
@@ -65,7 +65,7 @@ export default function useQuestionBank() {
     if (store.list.length === 0) return
     const ids = store.list.map(q => q.id).join(',')
     const category = filter.value.category || ''
-    router.push({ path: '/quiz', query: { ids, category } })
+    router.push({ path: '/quiz', query: { ids, category, mode: 'exam' } })
   }
 
   const displayList = computed(() => {
