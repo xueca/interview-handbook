@@ -11,7 +11,7 @@ module.exports = {
         NODE_ENV: 'production',
         PORT: 5000
       },
-      env_file: '/var/www/interview-handbook/backend/.env.production',
+      env_file: '/var/www/interview-handbook/backend/.env.production.active',
       log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
       error_file: '/var/log/pm2/interview-handbook-error.log',
       out_file: '/var/log/pm2/interview-handbook-out.log',

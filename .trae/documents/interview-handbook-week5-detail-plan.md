@@ -57,7 +57,7 @@
 | 文件 | 作用 | 状态 |
 |------|------|------|
 | `backend/middleware/auth.js` | 移除 JWT_SECRET 默认 fallback，生产环境强制注入 | 已提交 |
-| `backend/.env.production` | 生产环境变量模板（不会进入 Git） | 已创建 |
+| `backend/.env.production.example` | 生产环境变量模板（不会进入 Git） | 已创建 |
 | `ecosystem.config.js` | PM2 生产进程配置（单实例 fork 模式） | 已提交 |
 | `deploy.sh` | 一键部署脚本（拉代码→装依赖→构建→重启） | 已提交 |
 | `backend/scripts/backup-data.sh` | JSON 数据定时备份（保留 30 天） | 已提交 |
@@ -328,7 +328,7 @@ openssl rand -hex 32
 # 输出示例: a3f5e8b2c1d4...（64 位十六进制字符串）
 
 # 复制模板
-cp .env.production .env.production.active
+cp .env.production.example .env.production.active
 
 # 编辑真实密钥
 vim .env.production.active
