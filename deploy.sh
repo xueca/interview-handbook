@@ -9,7 +9,8 @@ cd "$APP_DIR"
 
 # 1. 拉取最新代码
 echo "==> 拉取最新代码..."
-git pull origin main
+git stash  # 防止本地修改导致 pull 冲突
+git pull origin reborn
 
 # 2. 安装后端依赖
 echo "==> 安装后端依赖..."
