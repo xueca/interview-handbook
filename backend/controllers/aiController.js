@@ -37,6 +37,8 @@ exports.generateStream = async (req, res) => {
     relaySSE(response, res)
   } catch (error) {
     console.error('[generateStream] DeepSeek API 错误:', error.message)
+    console.error('[generateStream] req.body:', JSON.stringify(req.body).slice(0, 200))
+    console.error('[generateStream] req.body 类型:', typeof req.body)
     try {
       res.write(`data: ${JSON.stringify({ type: 'error', error: error.message })}\n\n`)
       res.write('data: [DONE]\n\n')

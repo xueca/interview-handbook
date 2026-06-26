@@ -16,6 +16,9 @@ const port = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// 调试端点（仅诊断用）
+app.use('/api/debug', require('./routes/debug'))
+
 app.use('/api/auth', authRoutes);
 app.use('/api/questions', questionRoutes);
 app.use('/api/records', recordRoutes);
