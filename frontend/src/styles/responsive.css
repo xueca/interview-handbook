@@ -1,10 +1,45 @@
-/* 响应式适配: 768px(平板) + 480px(手机) | 数据流: 无，纯样式 */
+/* 响应式适配: 移动端优先 | 数据流: 无，纯样式 */
+/* 策略:
+ *   一、移动端专属元素(mobile-header/hamburger/overlay): 默认显示，桌面端min-width隐藏
+ *   二、覆盖各.vue scoped桌面样式: max-width媒体查询 + !important(因scoped特异性更高)
+ *   三、480px断点: 进一步缩小间距/字体，增大触摸区域
+ */
 
-/* ========== 平板断点 (≤768px) ========== */
+/* ================================================================ */
+/* 一、移动端专属元素（默认显示，桌面端隐藏）                       */
+/* ================================================================ */
+
+/* 移动端顶部栏 */
+.mobile-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.hamburger-btn {
+  display: inline-flex;
+}
+
+/* 侧边栏遮罩层：默认隐藏，.active时显示 */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+.sidebar-overlay.active {
+  display: block;
+}
+
+/* ================================================================ */
+/* 二、≤768px 覆盖各页面scoped桌面样式                              */
+/* ================================================================ */
+
 @media (max-width: 768px) {
-  /* 侧边栏：隐藏，通过汉堡菜单切换 */
+  /* --- App: 侧边栏滑出式 --- */
   .sidebar {
-    position: fixed;
+    position: fixed !important;
     left: -220px;
     top: 0;
     z-index: 1000;
@@ -13,78 +48,42 @@
   .sidebar.open {
     left: 0;
   }
-  /* 遮罩层 */
-  .sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 999;
-  }
-  .sidebar-overlay.active {
-    display: block;
-  }
-  /* 汉堡按钮：默认隐藏，平板显示 */
-  .mobile-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-  .hamburger-btn {
-    display: inline-flex;
-  }
-  /* 主内容区：全宽（!important 突破 App.vue scoped 特异性） */
+  /* 主内容区减小内边距 */
   .main-content {
-    padding: 16px !important;
+    padding: 12px 8px !important;
   }
-  /* Dashboard: 数据卡片2列 */
+
+  /* --- Dashboard: 数据卡片2列 --- */
   .stat-cards .el-col {
     max-width: 50% !important;
     flex: 0 0 50% !important;
   }
-  /* Dashboard: 图表单列 */
+  /* Dashboard: 图表单列 + 高度缩小 */
   .chart-row .el-col {
     max-width: 100% !important;
     flex: 0 0 100% !important;
   }
-  /* Quiz: 答题卡移到题目下方（width !important 突破 Quiz.vue scoped 的 width:200px） */
+  .chart-box {
+    height: 220px !important;
+  }
+
+  /* --- Quiz: 答题区纵向排列 --- */
   .quiz-body {
-    flex-direction: column;
+    flex-direction: column !important;
   }
   .answer-card {
     width: 100% !important;
   }
-  /* QuestionBank: 筛选区堆叠 */
-  .filter-card .el-col {
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
-    margin-bottom: 8px;
+  /* Quiz: 头部换行（标签+计时器不挤在一行） */
+  .quiz-header {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
   }
-  /* Quiz结果页: 统计卡片3列→单列 */
-  .result-stats .el-col {
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
-    margin-bottom: 8px;
+  .header-left {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
   }
-}
-
-/* ========== 手机断点 (≤480px) ========== */
-@media (max-width: 480px) {
-  /* 主内容区：更小内边距（!important 突破 App.vue scoped） */
-  .main-content {
-    padding: 12px 8px !important;
-  }
-  /* Dashboard: 数据卡片单列 */
-  .stat-cards .el-col {
-    max-width: 100% !important;
-    flex: 0 0 100% !important;
-  }
-  /* Dashboard: 图表高度缩小 */
-  .chart-box {
-    height: 200px !important;
-  }
-  /* Quiz: 选项更大触摸区域（!important 突破 Quiz.vue scoped 的 option-item/label/text 同名定义） */
+  /* Quiz: 选项增大触摸区域 */
   .option-item {
     padding: 16px 12px !important;
   }
@@ -97,7 +96,7 @@
     font-size: 16px !important;
     line-height: 32px !important;
   }
-  /* Quiz: 答题卡格子更大（!important 突破 scoped 的 card-item 同名定义） */
+  /* Quiz: 答题卡格子更大 */
   .card-item {
     width: 36px !important;
     height: 36px !important;
@@ -107,51 +106,117 @@
   .quiz-footer .el-button {
     padding: 12px 20px;
   }
-  /* AiChat: 消息区去掉左右margin（!important 突破 ai-chat.css 后加载的 40px 定义） */
+  /* Quiz结果页: 统计卡片单列 */
+  .result-stats .el-col {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+    margin-bottom: 8px;
+  }
+
+  /* --- QuestionBank: 筛选区堆叠 --- */
+  .filter-card .el-col {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+    margin-bottom: 8px;
+  }
+
+  /* --- WrongBook: 筛选栏换行 --- */
+  .filter-bar {
+    flex-wrap: wrap !important;
+  }
+  .filter-bar .el-select,
+  .filter-bar .el-input {
+    width: 100% !important;
+  }
+  /* WrongBook: 标题和按钮换行 */
+  .page-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
+  /* WrongBook: 详情头部换行 */
+  .item-header {
+    flex-wrap: wrap !important;
+  }
+  .item-tags {
+    flex-wrap: wrap !important;
+  }
+  /* WrongBook: 批量操作栏换行 */
+  .batch-bar {
+    flex-wrap: wrap !important;
+  }
+
+  /* --- AiChat: 消息区减小margin --- */
   .message.user {
     margin-left: 16px !important;
   }
   .message.assistant {
     margin-right: 16px !important;
   }
+  /* AiChat: 快捷出题区换行 */
+  .quick-row {
+    flex-wrap: wrap !important;
+  }
   /* AiChat: 输入区堆叠 */
   .input-row {
-    flex-direction: column;
+    flex-direction: column !important;
   }
-  /* Login: 卡片全宽 */
+
+  /* --- Login: 卡片全宽 --- */
   .login-card {
     width: 90vw !important;
     max-width: 400px;
   }
-  /* WrongBook: 筛选栏全宽 */
-  .filter-bar .el-select,
-  .filter-bar .el-input {
-    width: 100% !important;
+}
+
+/* ================================================================ */
+/* 三、≤480px 手机竖屏进一步优化                                    */
+/* ================================================================ */
+
+@media (max-width: 480px) {
+  /* Dashboard: 数据卡片单列 */
+  .stat-cards .el-col {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
   }
-  /* WrongBook: 标题和按钮换行（align-items !important 突破 WrongBook.vue scoped 的 center） */
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start !important;
-    gap: 8px;
+  /* Dashboard: 图表高度再缩小 */
+  .chart-box {
+    height: 180px !important;
   }
-  /* WrongBook: 详情头部换行 */
-  .item-header {
-    flex-wrap: wrap;
+  /* Quiz: 选项更大触摸区域 */
+  .option-item {
+    padding: 18px 12px !important;
   }
-  .item-tags {
-    flex-wrap: wrap;
+  .option-label {
+    width: 36px !important;
+    height: 36px !important;
+    font-size: 16px !important;
   }
-  /* WrongBook: 批量操作栏换行 */
-  .batch-bar {
-    flex-wrap: wrap;
+  .option-text {
+    font-size: 17px !important;
+    line-height: 36px !important;
+  }
+  /* AiChat: 消息区几乎全宽 */
+  .message.user {
+    margin-left: 8px !important;
+  }
+  .message.assistant {
+    margin-right: 8px !important;
   }
 }
 
-/* ========== 桌面端隐藏移动端元素 ========== */
-/* 注意：这里不能加 !important，否则会覆盖 768px 媒体查询里 display:flex/inline-flex */
-.mobile-header {
-  display: none;
-}
-.hamburger-btn {
-  display: none;
+/* ================================================================ */
+/* 四、桌面端（≥769px）：隐藏移动端专属元素                         */
+/* ================================================================ */
+
+@media (min-width: 769px) {
+  .mobile-header {
+    display: none !important;
+  }
+  .hamburger-btn {
+    display: none !important;
+  }
+  .sidebar-overlay {
+    display: none !important;
+  }
 }

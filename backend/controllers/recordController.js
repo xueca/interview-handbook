@@ -45,31 +45,58 @@ function getRecords(req, res) {
   res.json({ total: userRecords.length, list: userRecords })
 }
 
-function getStats(req, res) {
-  const allUserRecords = readJSON(RECORDS_FILE).filter(r => r.userId === req.user.id)
-  // 错题本重答记录只用于更新连续正确进度，不参与答题统计
-  const userRecords = allUserRecords.filter(r => r.source !== 'wrong-book')
-  const empty = { totalQuizzes: 0, avgScore: 0, totalQuestions: 0, totalCorrect: 0, dailyTrend: [], categoryStats: [], weakTopics: [] }
-  if (!userRecords.length) return res.json(empty)
-  const totalQuizzes = userRecords.length
-  const avgScore = Math.round(userRecords.reduce((s, r) => s + r.score, 0) / totalQuizzes)
-  // 修正：总答题数使用 answered（实际作答数），兼容旧数据回退到 total
-  const totalQuestions = userRecords.reduce((s, r) => s + (r.answered || r.total), 0)
-  const totalCorrect = userRecords.reduce((s, r) => s + r.correct, 0)
-  // 每日正确率趋势（最近7天）
+// 按题目去重聚合：遍历该用户所有记录（含错题本重答），每题只保留最近一次有效作答
+// records 按时间顺序 push，后面的 detail 覆盖前面的即得最近一次；总答题数=做过的不同题数
+function aggregateByQuestion(records) {
+  const perQ = {}
+  records.forEach(r => {
+    (r.details || []).forEach(d => {
+      if (d.isCorrect == null) return // 跳过未作答（null/undefined）
+      perQ[d.questionId] = d
+    })
+  })
+  return perQ
+}
+
+// 题目维度统计：按「最近一次对错」聚合出分类正确率 + 薄弱点TOP5（一次遍历）
+function buildTopicStats(perQ, qMap) {
+  const catMap = {}, weakMap = {}
+  Object.entries(perQ).forEach(([qid, d]) => {
+    const c = qMap[qid]?.category || '未分类'
+    if (!catMap[c]) catMap[c] = { category: c, correct: 0, total: 0 }
+    catMap[c].total++
+    if (d.isCorrect === true) catMap[c].correct++
+    else if (d.isCorrect === false) weakMap[c] = { topic: c, wrongCount: (weakMap[c]?.wrongCount || 0) + 1 }
+  })
+  const categoryStats = Object.values(catMap).map(c => ({ category: c.category, rate: c.total ? Math.round((c.correct / c.total) * 100) : 0, total: c.total }))
+  const weakTopics = Object.values(weakMap).sort((a, b) => b.wrongCount - a.wrongCount).slice(0, 5)
+  return { categoryStats, weakTopics }
+}
+
+// 会话维度每日正确率趋势（最近7天）：按场次累加，已排除错题本重答
+function buildDailyTrend(sessionRecords) {
   const dayMap = {}
   const now = new Date()
   for (let i = 6; i >= 0; i--) { const d = new Date(now); d.setDate(d.getDate() - i); const k = d.toISOString().slice(0, 10); dayMap[k] = { date: k, correct: 0, total: 0 } }
-  userRecords.forEach(r => { const k = r.createdAt?.slice(0, 10); if (dayMap[k]) { dayMap[k].correct += r.correct; dayMap[k].total += (r.answered || r.total) } })
-  const dailyTrend = Object.values(dayMap).map(d => ({ date: d.date, rate: d.total ? Math.round((d.correct / d.total) * 100) : 0 }))
-  // 分类正确率
-  const catMap = {}
-  userRecords.forEach(r => { const c = r.category || '未分类'; if (!catMap[c]) catMap[c] = { category: c, correct: 0, total: 0 }; catMap[c].correct += r.correct; catMap[c].total += (r.answered || r.total) })
-  const categoryStats = Object.values(catMap).map(c => ({ category: c.category, rate: c.total ? Math.round((c.correct / c.total) * 100) : 0, total: c.total }))
-  // 薄弱知识点TOP5
-  const weakMap = {}
-  userRecords.forEach(r => { const cat = r.category || '未分类'; (r.details || []).forEach(d => { if (d.isCorrect === false) { if (!weakMap[cat]) weakMap[cat] = { topic: cat, wrongCount: 0 }; weakMap[cat].wrongCount++ } }) })
-  const weakTopics = Object.values(weakMap).sort((a, b) => b.wrongCount - a.wrongCount).slice(0, 5)
+  sessionRecords.forEach(r => { const k = r.createdAt?.slice(0, 10); if (dayMap[k]) { dayMap[k].correct += r.correct; dayMap[k].total += (r.answered || r.total) } })
+  return Object.values(dayMap).map(d => ({ date: d.date, rate: d.total ? Math.round((d.correct / d.total) * 100) : 0 }))
+}
+
+function getStats(req, res) {
+  const allUserRecords = readJSON(RECORDS_FILE).filter(r => r.userId === req.user.id)
+  const empty = { totalQuizzes: 0, avgScore: 0, totalQuestions: 0, totalCorrect: 0, dailyTrend: [], categoryStats: [], weakTopics: [] }
+  if (!allUserRecords.length) return res.json(empty)
+  const qMap = Object.fromEntries(readJSON(QUESTIONS_FILE).map(q => [q.id, q]))
+  // 题目维度（去重，含错题本重答）：总答题数=做过的不同题数，正确率=每题最近一次对错
+  const perQ = aggregateByQuestion(allUserRecords)
+  const totalQuestions = Object.keys(perQ).length
+  const totalCorrect = Object.values(perQ).filter(d => d.isCorrect === true).length
+  const { categoryStats, weakTopics } = buildTopicStats(perQ, qMap)
+  // 会话维度（排除错题本重答）：答题次数/平均分/每日趋势，按「每场答题」统计
+  const sessionRecords = allUserRecords.filter(r => r.source !== 'wrong-book')
+  const totalQuizzes = sessionRecords.length
+  const avgScore = totalQuizzes ? Math.round(sessionRecords.reduce((s, r) => s + r.score, 0) / totalQuizzes) : 0
+  const dailyTrend = buildDailyTrend(sessionRecords)
   res.json({ totalQuizzes, avgScore, totalQuestions, totalCorrect, dailyTrend, categoryStats, weakTopics })
 }
 

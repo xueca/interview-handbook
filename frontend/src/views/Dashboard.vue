@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, onUnmounted, computed, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import * as echarts from 'echarts'
@@ -11,10 +12,12 @@ const router = useRouter()
 const userStore = useUserStore()
 const recordStore = useRecordStore()
 const { isDark } = useDarkMode()
-const { stats } = recordStore
+// storeToRefs 保留 ref 身份，模板自动解包，script 里用 .value
+const { stats } = storeToRefs(recordStore)
 
+// stats 是 Ref，script 上下文需要 .value
 const correctRate = computed(() =>
-  stats.totalQuestions ? Math.round((stats.totalCorrect / stats.totalQuestions) * 100) : 0
+  stats.value.totalQuestions ? Math.round((stats.value.totalCorrect / stats.value.totalQuestions) * 100) : 0
 )
 
 // 暗黑模式下的ECharts配色
@@ -26,7 +29,7 @@ const darkColors = computed(() => ({
   areaOpacity: isDark.value ? 0.08 : 0.15,
 }))
 
-let lineChart = null, barChart = null, pieChart = null
+let lineChart = null, barChart = null, pieChart = null, resizeTimer = null
 
 // 每日正确率折线图
 function initLineChart() {
@@ -36,9 +39,9 @@ function initLineChart() {
   lineChart.setOption({
     title: { text: '每日正确率趋势', left: 'center', textStyle: { fontSize: 14, color: darkColors.value.text } },
     tooltip: { trigger: 'axis', formatter: '{b}: {c}%' },
-    xAxis: { type: 'category', data: stats.dailyTrend.map(d => d.date.slice(5)), axisLine: { lineStyle: { color: darkColors.value.axisLine } }, axisLabel: { color: darkColors.value.subText } },
+    xAxis: { type: 'category', data: stats.value.dailyTrend.map(d => d.date.slice(5)), axisLine: { lineStyle: { color: darkColors.value.axisLine } }, axisLabel: { color: darkColors.value.subText } },
     yAxis: { type: 'value', max: 100, axisLabel: { formatter: '{value}%', color: darkColors.value.subText }, splitLine: { lineStyle: { color: darkColors.value.splitLine } } },
-    series: [{ type: 'line', data: stats.dailyTrend.map(d => d.rate), smooth: true, areaStyle: { opacity: darkColors.value.areaOpacity }, itemStyle: { color: '#409eff' } }],
+    series: [{ type: 'line', data: stats.value.dailyTrend.map(d => d.rate), smooth: true, areaStyle: { opacity: darkColors.value.areaOpacity }, itemStyle: { color: '#409eff' } }],
     grid: { left: 40, right: 20, top: 40, bottom: 20 }
   })
 }
@@ -51,9 +54,9 @@ function initBarChart() {
   barChart.setOption({
     title: { text: '分类正确率', left: 'center', textStyle: { fontSize: 14, color: darkColors.value.text } },
     tooltip: { trigger: 'axis', formatter: '{b}: {c}%' },
-    xAxis: { type: 'category', data: stats.categoryStats.map(c => c.category), axisLine: { lineStyle: { color: darkColors.value.axisLine } }, axisLabel: { color: darkColors.value.subText } },
+    xAxis: { type: 'category', data: stats.value.categoryStats.map(c => c.category), axisLine: { lineStyle: { color: darkColors.value.axisLine } }, axisLabel: { color: darkColors.value.subText } },
     yAxis: { type: 'value', max: 100, axisLabel: { formatter: '{value}%', color: darkColors.value.subText }, splitLine: { lineStyle: { color: darkColors.value.splitLine } } },
-    series: [{ type: 'bar', data: stats.categoryStats.map(c => c.rate), itemStyle: { color: '#67c23a' }, barWidth: '40%' }],
+    series: [{ type: 'bar', data: stats.value.categoryStats.map(c => c.rate), itemStyle: { color: '#67c23a' }, barWidth: '40%' }],
     grid: { left: 40, right: 20, top: 40, bottom: 20 }
   })
 }
@@ -66,17 +69,22 @@ function initPieChart() {
   pieChart.setOption({
     title: { text: '薄弱知识点', left: 'center', textStyle: { fontSize: 14, color: darkColors.value.text } },
     tooltip: { trigger: 'item', formatter: '{b}: {c}题 ({d}%)' },
-    series: [{ type: 'pie', radius: ['35%', '65%'], data: stats.weakTopics.map(w => ({ name: w.topic, value: w.wrongCount })), label: { color: darkColors.value.subText, formatter: '{b}\n{d}%' } }],
+    series: [{ type: 'pie', radius: ['35%', '65%'], data: stats.value.weakTopics.map(w => ({ name: w.topic, value: w.wrongCount })), label: { color: darkColors.value.subText, formatter: '{b}\n{d}%' } }],
     color: ['#f56c6c', '#e6a23c', '#409eff', '#67c23a', '#909399']
   })
 }
 
+// dispose + 重建合一：先销毁旧实例再重建，使此函数可安全重复调用（暗黑切换 / 未来数据刷新）
 function initCharts() {
+  lineChart?.dispose(); barChart?.dispose(); pieChart?.dispose()
+  lineChart = null; barChart = null; pieChart = null
   initLineChart(); initBarChart(); initPieChart()
 }
 
+// 防抖 150ms：拖动窗口时高频触发，只在停止后执行一次 canvas 重排，避免无效的 ECharts resize
 function handleResize() {
-  lineChart?.resize(); barChart?.resize(); pieChart?.resize()
+  clearTimeout(resizeTimer)
+  resizeTimer = setTimeout(() => { lineChart?.resize(); barChart?.resize(); pieChart?.resize() }, 150)
 }
 
 onMounted(async () => {
@@ -85,16 +93,13 @@ onMounted(async () => {
   window.addEventListener('resize', handleResize)
 })
 onUnmounted(() => {
+  clearTimeout(resizeTimer)
   window.removeEventListener('resize', handleResize)
   lineChart?.dispose(); barChart?.dispose(); pieChart?.dispose()
 })
 
-// 暗黑模式切换时: 先销毁旧实例再重建, 防止 ECharts 实例叠加导致的内存泄漏
-watch(isDark, () => {
-  lineChart?.dispose(); barChart?.dispose(); pieChart?.dispose()
-  lineChart = null; barChart = null; pieChart = null
-  initCharts()
-})
+// 暗黑切换：直接复用 initCharts（已内置 dispose），无需重复写销毁逻辑
+watch(isDark, initCharts)
 
 // 统计数据加载失败时给出提示, 避免页面静默空白
 watch(() => recordStore.error, (val) => {

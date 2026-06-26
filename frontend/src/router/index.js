@@ -5,6 +5,8 @@ import QuestionBank from '../views/QuestionBank.vue'
 import Quiz from '../views/Quiz.vue'
 import WrongBook from '../views/WrongBook.vue'
 import AiChat from '../views/AiChat.vue'
+import Profile from '../views/Profile.vue'
+import QuestionDetail from '../views/QuestionDetail.vue'
 import NotFound from '../views/NotFound.vue'
 
 const routes = [
@@ -40,6 +42,16 @@ const routes = [
     component: AiChat,
   },
   {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile,
+  },
+  {
+    path: '/question/:id',
+    name: 'QuestionDetail',
+    component: QuestionDetail,
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound,
@@ -52,11 +64,13 @@ const router = createRouter({
   routes,
 })
 
-// 路由守卫：未登录跳登录页
+// 路由守卫：未登录跳登录页 | /quiz无参数时重定向到题库
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
   if (to.name !== 'Login' && !token) {
     next({ name: 'Login' })
+  } else if (to.name === 'Quiz' && !to.query.ids && !to.query.id && !to.query.category && !to.query.difficulty && !to.query.from) {
+    next({ name: 'QuestionBank' })
   } else {
     next()
   }

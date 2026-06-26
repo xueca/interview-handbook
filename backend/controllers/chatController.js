@@ -46,7 +46,7 @@ exports.chatStream = async (req, res) => {
   } catch (error) {
     console.error('[chatStream] DeepSeek API 错误:', error.message)
     try {
-      res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`)
+      res.write(`data: ${JSON.stringify({ type: 'error', error: error.message })}\n\n`)
       res.write('data: [DONE]\n\n')
       res.end()
     } catch {

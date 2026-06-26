@@ -3,6 +3,19 @@ const { readJSON } = require('../data')
 const QUESTIONS_FILE = 'questions.json'
 const MARKS_FILE = 'marks.json'  // 删题时级联清理
 
+// 归一化题干：去首尾+压缩内部空白、中文标点转半角、转小写
+// 用途：让「闭包是什么？」和「闭包是什么? 」被判定为同一道题，挡住标点/空格/大小写差异的伪重复
+function normalizeTitle(raw) {
+  if (typeof raw !== 'string') return ''
+  // 常见全角标点 → 半角，统一比对口径
+  const punctMap = { '？': '?', '！': '!', '，': ',', '：': ':', '；': ';', '（': '(', '）': ')', '　': ' ' }
+  return raw
+    .replace(/[？！，：；（）　]/g, ch => punctMap[ch])
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase()
+}
+
 /**
  * 自动拆分 title 中的行内代码
  * 匹配模式：中文问号后跟 JavaScript 代码特征
@@ -70,6 +83,13 @@ function createQuestion(req, res) {
     return res.status(400).json({ error: '缺少必要字段' })
   }
   const questions = readJSON(QUESTIONS_FILE)
+  // 按归一化题干去重：同一道题只入库一次，重复时回传已有题目并标记 duplicated
+  // 防止 AI 对话里反复点「加入题库」导致题库出现重复/标点空格大小写差异的伪重复题
+  const normTitle = normalizeTitle(title)
+  const existing = questions.find(q => normalizeTitle(q.title) === normTitle)
+  if (existing) {
+    return res.json({ ...existing, duplicated: true })
+  }
   const maxId = questions.reduce((max, q) => Math.max(max, q.id || 0), 0)
   const newQuestion = {
     id: maxId + 1,

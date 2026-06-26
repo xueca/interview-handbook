@@ -95,4 +95,66 @@ function closeSidebar() {
             <el-button type="danger" size="small" plain @click="handleLogout">退出</el-button>
           </div>
         </div>
-    
+      </el-menu>
+      <div class="main-content">
+        <!-- 移动端顶部栏 -->
+        <div class="mobile-header">
+          <el-button class="hamburger-btn" :icon="sidebarOpen ? Close : Expand" @click="toggleSidebar" />
+          <span style="font-size: 16px; font-weight: 600; color: #409eff;">面试宝典</span>
+        </div>
+        <router-view />
+      </div>
+    </div>
+  </template>
+</template>
+
+<style scoped>
+.layout {
+  display: flex;
+  height: 100vh;
+}
+.sidebar {
+  width: 220px;
+  height: 100vh;
+  overflow-y: auto;
+  border-right: 1px solid #e6e6e6;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar-title {
+  height: 60px;
+  line-height: 60px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #409eff;
+  border-bottom: 1px solid #e6e6e6;
+}
+.sidebar-footer {
+  margin-top: auto;
+  padding: 16px;
+  border-top: 1px solid #e6e6e6;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.footer-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.user-name {
+  font-size: 14px;
+  color: #606266;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 110px;
+}
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  background: #f5f7fa;
+}
+</style>

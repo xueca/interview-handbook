@@ -23,6 +23,11 @@ export default [
       // Vue 规范
       'vue/multi-word-component-names': 'off',
       'vue/no-unused-vars': 'error',
+      // 关闭 Vue recommended 中过度的格式约束，保留架构/质量相关规则
+      'vue/max-attributes-per-line': 'off',
+      'vue/singleline-html-element-content-newline': 'off',
+      'vue/first-attribute-linebreak': 'off',
+      'vue/html-closing-bracket-newline': 'off',
       // 代码风格（适应现有4空格缩进）
       'indent': 'off',
       'vue/html-indent': 'off',
