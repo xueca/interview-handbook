@@ -17,9 +17,9 @@ TOTAL=0
 PASS=0
 FAIL=0
 
-ok()   { echo -e "  ${GREEN}✅${NC} $1"; ((PASS++)); }
+ok()   { echo -e "  ${GREEN}✅${NC} $1"; PASS=$((PASS+1)); }
 warn() { echo -e "  ${YELLOW}⚠️${NC} $1"; }
-fail() { echo -e "  ${RED}❌${NC} $1"; ((FAIL++)); ((TOTAL--)); }
+fail() { echo -e "  ${RED}❌${NC} $1"; FAIL=$((FAIL+1)); TOTAL=$((TOTAL-1)); }
 info() { echo -e "  ${CYAN}ℹ️${NC}  $1"; }
 sep()  { echo -e "  ${CYAN}────────────────────────────────────────${NC}"; }
 blank(){ echo ""; }
