@@ -3,6 +3,9 @@
 
 const axios = require('axios')
 
+// 单次流式输出累计字符上限：防止上游异常长流耗尽内存或让 SSE 连接永久挂起
+const MAX_OUTPUT_CHARS = 16000
+
 // 底层调用：统一 model/温度/超时/响应类型，调用方只需传 messages 和是否流式
 // stream=true 时返回可读流（responseType:stream），false 时返回完整 JSON
 function callDeepSeek({ messages, stream = false, timeout }) {
@@ -14,8 +17,8 @@ function callDeepSeek({ messages, stream = false, timeout }) {
     { model: 'deepseek-v4-flash', messages, stream, temperature: 0.7, max_tokens: 2048 },
     {
       headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      // 非流式默认 10s、流式默认 30s；显式传 timeout 时优先
-      timeout: timeout || (stream ? 30000 : 10000),
+      // 非流式/流式默认 30s（非流式需要等完整响应，DeepSeek 可能超过 10s）
+      timeout: timeout || (stream ? 30000 : 30000),
       responseType: stream ? 'stream' : 'json'
     }
   )
@@ -40,6 +43,7 @@ function initSSE(res) {
  */
 function relaySSE(upstream, res) {
   let ended = false
+  let accumulated = 0
   // 防重复结束：data/end/error 多路径都可能触发收尾
   const endStream = () => {
     if (ended) return
@@ -56,8 +60,10 @@ function relaySSE(upstream, res) {
       try {
         // V4 双通道：reasoning_content 是模型自然语言推理（前端用于「思考中」打字效果），content 是正文/题目 JSON
         const delta = JSON.parse(data).choices[0].delta
-        if (delta.reasoning_content) res.write(`data: ${JSON.stringify({ reasoning: delta.reasoning_content })}\n\n`)
-        if (delta.content) res.write(`data: ${JSON.stringify({ content: delta.content })}\n\n`)
+        if (delta.reasoning_content) { accumulated += delta.reasoning_content.length; res.write(`data: ${JSON.stringify({ reasoning: delta.reasoning_content })}\n\n`) }
+        if (delta.content) { accumulated += delta.content.length; res.write(`data: ${JSON.stringify({ content: delta.content })}\n\n`) }
+        // 防暴走：累计输出超过上限即主动断开上游并收尾，已生成内容交由前端 finalize 解析
+        if (accumulated > MAX_OUTPUT_CHARS) { upstream.data.destroy(); endStream(); return }
       } catch {
         // 跳过解析失败的行（半包/心跳）
       }
@@ -66,7 +72,7 @@ function relaySSE(upstream, res) {
   upstream.data.on('end', endStream)
   upstream.data.on('error', (err) => {
     if (ended) return
-    res.write(`data: ${JSON.stringify({ error: err.message })}\n\n`)
+    res.write(`data: ${JSON.stringify({ type: 'error', error: err.message })}\n\n`)
     endStream()
   })
 
