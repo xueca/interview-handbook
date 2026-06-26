@@ -1,4 +1,6 @@
-require('dotenv').config();
+// 生产环境使用 .env.production.active，开发环境使用 .env
+const envPath = __dirname + '/' + (process.env.NODE_ENV === 'production' ? '.env.production.active' : '.env')
+require('dotenv').config({ path: envPath })
 const express = require('express');
 const cors = require('cors');
 
