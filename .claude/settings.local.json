@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node backend/test-day21.js)",
+      "Bash(node backend/scripts/check-file-size.js)",
+      "Bash(node *)",
+      "Bash(npx eslint *)",
+      "Bash(powershell *)",
+      "Skill(update-config)",
+      "WebSearch",
+      "Bash(gh auth *)",
+      "Bash(gh pr *)",
+      "Bash(gh api *)",
+      "Bash(npm ls *)",
+      "Bash(npm install *)",
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(where rg *)",
+      "Bash(cmd *)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\(json.dumps\\(d.get\\('mcpServers', {}\\), indent=2, ensure_ascii=False\\)\\)\")",
+      "Skill(code-review)",
+      "Bash(echo \"=== exit: $? ===\")",
+      "Bash(cmd.exe /c start \"\" \"C:\\\\Users\\\\Public\\\\Desktop\\\\eNSP.lnk\")",
+      "Bash(echo \"---exit: $?---\")"
+    ]
+  }
+}

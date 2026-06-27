@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "code-guardian": {
+      "command": "node",
+      "args": [
+        "D:\\BaiduNetdiskDownload\\A055\\sql\\trae\\shuju\\webtest\\interview-handbook\\my-mcp-server\\code-guardian\\index.js",
+        "--project-root",
+        "D:\\BaiduNetdiskDownload\\A055\\sql\\trae\\shuju\\webtest\\interview-handbook"
+      ]
+    }
+  }
+}

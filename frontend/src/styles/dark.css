@@ -1,0 +1,188 @@
+/* 暗黑模式自定义变量覆盖 | html.dark 激活时生效 */
+html.dark {
+  /* 全局背景 */
+  --dark-bg: #141414;
+  --dark-bg-secondary: #1d1d1d;
+  --dark-bg-card: #1d1d1d;
+  --dark-bg-hover: #262626;
+  --dark-bg-input: #1d1d1d;
+
+  /* 文字色 */
+  --dark-text-primary: #e5eaf3;
+  --dark-text-regular: #cfd3dc;
+  --dark-text-secondary: #a3a6ad;
+  --dark-text-placeholder: #6c6e72;
+
+  /* 边框色 */
+  --dark-border: #4c4d4f;
+  --dark-border-light: #414243;
+
+  /* 主题色（保持不变，Element Plus已处理） */
+  color-scheme: dark;
+}
+
+/* 全局背景 */
+html.dark body,
+html.dark .main-content {
+  background: var(--dark-bg) !important;
+}
+
+/* 侧边栏 */
+html.dark .sidebar {
+  background: var(--dark-bg-secondary);
+  border-right-color: var(--dark-border);
+}
+html.dark .sidebar-title {
+  border-bottom-color: var(--dark-border);
+}
+html.dark .sidebar-footer {
+  border-top-color: var(--dark-border);
+}
+html.dark .user-name {
+  color: var(--dark-text-regular);
+}
+
+/* 登录页 */
+html.dark .login-container {
+  background: var(--dark-bg);
+}
+
+/* Quiz 页 */
+html.dark .quiz-header {
+  border-bottom-color: var(--dark-border);
+}
+html.dark .question-code {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border);
+  color: var(--dark-text-primary);
+}
+html.dark .option-item {
+  border-color: var(--dark-border);
+  background: var(--dark-bg-secondary);
+}
+html.dark .option-item:hover {
+  border-color: #409eff;
+  background: var(--dark-bg-hover);
+}
+/* 选中状态用更深的蓝，符合暗色系 */
+html.dark .option-item.selected {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+html.dark .option-item.selected .option-label {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+/* 选项字母圆圈：暗色背景+中灰文字 */
+html.dark .option-label {
+  background: #374151;
+  color: #9ca3af;
+}
+html.dark .answer-card {
+  background: var(--dark-bg-secondary);
+}
+/* 答题卡已答格子：深蓝色系 */
+html.dark .card-item {
+  background: var(--dark-bg-secondary);
+  border-color: var(--dark-border);
+  color: var(--dark-text-secondary);
+}
+html.dark .card-item.answered {
+  background: #1e3a5f;
+  border-color: #2563eb;
+  color: #93c5fd;
+}
+html.dark .quiz-footer {
+  border-top-color: var(--dark-border);
+}
+html.dark .detail-item.correct {
+  background: rgba(88, 146, 56, 0.12);
+}
+html.dark .detail-item.wrong {
+  background: rgba(245, 108, 108, 0.1);
+}
+
+/* Dashboard 页 */
+html.dark .weak-item {
+  border-bottom-color: var(--dark-border);
+}
+html.dark .weak-rank {
+  background: rgba(245, 108, 108, 0.15);
+}
+
+/* AiChat 页 — 样式已迁移至 styles/ai-chat.css，由CSS变量控制 */
+
+/* WrongBook 页 */
+html.dark .batch-bar {
+  background: var(--dark-bg-secondary);
+}
+/* 错题本展开区域文字适配暗色背景 */
+html.dark .item-title,
+html.dark .detail-user-answer,
+html.dark .detail-analysis {
+  color: var(--dark-text-regular);
+}
+html.dark .detail-option {
+  color: var(--dark-text-secondary);
+}
+html.dark .detail-option.correct {
+  color: #58923c;
+}
+html.dark .item-detail {
+  border-top-color: var(--dark-border);
+}
+
+/* AiQuestionCard 暗黑适配 */
+html.dark .ai-question-card {
+  border-color: var(--dark-border);
+}
+html.dark .ai-question-card .q-title,
+html.dark .ai-question-card .opt-text,
+html.dark .ai-question-card .q-answer,
+html.dark .ai-question-card .q-analysis {
+  color: var(--dark-text-regular);
+}
+/* 非正确答案的字母标签，暗色背景+浅灰文字 */
+html.dark .ai-question-card .opt-label:not(.correct) {
+  background: #374151;
+  color: #9ca3af;
+}
+
+/* Profile 个人中心页 */
+html.dark .info-id,
+html.dark .info-label {
+  color: var(--dark-text-secondary);
+}
+
+/* QuestionDetail 页 */
+html.dark .q-title { color: var(--dark-text-primary); }
+html.dark .q-code { background: var(--dark-bg-secondary); color: var(--dark-text-primary); }
+html.dark .q-option { border-color: var(--dark-border); background: var(--dark-bg-secondary); }
+html.dark .q-option:hover { border-color: #409eff; background: var(--dark-bg-hover); }
+html.dark .q-option.selected { background: #2563eb; border-color: #2563eb; }
+html.dark .q-option.selected .opt-label { background: rgba(255,255,255,0.15); color: #fff; }
+html.dark .opt-label { background: #374151; color: #9ca3af; }
+html.dark .opt-text { color: var(--dark-text-regular); }
+html.dark .q-analysis { background: var(--dark-bg-secondary); color: var(--dark-text-regular); }
+
+/* Quiz 页补充 */
+html.dark .result-score { color: #93c5fd; }
+html.dark .result-pct { color: var(--dark-text-secondary); }
+html.dark .keyboard-hint { color: var(--dark-text-secondary); }
+
+/* 通用文字色覆盖 */
+html.dark .progress,
+html.dark .question-title,
+html.dark .dashboard h2,
+html.dark .quick-start-content h3,
+html.dark .weak-list-card h4,
+html.dark .weak-topic,
+html.dark .page-header h2,
+html.dark .page-title,
+html.dark .info-username,
+html.dark .info-value,
+html.dark .detail-analysis,
+html.dark .detail-user-answer,
+html.dark .analysis-text {
+  color: var(--dark-text-primary);
+}

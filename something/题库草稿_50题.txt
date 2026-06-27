@@ -1,0 +1,364 @@
+题库草稿 — Day4 预置50道前端面试题（文字版）
+============================================
+Day5 由AI转成JSON格式
+============================================
+
+--- JavaScript（15道）---
+
+1. 题目：以下代码中 this 的指向是什么？
+   选项：A. window/global  B. undefined  C. 调用对象  D. 箭头函数外层
+   正确答案：C
+   解析：普通函数中 this 指向调用它的对象；箭头函数 this 指向定义时的外层作用域。
+   标签：JavaScript
+   难度：简单
+
+2. 题目：闭包是什么？有什么作用和缺点？
+   选项：A. 能访问外部函数变量的函数  B. 一种数据类型  C. 一个内置对象  D. 一种循环结构
+   正确答案：A
+   解析：闭包是函数与其词法环境的组合，能访问外部函数变量。作用：封装私有变量、创建模块。缺点：可能造成内存泄漏。
+   标签：JavaScript
+   难度：中等
+
+3. 题目：原型链的终点是什么？
+   选项：A. Object.prototype  B. null  C. undefined  D. Function.prototype
+   正确答案：B
+   解析：原型链的尽头是 null。Object.prototype 是原型链的最后一站，它的原型是 null。
+   标签：JavaScript
+   难度：中等
+
+4. 题目：Promise.all 和 Promise.race 的区别是什么？
+   选项：A. all 等所有成功，race 等第一个  B. all 等第一个，race 等所有  C. 没区别  D. all 只用于异步，race 用于同步
+   正确答案：A
+   解析：Promise.all 等待所有 Promise 完成（一个失败则整体失败），Promise.race 等待第一个完成（无论成功或失败）。
+   标签：JavaScript
+   难度：中等
+
+5. 题目：以下代码输出顺序正确的是？console.log(1); setTimeout(() => console.log(2)); Promise.resolve().then(() => console.log(3)); console.log(4);
+   选项：A. 1 4 3 2  B. 1 4 2 3  C. 1 2 3 4  D. 4 1 2 3
+   正确答案：A
+   解析：同步代码先执行（1,4），微任务（Promise.then）先于宏任务（setTimeout），所以 3 在 2 之前。
+   标签：JavaScript
+   难度：中等
+
+6. 题目：防抖（debounce）和节流（throttle）的区别是什么？
+   选项：A. 防抖只执行最后一次，节流限制执行频率  B. 防抖限制频率，节流只执行最后一次  C. 没有区别  D. 防抖用于滚动，节流用于输入
+   正确答案：A
+   解析：防抖在连续触发后只执行最后一次；节流在单位时间内只执行一次。
+   标签：JavaScript
+   难度：中等
+
+7. 题目：深拷贝和浅拷贝的区别？
+   选项：A. 浅拷贝只复制引用，深拷贝递归复制所有层  B. 深拷贝只复制引用  C. 两者相同  D. 浅拷贝用 JSON.parse(JSON.stringify())
+   正确答案：A
+   解析：浅拷贝只复制第一层属性（对象属性复制引用），深拷贝递归复制所有层级，生成独立对象。
+   标签：JavaScript
+   难度：简单
+
+8. 题目：箭头函数和普通函数的区别有哪些？
+   选项：A. 箭头函数没有 this 绑定  B. 箭头函数有 arguments  C. 箭头函数可以用作构造函数  D. 箭头函数有 prototype
+   正确答案：A
+   解析：箭头函数没有自己的 this、arguments、prototype，不能用作构造函数。
+   标签：JavaScript
+   难度：中等
+
+9. 题目：var、let、const 的区别是什么？
+   选项：A. var 函数级作用域，let/const 块级作用域  B. let 和 var 完全一样  C. const 不能赋值但可以修改对象属性  D. A 和 C
+   正确答案：D
+   解析：var 有函数提升和函数作用域；let/const 有块级作用域和暂存死区；const 声明常量，引用类型内部可修改。
+   标签：JavaScript
+   难度：简单
+
+10. 题目：事件冒泡和事件捕获的执行顺序是？
+    选项：A. 先捕获后冒泡  B. 先冒泡后捕获  C. 同时执行  D. 只执行冒泡
+    正确答案：A
+    解析：DOM 事件流顺序：捕获阶段 → 目标阶段 → 冒泡阶段。addEventListener 第三个参数 true 为捕获。
+    标签：JavaScript
+    难度：中等
+
+11. 题目：typeof null 返回值是什么？
+    选项：A. "object"  B. "null"  C. "undefined"  D. "boolean"
+    正确答案：A
+    解析：这是 JavaScript 的经典 Bug，typeof null 返回 "object"，null 本身是基本类型。
+    标签：JavaScript
+    难度：简单
+
+12. 题目：JavaScript 实现异步编程的方式有哪些？
+    选项：A. 回调函数  B. Promise  C. async/await  D. 以上都是
+    正确答案：D
+    解析：异步编程发展：回调函数（Callback）→ Promise → Generator → async/await。
+    标签：JavaScript
+    难度：简单
+
+13. 题目：Map 和 WeakMap 的区别是什么？
+    选项：A. WeakMap 的键必须是对象且弱引用  B. Map 的键可以是任何类型  C. WeakMap 不可遍历  D. 以上都是
+    正确答案：D
+    解析：Map 键可以是任意类型，可遍历；WeakMap 键必须是对象（弱引用），不可遍历，用于防止内存泄漏。
+    标签：JavaScript
+    难度：中等
+
+14. 题目：[] == ![] 的结果是什么？
+    选项：A. true  B. false  C. undefined  D. 报错
+    正确答案：A
+    解析：![] 为 false，[] == false 进行类型转换后两边都为 0，所以返回 true。
+    标签：JavaScript
+    难度：困难
+
+15. 题目：setTimeout(fn, 0) 会在什么时候执行？
+    选项：A. 立即执行  B. 同步代码执行完后  C. 下一个事件循环  D. 当前事件循环结束前
+    正确答案：C
+    解析：setTimeout(fn, 0) 会在当前同步代码和微任务执行完后，在下一个事件循环的宏任务阶段执行。
+    标签：JavaScript
+    难度：中等
+
+--- Vue/React（10道）---
+
+16. 题目：Vue 的响应式原理是什么？
+    选项：A. Object.defineProperty  B. Proxy  C. 虚拟 DOM  D. 以上都是，3.x 用 Proxy
+    正确答案：D
+    解析：Vue 2.x 用 Object.defineProperty，Vue 3.x 用 Proxy，配合依赖收集实现响应式。
+    标签：Vue
+    难度：中等
+
+17. 题目：Vue 的生命周期钩子有哪些？
+    选项：A. created、mounted、updated、unmounted  B. init、render、destroy  C. start、stop  D. load、ready、end
+    正确答案：A
+    解析：Vue 3 生命周期：setup、onBeforeMount、onMounted、onBeforeUpdate、onUpdated、onBeforeUnmount、onUnmounted。
+    标签：Vue
+    难度：简单
+
+18. 题目：Vue 组件通信方式有哪些？
+    选项：A. props/$emit  B. provide/inject  C. Pinia/Vuex  D. 以上都是
+    正确答案：D
+    解析：父子通信用 props/$emit，跨层级用 provide/inject，全局共享用 Pinia/Vuex。
+    标签：Vue
+    难度：简单
+
+19. 题目：v-if 和 v-show 的区别？
+    选项：A. v-if 条件渲染（增删DOM），v-show 切换 display  B. v-show 条件渲染  C. v-if 性能更好  D. 没有区别
+    正确答案：A
+    解析：v-if 是真正的条件渲染（有销毁和重建），v-show 只是切换 CSS display 属性。
+    标签：Vue
+    难度：简单
+
+20. 题目：computed 和 watch 的区别？
+    选项：A. computed 有缓存，watch 没有  B. computed 异步，watch 同步  C. 两者完全一样  D. watch 用于模板渲染
+    正确答案：A
+    解析：computed 基于依赖缓存计算结果（只有依赖变化才重新计算），watch 监听特定数据变化执行回调。
+    标签：Vue
+    难度：简单
+
+21. 题目：nextTick 的作用是什么？
+    选项：A. 在 DOM 更新后执行回调  B. 延迟执行  C. 异步请求  D. 定时器
+    正确答案：A
+    解析：nextTick 回调在 Vue 完成 DOM 更新后执行，用于获取更新后的 DOM 状态。
+    标签：Vue
+    难度：中等
+
+22. 题目：Vue Router 的两种模式是什么？
+    选项：A. hash 和 history  B. push 和 replace  C. 前端和后端  D. 同步和异步
+    正确答案：A
+    解析：hash 模式使用 URL hash（#），history 模式使用 HTML5 History API，需服务端配合。
+    标签：Vue
+    难度：简单
+
+23. 题目：Vue 中 key 的作用是什么？
+    选项：A. 唯一标识，优化虚拟 DOM diff  B. 设置样式  C. 绑定事件  D. 定义变量
+    正确答案：A
+    解析：key 帮助 Vue 识别节点，在 diff 算法中复用和重排元素，提高渲染性能。
+    标签：Vue
+    难度：简单
+
+24. 题目：虚拟 DOM 是什么？有什么优点？
+    选项：A. 用 JS 对象模拟真实 DOM，减少操作次数  B. 真实 DOM 的拷贝  C. HTML 字符串  D. 浏览器 API
+    正确答案：A
+    解析：虚拟 DOM 是真实 DOM 的 JS 对象表示，通过 diff 算法最小化 DOM 操作，提高性能。
+    标签：Vue
+    难度：中等
+
+25. 题目：Vue 插槽（slot）的作用？
+    选项：A. 内容分发，父组件向子组件传递模板内容  B. 传递数据  C. 绑定事件  D. 定义样式
+    正确答案：A
+    解析：slot 允许父组件向子组件特定位置插入模板内容，包括默认插槽、具名插槽、作用域插槽。
+    标签：Vue
+    难度：简单
+
+--- CSS（10道）---
+
+26. 题目：CSS 盒模型包括哪些部分？
+    选项：A. content、padding、border、margin  B. width、height  C. 内边距和外边距  D. 内容和边框
+    正确答案：A
+    解析：标准盒模型由 content、padding、border、margin 构成。box-sizing 可切换盒模型计算方式。
+    标签：CSS
+    难度：简单
+
+27. 题目：Flex 布局中 justify-content: center 的作用？
+    选项：A. 主轴居中  B. 交叉轴居中  C. 两端对齐  D. 等分空间
+    正确答案：A
+    解析：justify-content 控制主轴对齐方式，center 为主轴居中。align-items 控制交叉轴。
+    标签：CSS
+    难度：简单
+
+28. 题目：Grid 布局和 Flex 布局的适用场景？
+    选项：A. Grid 二维布局，Flex 一维布局  B. 两者相同  C. Grid 用于移动端  D. Flex 用于网格
+    正确答案：A
+    解析：Grid 适用于二维网格布局（行+列），Flex 适用于一维布局（单行或单列）。
+    标签：CSS
+    难度：中等
+
+29. 题目：什么是 BFC？
+    选项：A. 块级格式化上下文，独立渲染区域  B. 一种选择器  C. 盒模型  D. 动画效果
+    正确答案：A
+    解析：BFC（Block Formatting Context）是独立的渲染区域，内部元素不影响外部。触发条件：overflow: hidden、float、position: absolute 等。
+    标签：CSS
+    难度：中等
+
+30. 题目：position 属性有哪些取值？
+    选项：A. static、relative、absolute、fixed、sticky  B. 只有 relative 和 absolute  C. static 和 fixed  D. 只有 static
+    正确答案：A
+    解析：static（默认）、relative（相对自身）、absolute（相对最近定位祖先）、fixed（视口）、sticky（粘性定位）。
+    标签：CSS
+    难度：简单
+
+31. 题目：实现水平垂直居中的方式有哪些？
+    选项：A. flex + align-items/justify-content  B. absolute + transform  C. grid + place-items  D. 以上都是
+    正确答案：D
+    解析：flex 方案：父元素 display:flex + align-items:center + justify-content:center；grid 方案：place-items:center；定位方案：absolute + transform。
+    标签：CSS
+    难度：简单
+
+32. 题目：CSS 选择器优先级顺序是？
+    选项：A. !important > 内联 > id > class > 标签  B. 标签 > class > id  C. 内联 > !important  D. class 和 id 同级
+    正确答案：A
+    解析：!important > 内联样式 > id 选择器 > class/属性/伪类 > 标签/伪元素。相同优先级按后出现覆盖。
+    标签：CSS
+    难度：中等
+
+33. 题目：伪类和伪元素的区别？
+    选项：A. 伪类用单冒号（:），伪元素用双冒号（::）  B. 完全一样  C. 伪类操作内容，伪元素操作状态  D. 伪元素用单冒号
+    正确答案：A
+    解析：伪类（:hover、:focus）表示元素状态；伪元素（::before、::after）创建虚拟元素。CSS3 规范区分单双冒号。
+    标签：CSS
+    难度：中等
+
+34. 题目：transition 和 animation 的区别？
+    选项：A. transition 需要触发，animation 自动播放  B. 两者一样  C. animation 需要触发  D. transition 可以循环
+    正确答案：A
+    解析：transition 需要事件触发（如 hover），只有开始和结束状态；animation 可自动播放，定义关键帧可控制多阶段动画。
+    标签：CSS
+    难度：中等
+
+35. 题目：响应式布局的实现方式？
+    选项：A. 媒体查询（@media）  B. 百分比/rem/vw/vh  C. flex/grid  D. 以上都是
+    正确答案：D
+    解析：响应式布局结合媒体查询、相对单位、弹性布局，适配不同屏幕尺寸。
+    标签：CSS
+    难度：简单
+
+--- 网络/浏览器（10道）---
+
+36. 题目：HTTP 缓存有哪些类型？
+    选项：A. 强缓存和协商缓存  B. 浏览器缓存和服务器缓存  C. 内存缓存和磁盘缓存  D. 以上都是
+    正确答案：A
+    解析：强缓存（200 from cache，Cache-Control/Expires）不请求服务器；协商缓存（304，ETag/Last-Modified）向服务器验证是否可用缓存。
+    标签：网络
+    难度：中等
+
+37. 题目：什么是跨域？如何解决？
+    选项：A. CORS  B. JSONP  C. 代理服务器  D. 以上都是
+    正确答案：D
+    解析：跨域是浏览器同源策略限制。解决方案：CORS（后端设置响应头）、JSONP（仅 GET）、代理服务器（开发环境 vite/webpack proxy）。
+    标签：网络
+    难度：中等
+
+38. 题目：浏览器从输入 URL 到页面显示的过程？
+    选项：A. DNS 解析 → TCP 连接 → HTTP 请求 → 渲染  B. 直接渲染  C. 先渲染后请求  D. 只下载 HTML
+    正确答案：A
+    解析：DNS 解析 → TCP 三次握手 → 发送 HTTP 请求 → 服务器响应 → 浏览器解析 HTML/CSS/JS → 构建渲染树 → 布局 → 绘制。
+    标签：网络
+    难度：中等
+
+39. 题目：HTTPS 和 HTTP 的区别？
+    选项：A. HTTPS 有 SSL/TLS 加密  B. HTTPS 更快  C. HTTP 更安全  D. 没有区别
+    正确答案：A
+    解析：HTTPS 在 HTTP 基础上加入 SSL/TLS 协议，提供加密传输、身份认证、数据完整性校验。
+    标签：网络
+    难度：简单
+
+40. 题目：Cookie、localStorage、sessionStorage 的区别？
+    选项：A. Cookie 4KB，自动带请求头；localStorage 5MB，持久化；sessionStorage 标签页隔离  B. 三者完全一样  C. Cookie 容量最大  D. localStorage 会过期
+    正确答案：A
+    解析：Cookie 容量小（4KB）且每次请求自动携带；localStorage 持久化存储（5MB+）；sessionStorage 标签页级隔离，关闭即清除。
+    标签：网络
+    难度：简单
+
+41. 题目：TCP 三次握手的过程？
+    选项：A. SYN → SYN-ACK → ACK  B. ACK → SYN → SYN-ACK  C. SYN → ACK → SYN  D. 两次握手
+    正确答案：A
+    解析：第一次客户端发 SYN；第二次服务端回复 SYN-ACK；第三次客户端发 ACK 确认。建立可靠连接。
+    标签：网络
+    难度：中等
+
+42. 题目：什么是回流和重绘？
+    选项：A. 回流改变布局，重绘改变外观  B. 两者相同  C. 重绘影响布局  D. 回流只改变颜色
+    正确答案：A
+    解析：回流（reflow）是布局变化引起的重新计算，开销大；重绘（repaint）是外观变化引起的重新绘制。回流一定触发重绘。
+    标签：浏览器
+    难度：中等
+
+43. 题目：浏览器的渲染流程是什么？
+    选项：A. HTML 解析 → CSS 解析 → 渲染树 → 布局 → 绘制  B. JS 执行 → HTML 解析  C. 直接绘制  D. 先布局后解析
+    正确答案：A
+    解析：解析 HTML 生成 DOM 树 → 解析 CSS 生成 CSSOM 树 → 合并为渲染树 → 布局计算位置 → 绘制像素。
+    标签：浏览器
+    难度：中等
+
+44. 题目：强缓存和协商缓存的请求状态码分别是什么？
+    选项：A. 强缓存 200，协商缓存 304  B. 强缓存 304，协商缓存 200  C. 强缓存 301  D. 强缓存 404
+    正确答案：A
+    解析：强缓存命中返回 200（from disk/memory cache），协商缓存命中返回 304 Not Modified。
+    标签：网络
+    难度：简单
+
+45. 题目：Event Loop 中宏任务和微任务的执行顺序？
+    选项：A. 同步代码 → 微任务 → 宏任务  B. 宏任务 → 微任务  C. 同步代码 → 宏任务 → 微任务  D. 随机执行
+    正确答案：A
+    解析：当前宏任务执行完 → 清空微任务队列 → 取下一个宏任务。微任务包括 Promise.then、MutationObserver 等。
+    标签：浏览器
+    难度：中等
+
+--- 工程化（5道）---
+
+46. 题目：Webpack 和 Vite 的主要区别？
+    选项：A. Webpack 打包，Vite 基于 ES Module 开发时按需编译  B. 两者一样  C. Vite 更慢  D. Webpack 不支持模块化
+    正确答案：A
+    解析：Webpack 开发时全量打包；Vite 利用浏览器原生 ES Module，开发时按需编译，速度更快。
+    标签：工程化
+    难度：中等
+
+47. 题目：Tree Shaking 是什么？
+    选项：A. 删除未使用的代码  B. 优化图片  C. 压缩 CSS  D. 代码分割
+    正确答案：A
+    解析：Tree Shaking 指在打包时移除未被引用的代码（dead code elimination），依赖 ES Module 的静态分析。
+    标签：工程化
+    难度：中等
+
+48. 题目：前端模块化规范有哪些？
+    选项：A. CommonJS（require）、ES Module（import）、AMD、CMD  B. 只有 CommonJS  C. 只有 ES Module  D. 只有 AMD
+    正确答案：A
+    解析：CommonJS（Node.js 用 require/module.exports）、ES Module（浏览器用 import/export）、AMD（require.js）、CMD（sea.js）。
+    标签：工程化
+    难度：中等
+
+49. 题目：Webpack 的打包流程是什么？
+    选项：A. 读取配置 → 解析入口 → 递归解析依赖 → loader 转换 → 输出 bundle  B. 直接输出  C. 先输出后解析  D. 只转换 JS
+    正确答案：A
+    解析：Webpack 从入口文件开始，递归解析依赖图，用 loader 转换非 JS 文件，最后合并输出 bundle。
+    标签：工程化
+    难度：困难
+
+50. 题目：Source Map 的作用是什么？
+    选项：A. 将压缩代码映射回源码，方便调试  B. 加密代码  C. 压缩代码  D. 优化性能
+    正确答案：A
+    解析：Source Map 建立压缩/转换后代码与源码的映射关系，浏览器 devtools 可显示原始源码，方便调试。
+    标签：工程化
+    难度：简单

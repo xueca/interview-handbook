@@ -1,0 +1,5 @@
+#!/bin/sh
+echo "🔍 正在运行 ESLint 检查..."
+cd frontend
+npx lint-staged
+echo "✅ ESLint 检查通过"

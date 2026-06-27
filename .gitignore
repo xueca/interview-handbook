@@ -1,0 +1,41 @@
+.env
+.env.production
+.env.local
+.env.development
+.env.test
+
+# 但允许示例模板进入版本控制
+!.env.production.example
+
+# Node modules
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+my-mcp-server/*/node_modules/
+
+# Build output
+dist/
+frontend/dist/
+backend/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Code Guardian temp files
+my-mcp-server/code-guardian/.eslint.config.temp.mjs
+
+# Resume files (private)
+resume/
+resume-revision/
+resume-xueca/
+resume-xueca-v3.html
+something/resume-xueca-v3.html

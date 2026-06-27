@@ -1,0 +1,12 @@
+{
+  "id": null,
+  "title": null,
+  "source": null,
+  "createdAt": null,
+  "summary": null,
+  "tasks": [],
+  "entryFile": null,
+  "notes": null,
+  "status": "empty",
+  "schema_version": "1.1"
+}
