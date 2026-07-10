@@ -22,6 +22,10 @@ backend/dist/
 .vscode/
 .idea/
 
+# Runtime data (后端运行时生成，不纳入版本控制，防止 git stash/pull 覆盖用户数据)
+backend/data/*.json
+backend/data/*.json.bak
+
 # Logs
 *.log
 npm-debug.log*

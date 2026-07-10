@@ -9,7 +9,8 @@ cd "$APP_DIR"
 
 # 1. 拉取最新代码
 echo "==> 拉取最新代码..."
-git stash  # 防止本地修改导致 pull 冲突
+# 重置跟踪文件到 HEAD 版本（运行时 JSON 数据文件已不在版本控制中，不受影响）
+git checkout -- .
 git pull origin reborn
 
 # 2. 安装后端依赖

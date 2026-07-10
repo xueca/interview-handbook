@@ -1,0 +1,44 @@
+# 文件功能: CD 部署工作流 | 触发方式: push 到 reborn 分支
+# 流程: 调用 ci.yml（lint+构建）→ CI 通过后 SSH 到服务器执行 deploy.sh
+name: Deploy
+
+on:
+  push:
+    branches:
+      - reborn
+
+permissions:
+  contents: read
+
+# 并发控制：同一分支只允许一个部署运行，新 push 取消旧部署
+concurrency:
+  group: deploy-reborn
+  cancel-in-progress: true
+
+jobs:
+  # Job 1: 调用可复用 CI 工作流（lint + build + 文件行数检查）
+  ci:
+    name: CI Check
+    uses: ./.github/workflows/ci.yml
+
+  # Job 2: SSH 部署（依赖 CI 通过）
+  deploy:
+    name: Deploy to Server
+    needs: ci
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: SSH Deploy
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          # SSH 命令超时设为 10 分钟（npm ci + build 可能耗时较长）
+          command_timeout: 10m
+          # 脚本中加 set -e 确保任何步骤失败即终止
+          script: |
+            set -e
+            cd /var/www/interview-handbook
+            bash deploy.sh
