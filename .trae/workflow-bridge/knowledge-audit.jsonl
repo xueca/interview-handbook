@@ -1,2 +1,0 @@
-{"time":"2026-06-17T15:23:43.471Z","id":"cli-1781709823468","problem":"SSE 流式传输中数据丢失","action":"auto-commit","score":5.4,"matchedTags":["SSE","架构分层","数据一致性"],"reason":"高置信度匹配"}
-{"time":"2026-06-17T15:23:45.017Z","id":"cli-1781709825016","problem":"按钮颜色太深","action":"skip","score":0,"matchedTags":[],"reason":"仅非代码文件修改，不沉淀"}
