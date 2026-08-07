@@ -2,7 +2,7 @@
 
 > AI 驱动的面试刷题助手 — 题库练习 + 错题本 + 智能统计 + AI 出题对话
 
-**🌐 在线演示**：https://pan.quark.cn/s/e74103dba761
+**📹 演示视频**：https://pan.quark.cn/s/e74103dba761
 
 ---
 
